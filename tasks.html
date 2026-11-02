@@ -3,38 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Задания — KanjiZen</title>
+    <title>Задания JLPT — KanjiZen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: { extend: {
-                colors: { zen: { 50:'#fcfbfa',100:'#f5f2ec',200:'#ebe5da',300:'#d9cfbe',400:'#b8a68c',500:'#947e61',600:'#7a6448',700:'#5c4b35',800:'#3d3122',900:'#221b12' },
-                          accent: { 500:'#d97706', 600:'#b45309' } },
-                fontFamily: { sans: ['Inter','sans-serif'], jp: ['Noto Sans JP','sans-serif'] } } }
+                colors: {
+                    zen: { 50:'#fcfbfa',100:'#f5f2ec',200:'#ebe5da',300:'#d9cfbe',400:'#b8a68c',500:'#947e61',600:'#7a6448',700:'#5c4b35',800:'#3d3122',900:'#221b12',950:'#140f09' },
+                    accent: { 500:'#d97706', 600:'#b45309' }
+                },
+                fontFamily: { sans: ['Inter','sans-serif'], jp: ['Noto Sans JP','sans-serif'] }
+            } }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>.zen-gradient { background: linear-gradient(135deg, #3d3122 0%, #5c4b35 100%); }</style>
+    <style>
+        .zen-gradient { background: linear-gradient(135deg, #3d3122 0%, #5c4b35 55%, #7a6448 100%); }
+        .glow { box-shadow: 0 0 0 1px rgba(251,191,36,.25), 0 20px 50px -20px rgba(217,119,6,.45); }
+        .opt { transition: all .15s ease; }
+        .opt:hover:not(:disabled) { transform: translateY(-1px); border-color: #d97706; }
+        .opt.selected { border-color: #d97706; background: #fffbeb; box-shadow: 0 0 0 3px rgba(217,119,6,.15); }
+        .opt.right { border-color: #16a34a; background: #f0fdf4; }
+        .opt.wrong { border-color: #dc2626; background: #fef2f2; }
+        .opt:disabled { cursor: default; }
+        .bar { transition: width .6s ease; }
+        @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        .rise { animation: rise .45s ease both; }
+    </style>
 </head>
-<body class="min-h-full bg-zen-100/70 text-zen-800 font-sans">
+<body class="min-h-full bg-zen-100 text-zen-900 font-sans">
 
-    <header class="zen-gradient text-white shadow-xl">
-        <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center space-x-3">
+    <!-- Шапка -->
+    <header class="zen-gradient text-white">
+        <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/25 flex items-center justify-center font-black text-amber-100 font-jp">漢字</div>
                 <div>
                     <h1 class="font-extrabold text-amber-50 leading-tight">KanjiZen</h1>
                     <p class="text-[11px] text-amber-100/70">Задания JLPT</p>
                 </div>
             </a>
-            <a href="/" class="text-xs text-amber-100 hover:text-white">← Справочник</a>
+            <a href="/" class="text-xs font-semibold text-amber-100 hover:text-white">← Справочник</a>
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-6 py-8 space-y-6">
-        <div id="message" class="bg-white border border-zen-200/80 rounded-3xl p-6 text-center text-sm text-zen-500">Загружаем...</div>
-        <div id="tasks" class="space-y-6"></div>
+    <!-- Герой -->
+    <section class="zen-gradient text-white pb-14 pt-4 relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-72 h-72 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-3xl mx-auto px-5 relative">
+            <p class="text-xs uppercase tracking-[0.2em] text-amber-200/80 font-semibold mb-2">Тренировка</p>
+            <h2 id="hero-title" class="text-3xl font-black leading-tight">Проверьте себя на реальных вопросах JLPT</h2>
+            <p id="hero-sub" class="text-amber-100/80 mt-3 text-sm">Загружаем задания…</p>
+        </div>
+    </section>
+
+    <main class="max-w-3xl mx-auto px-5 -mt-8 pb-16 space-y-8 relative">
+        <div id="content" class="space-y-8"></div>
     </main>
 
     <script>
@@ -42,101 +67,200 @@
             'https://stnxwbuozduhphftfqri.supabase.co',
             'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS'
         );
-        const msg = document.getElementById('message');
-        const box = document.getElementById('tasks');
+        const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
+        const content = document.getElementById('content');
+        const done = {};        // id задания -> true/false (результат)
+        let allTasks = [], owned = [], counts = [];
 
         function esc(s) {
             return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
+        function plural(n, forms) {
+            const m10 = n % 10, m100 = n % 100;
+            if (m10 === 1 && m100 !== 11) return forms[0];
+            if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return forms[1];
+            return forms[2];
+        }
+        const tasksWord = n => `${n} ${plural(n, ['задание', 'задания', 'заданий'])}`;
 
+        // ----- Карточка задания -----
         function renderTask(t, idx) {
+            const letters = ['A', 'B', 'C', 'D'];
             const opts = t.options.map((o, i) => `
-                <label class="flex items-center gap-3 p-3 rounded-2xl border border-zen-200 hover:border-amber-500/70 cursor-pointer">
-                    <input type="radio" name="q${t.id}" value="${esc(o)}" class="accent-amber-600">
-                    <span class="font-jp">${esc(o)}</span>
-                </label>`).join('');
+                <button type="button" class="opt w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-zen-200 bg-white text-left"
+                        data-opt="${esc(o)}" onclick="pick(${t.id}, this)">
+                    <span class="w-8 h-8 shrink-0 rounded-xl bg-zen-100 text-zen-600 text-xs font-bold flex items-center justify-center">${letters[i] || i + 1}</span>
+                    <span class="font-jp text-lg">${esc(o)}</span>
+                </button>`).join('');
             return `
-                <div class="bg-white border border-zen-200/80 rounded-3xl p-6 shadow-sm" data-id="${t.id}" data-answer="${esc(t.answer)}">
-                    <p class="text-xs text-zen-400 mb-2">Уровень ${esc(t.level)} · вопрос ${idx + 1}</p>
-                    <h3 class="font-semibold text-lg mb-4">${esc(t.question)}</h3>
-                    <div class="space-y-2">${opts}</div>
-                    <div class="mt-4 flex items-center gap-3">
-                        <button onclick="checkTask(${t.id})" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl">Проверить</button>
+                <article class="rise bg-white rounded-3xl p-6 md:p-7 shadow-sm border border-zen-200/70" id="card${t.id}" data-id="${t.id}" data-answer="${esc(t.answer)}">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full">${esc(t.level)} · ${idx + 1}</span>
+                        ${t.is_free ? '<span class="text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">Бесплатно</span>' : ''}
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-5 font-jp">${esc(t.question)}</h3>
+                    <div class="grid gap-2.5 sm:grid-cols-2">${opts}</div>
+                    <div class="mt-5 flex items-center gap-4">
+                        <button id="check${t.id}" onclick="check(${t.id})" disabled
+                            class="px-6 py-3 bg-zen-800 hover:bg-zen-700 disabled:bg-zen-200 disabled:text-zen-400 text-white font-semibold rounded-xl transition-all">Проверить</button>
                         <span id="res${t.id}" class="text-sm font-semibold"></span>
                     </div>
-                </div>`;
+                </article>`;
         }
 
-        function checkTask(id) {
-            const card = document.querySelector(`[data-id="${id}"]`);
-            const chosen = card.querySelector('input:checked');
+        function pick(id, btn) {
+            const card = document.getElementById('card' + id);
+            if (card.dataset.locked) return;
+            card.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('check' + id).disabled = false;
+        }
+
+        function check(id) {
+            const card = document.getElementById('card' + id);
+            if (card.dataset.locked) return;
+            const sel = card.querySelector('.opt.selected');
+            if (!sel) return;
+            const ok = sel.dataset.opt === card.dataset.answer;
+            card.dataset.locked = '1';
+            card.querySelectorAll('.opt').forEach(b => {
+                b.disabled = true;
+                if (b.dataset.opt === card.dataset.answer) b.classList.add('right');
+            });
+            if (!ok) sel.classList.add('wrong');
+            sel.classList.remove('selected');
+            document.getElementById('check' + id).classList.add('hidden');
             const res = document.getElementById('res' + id);
-            if (!chosen) { res.className = 'text-sm font-semibold text-zen-500'; res.innerText = 'Выберите ответ'; return; }
-            const ok = chosen.value === card.dataset.answer;
             res.className = 'text-sm font-semibold ' + (ok ? 'text-green-700' : 'text-red-600');
-            res.innerText = ok ? 'Верно!' : 'Неверно. Правильный ответ: ' + card.dataset.answer;
+            res.innerText = ok ? '✓ Верно! Отличная работа.' : '✗ Правильный ответ выделен зелёным.';
+            done[id] = ok;
+            updateHero();
+            refreshProgress();
         }
 
-        const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
-
+        // ----- Заблокированный уровень -----
         function lockedCard(level, n) {
-            const bar = w => `<div class="h-3 rounded bg-zen-200 mb-3" style="width:${w}%"></div>`;
+            const bar = w => `<div class="h-3 rounded-full bg-zen-200" style="width:${w}%"></div>`;
             return `
-                <div class="relative bg-white border border-zen-200/80 rounded-3xl p-6 overflow-hidden">
-                    <div class="blur-sm select-none pointer-events-none">
-                        <p class="text-xs text-zen-400 mb-3">Уровень ${level}</p>
-                        ${bar(80)}${bar(60)}
-                        <div class="grid grid-cols-2 gap-2 mt-4">
-                            <div class="h-10 rounded-2xl bg-zen-100"></div><div class="h-10 rounded-2xl bg-zen-100"></div>
-                            <div class="h-10 rounded-2xl bg-zen-100"></div><div class="h-10 rounded-2xl bg-zen-100"></div>
+                <div class="relative bg-white rounded-3xl p-6 md:p-7 border border-zen-200/70 overflow-hidden glow">
+                    <div class="blur-[3px] select-none pointer-events-none space-y-4">
+                        <div class="h-4 w-24 rounded-full bg-amber-100"></div>
+                        ${bar(90)}${bar(70)}
+                        <div class="grid grid-cols-2 gap-2.5 pt-2">
+                            <div class="h-14 rounded-2xl bg-zen-100"></div><div class="h-14 rounded-2xl bg-zen-100"></div>
+                            <div class="h-14 rounded-2xl bg-zen-100"></div><div class="h-14 rounded-2xl bg-zen-100"></div>
                         </div>
                     </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white/70">
-                        <p class="font-bold text-zen-900 mb-1">Заблокировано</p>
-                        <p class="text-sm text-zen-500 mb-4">Ещё ${n} заданий уровня ${level}</p>
-                        <button disabled class="px-5 py-2.5 bg-zen-300 text-white font-semibold rounded-xl cursor-not-allowed">Купить уровень — скоро</button>
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/85 to-white flex flex-col items-center justify-center text-center p-6">
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">Уровень ${level}</p>
+                        <h4 class="text-xl font-black mb-1">Ещё ${tasksWord(n)} впереди</h4>
+                        <p class="text-sm text-zen-500 mb-5 max-w-xs">Откройте полный уровень, чтобы пройти все вопросы и закрепить материал.</p>
+                        <button disabled class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold opacity-60 cursor-not-allowed">Открыть ${level} — скоро</button>
                     </div>
                 </div>`;
         }
 
+        // ----- Прогресс и призыв к покупке -----
+        function levelProgress(level) {
+            const free = allTasks.filter(t => t.level === level && t.is_free);
+            const answered = free.filter(t => t.id in done).length;
+            return { total: free.length, answered };
+        }
+
+        function updateHero() {
+            const all = allTasks.filter(t => t.is_free);
+            const ans = all.filter(t => t.id in done);
+            const right = ans.filter(t => done[t.id]).length;
+            document.getElementById('hero-title').innerText =
+                ans.length === all.length && all.length
+                    ? 'Бесплатная часть пройдена!'
+                    : 'Проверьте себя на реальных вопросах JLPT';
+            document.getElementById('hero-sub').innerText = all.length
+                ? (ans.length ? `Правильно: ${right} из ${ans.length}. ` : '') +
+                  `Бесплатных вопросов: ${all.length}`
+                : 'Пока нет бесплатных заданий';
+        }
+
+        function refreshProgress() {
+            LEVELS.forEach(level => {
+                const el = document.getElementById('prog-' + level);
+                if (!el) return;
+                const p = levelProgress(level);
+                const pct = p.total ? Math.round(p.answered / p.total * 100) : 0;
+                el.querySelector('.bar').style.width = pct + '%';
+                el.querySelector('.prog-text').innerText = `${p.answered} из ${p.total}`;
+            });
+            const finishEl = document.getElementById('finish');
+            if (finishEl) {
+                const all = allTasks.filter(t => t.is_free);
+                const complete = all.length && all.every(t => t.id in done);
+                finishEl.classList.toggle('hidden', !complete);
+            }
+        }
+
+        function progressHeader(level, total) {
+            return `
+                <div id="prog-${level}" class="flex items-center gap-4 mb-4">
+                    <h2 class="text-2xl font-black">Уровень ${level}</h2>
+                    <div class="flex-1 h-2 rounded-full bg-zen-200 overflow-hidden"><div class="bar h-full bg-gradient-to-r from-amber-500 to-amber-600" style="width:0%"></div></div>
+                    <span class="prog-text text-xs font-semibold text-zen-500 whitespace-nowrap">0 из ${total}</span>
+                </div>`;
+        }
+
+        // ----- Загрузка -----
         async function init() {
             const { data: { session } } = await sb.auth.getSession();
-
-            let owned = [];
             if (session) {
-                const { data: purchases, error: pErr } = await sb.from('purchases').select('level');
-                if (pErr) { msg.innerText = 'Ошибка: ' + pErr.message; return; }
-                owned = purchases.map(p => p.level);
+                const { data: purchases } = await sb.from('purchases').select('level');
+                owned = (purchases || []).map(p => p.level);
             }
+            const { data: tasks, error } = await sb.from('tasks').select('*').order('id');
+            if (error) { content.innerHTML = `<p class="text-red-600">Ошибка: ${esc(error.message)}</p>`; return; }
+            const { data: c } = await sb.from('level_counts').select('*');
+            counts = c || [];
+            allTasks = tasks;
 
-            // Бесплатные задания видны всем, платные — только купившим уровень (это решает база)
-            const { data: tasks, error: tErr } = await sb.from('tasks').select('*').order('id');
-            if (tErr) { msg.innerText = 'Ошибка: ' + tErr.message; return; }
-
-            const { data: counts } = await sb.from('level_counts').select('*');
-            const countOf = lvl => ((counts || []).find(c => c.level === lvl) || {}).total || 0;
-
-            msg.innerHTML = session
-                ? `Открытые уровни: ${owned.length ? owned.join(', ') : 'пока нет'}. Остальные уровни можно посмотреть ниже.`
-                : 'Бесплатные задания доступны всем. Чтобы открыть остальные, <a href="login.html" class="text-amber-700 font-semibold underline">войдите в аккаунт</a>.';
+            const countOf = lvl => (counts.find(x => x.level === lvl) || {}).total || 0;
 
             let html = '';
             LEVELS.forEach(level => {
-                const lt = tasks.filter(t => t.level === level);
+                const lt = allTasks.filter(t => t.level === level);
                 const total = countOf(level);
                 if (!lt.length && !total) return;
 
-                html += `<h2 class="text-lg font-bold text-zen-900 pt-2">Уровень ${level}</h2>`;
+                const freeCount = lt.filter(t => t.is_free).length;
+                html += `<section class="space-y-4">`;
+                html += progressHeader(level, owned.includes(level) ? lt.length : freeCount);
                 if (owned.includes(level)) {
-                    html += lt.map(renderTask).join('');
+                    html += lt.map((t, i) => renderTask(t, i)).join('');
                 } else {
-                    const free = lt.filter(t => t.is_free);
-                    html += free.map(renderTask).join('');
-                    const locked = total - free.length;
+                    html += lt.filter(t => t.is_free).map((t, i) => renderTask(t, i)).join('');
+                    const locked = total - freeCount;
                     if (locked > 0) html += lockedCard(level, locked);
                 }
+                html += `</section>`;
             });
-            box.innerHTML = html || '<p class="text-sm text-zen-500">Задания пока не добавлены.</p>';
+
+            // Финальный призыв после бесплатной части
+            html += `
+                <div id="finish" class="hidden rise rounded-3xl p-7 md:p-9 text-white zen-gradient glow text-center">
+                    <p class="text-xs uppercase tracking-[0.2em] text-amber-200 font-semibold mb-2">Бесплатная часть пройдена</p>
+                    <h3 class="text-2xl md:text-3xl font-black mb-3">Хотите пройти весь уровень?</h3>
+                    <p class="text-amber-100/80 text-sm mb-6 max-w-md mx-auto">Полные наборы заданий для каждого уровня JLPT: от N5 до N1. Покупка открывает все вопросы уровня.</p>
+                    <button disabled class="px-7 py-3.5 rounded-2xl bg-amber-500 text-white font-bold opacity-70 cursor-not-allowed">Купить доступ — скоро</button>
+                </div>`;
+
+            content.innerHTML = html || '<p class="text-zen-500">Задания пока не добавлены.</p>';
+            updateHero();
+            refreshProgress();
+
+            if (!session) {
+                content.insertAdjacentHTML('afterbegin', `
+                    <div class="rise bg-white rounded-2xl p-4 text-sm text-zen-600 border border-zen-200/70 flex items-center justify-between gap-4 flex-wrap">
+                        <span>Бесплатные задания доступны всем.</span>
+                        <a href="login.html" class="font-semibold text-amber-700 hover:text-amber-800">Войти, чтобы открыть остальные →</a>
+                    </div>`);
+            }
         }
 
         init();
