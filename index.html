@@ -52,6 +52,22 @@
         .zen-gradient {
             background: linear-gradient(135deg, #3d3122 0%, #5c4b35 100%);
         }
+        /* ===== Адаптация под телефон ===== */
+        @media (max-width: 640px) {
+            main { padding: 16px 12px !important; }
+            header .max-w-7xl { padding-left: 12px !important; padding-right: 12px !important; }
+            /* Таблица: прячем Номер и Ссылки, остальное ужимаем */
+            table th, table td { padding-left: 8px !important; padding-right: 8px !important; padding-top: 10px !important; padding-bottom: 10px !important; }
+            table th:nth-child(6), table td:nth-child(6),
+            table th:nth-child(7), table td:nth-child(7) { display: none; }
+            #kanji-table-body td:first-child span { font-size: 1.75rem !important; }
+            #kanji-table-body td:nth-child(3), #kanji-table-body td:nth-child(4) { font-size: 0.75rem; }
+            /* Telegram: оставляем только иконку */
+            a[href*="t.me"] span { display: none; }
+            /* Кандзи дня компактнее */
+            #daily-kanji { font-size: 3rem !important; }
+            #daily-bg-char { font-size: 6rem !important; }
+        }
     </style>
 </head>
 <body class="bg-zen-100/70 text-zen-800 dark:bg-zen-900 dark:text-zen-100 h-full flex flex-col transition-colors duration-300">
