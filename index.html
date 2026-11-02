@@ -37,6 +37,8 @@
             }
         }
     </script>
+    <!-- Supabase: вход и профиль -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- FontAwesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -88,6 +90,12 @@
 
             <!-- Правая часть: Водяной знак ТГК и переключатель тем -->
             <div class="flex items-center space-x-3">
+                <!-- Вход / Профиль -->
+                <a id="auth-btn" href="login.html" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-amber-500/90 hover:bg-amber-500 text-white text-xs font-bold shadow-sm transition-all">
+                    <i class="fa-solid fa-user"></i>
+                    <span id="auth-btn-text">Войти / Регистрация</span>
+                </a>
+
                 <!-- Водяной знак ТГК с детализированным логотипом Telegram -->
                 <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all shadow-sm backdrop-blur-sm group" title="Перейти в Telegram-канал">
                     <div class="w-6 h-6 rounded-xl bg-gradient-to-tr from-[#2aabee] to-[#229ed9] flex items-center justify-center text-white flex-shrink-0 shadow-md group-hover:scale-110 transition-transform">
@@ -1268,6 +1276,18 @@
             document.getElementById('kanji-modal').classList.add('hidden');
             document.getElementById('kanji-modal').classList.remove('flex');
         }
+        // ===== Аккаунт: кнопка входа / профиля в шапке =====
+        (function initAuthButton() {
+            const sb = supabase.createClient(
+                'https://stnxwbuozduhphftfqri.supabase.co',
+                'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS'
+            );
+            const setBtn = session => {
+                document.getElementById('auth-btn-text').innerText = session ? 'Профиль' : 'Войти / Регистрация';
+            };
+            sb.auth.getSession().then(({ data }) => setBtn(data.session));
+            sb.auth.onAuthStateChange((_event, session) => setBtn(session));
+        })();
     </script>
 </body>
 </html>
