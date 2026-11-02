@@ -77,24 +77,66 @@
             res.innerText = ok ? 'Верно!' : 'Неверно. Правильный ответ: ' + card.dataset.answer;
         }
 
+        const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
+
+        function lockedCard(level, n) {
+            const bar = w => `<div class="h-3 rounded bg-zen-200 mb-3" style="width:${w}%"></div>`;
+            return `
+                <div class="relative bg-white border border-zen-200/80 rounded-3xl p-6 overflow-hidden">
+                    <div class="blur-sm select-none pointer-events-none">
+                        <p class="text-xs text-zen-400 mb-3">Уровень ${level}</p>
+                        ${bar(80)}${bar(60)}
+                        <div class="grid grid-cols-2 gap-2 mt-4">
+                            <div class="h-10 rounded-2xl bg-zen-100"></div><div class="h-10 rounded-2xl bg-zen-100"></div>
+                            <div class="h-10 rounded-2xl bg-zen-100"></div><div class="h-10 rounded-2xl bg-zen-100"></div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white/70">
+                        <p class="font-bold text-zen-900 mb-1">Заблокировано</p>
+                        <p class="text-sm text-zen-500 mb-4">Ещё ${n} заданий уровня ${level}</p>
+                        <button disabled class="px-5 py-2.5 bg-zen-300 text-white font-semibold rounded-xl cursor-not-allowed">Купить уровень — скоро</button>
+                    </div>
+                </div>`;
+        }
+
         async function init() {
             const { data: { session } } = await sb.auth.getSession();
-            if (!session) {
-                msg.innerHTML = 'Чтобы открыть задания, <a href="login.html" class="text-amber-700 font-semibold underline">войдите в аккаунт</a>.';
-                return;
+
+            let owned = [];
+            if (session) {
+                const { data: purchases, error: pErr } = await sb.from('purchases').select('level');
+                if (pErr) { msg.innerText = 'Ошибка: ' + pErr.message; return; }
+                owned = purchases.map(p => p.level);
             }
-            const { data: purchases, error: pErr } = await sb.from('purchases').select('level');
-            if (pErr) { msg.innerText = 'Ошибка: ' + pErr.message; return; }
-            if (!purchases.length) {
-                msg.innerHTML = 'У вас пока нет открытых уровней. Оплата уровней появится позже.';
-                return;
-            }
-            const levels = purchases.map(p => p.level);
-            const { data: tasks, error: tErr } = await sb.from('tasks').select('*').in('level', levels).order('id');
+
+            // Бесплатные задания видны всем, платные — только купившим уровень (это решает база)
+            const { data: tasks, error: tErr } = await sb.from('tasks').select('*').order('id');
             if (tErr) { msg.innerText = 'Ошибка: ' + tErr.message; return; }
-            if (!tasks.length) { msg.innerText = 'Задания для ваших уровней пока не добавлены.'; return; }
-            msg.innerText = `Открыто уровней: ${levels.join(', ')} · заданий: ${tasks.length}`;
-            box.innerHTML = tasks.map(renderTask).join('');
+
+            const { data: counts } = await sb.from('level_counts').select('*');
+            const countOf = lvl => ((counts || []).find(c => c.level === lvl) || {}).total || 0;
+
+            msg.innerHTML = session
+                ? `Открытые уровни: ${owned.length ? owned.join(', ') : 'пока нет'}. Остальные уровни можно посмотреть ниже.`
+                : 'Бесплатные задания доступны всем. Чтобы открыть остальные, <a href="login.html" class="text-amber-700 font-semibold underline">войдите в аккаунт</a>.';
+
+            let html = '';
+            LEVELS.forEach(level => {
+                const lt = tasks.filter(t => t.level === level);
+                const total = countOf(level);
+                if (!lt.length && !total) return;
+
+                html += `<h2 class="text-lg font-bold text-zen-900 pt-2">Уровень ${level}</h2>`;
+                if (owned.includes(level)) {
+                    html += lt.map(renderTask).join('');
+                } else {
+                    const free = lt.filter(t => t.is_free);
+                    html += free.map(renderTask).join('');
+                    const locked = total - free.length;
+                    if (locked > 0) html += lockedCard(level, locked);
+                }
+            });
+            box.innerHTML = html || '<p class="text-sm text-zen-500">Задания пока не добавлены.</p>';
         }
 
         init();
