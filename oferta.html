@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Публичная оферта — KanjiZen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { zen: { 50:'#fcfbfa',100:'#f5f2ec',200:'#ebe5da',300:'#d9cfbe',400:'#b8a68c',500:'#947e61',600:'#7a6448',700:'#5c4b35',800:'#3d3122',900:'#221b12' }, accent: { 500:'#d97706', 600:'#b45309' } },
+            fontFamily: { sans: ['Inter','sans-serif'], jp: ['Noto Sans JP','sans-serif'] } } } }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>.zen-gradient { background: linear-gradient(135deg, #3d3122 0%, #5c4b35 100%); }</style>
+</head>
+<body class="min-h-full bg-zen-100 text-zen-800 font-sans">
+    <header class="zen-gradient text-white">
+        <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/25 flex items-center justify-center font-black text-amber-100 font-jp">漢字</div>
+                <div><h1 class="font-extrabold text-amber-50 leading-tight">KanjiZen</h1><p class="text-[11px] text-amber-100/70">Справочник и задания JLPT</p></div>
+            </a>
+            <a href="/" class="text-xs font-semibold text-amber-100 hover:text-white">← На главную</a>
+        </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-5 py-10">
+        <div class="bg-white rounded-3xl p-7 md:p-10 border border-zen-200/70 shadow-sm space-y-6 leading-relaxed text-[15px]">
+
+            <h1 class="text-2xl font-black">Публичная оферта</h1>
+            <p class="text-sm text-zen-500">Редакция от 3 ноября 2026 г.</p>
+            <h2 class="text-lg font-bold pt-2">1. Общие положения</h2>
+            <p>Настоящий документ является публичной офертой Лёвин Игорь Игоревич (ИНН 972100452162, самозанятый, далее — «Исполнитель») и адресован любому физическому лицу (далее — «Покупатель»). Оплата доступа на сайте https://kanjizen.pages.dev означает согласие Покупателя с условиями оферты.</p>
+            <h2 class="text-lg font-bold pt-2">2. Предмет</h2>
+            <p>Исполнитель предоставляет Покупателю доступ к онлайн-заданиям для подготовки к экзаменам JLPT по выбранному уровню (N5, N4, N3, N2, N1) в личном кабинете на сайте. Цена и состав каждого уровня указаны на сайте в момент оплаты.</p>
+            <h2 class="text-lg font-bold pt-2">3. Порядок оплаты и доступа</h2>
+            <p>Оплата производится через платёжный сервис ЮKassa. После успешной оплаты доступ к выбранному уровню открывается автоматически в личном кабинете Покупателя, обычно в течение нескольких минут. Для доступа Покупатель должен войти в аккаунт по адресу своей электронной почты.</p>
+            <h2 class="text-lg font-bold pt-2">4. Возврат средств</h2>
+            <p>Товар является цифровым и предоставляется сразу после оплаты. Возврат средств возможен, если доступ не был открыт по вине Исполнителя или при технической ошибке, которую не удалось устранить в разумный срок. Во всех остальных случаях возврат производится в порядке, предусмотренном законодательством о защите прав потребителей. Для запроса возврата напишите Исполнителю по контакту из раздела «Реквизиты».</p>
+            <h2 class="text-lg font-bold pt-2">5. Чек</h2>
+            <p>Чек о расчёте формируется в приложении «Мой налог» и направляется Покупателю на электронную почту, указанную при оплате.</p>
+            <h2 class="text-lg font-bold pt-2">6. Персональные данные</h2>
+            <p>Обработка персональных данных осуществляется в соответствии с <a class="text-amber-700 underline" href="privacy.html">Политикой конфиденциальности</a>.</p>
+            <h2 class="text-lg font-bold pt-2">7. Прочее</h2>
+            <p>Исполнитель вправе изменять условия оферты; новая редакция вступает в силу с момента публикации на сайте. Оферта действует до отзыва Исполнителем.</p>
+
+        </div>
+        <nav class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-zen-500">
+            <a href="requisites.html" class="hover:text-amber-700">Реквизиты</a>
+            <a href="oferta.html" class="hover:text-amber-700">Публичная оферта</a>
+            <a href="privacy.html" class="hover:text-amber-700">Политика конфиденциальности</a>
+        </nav>
+    </main>
+</body>
+</html>
