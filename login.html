@@ -81,6 +81,16 @@
                 </button>
             </div>
 
+            <!-- Вход по паролю (для проверки сайта и тестовых аккаунтов) -->
+            <details class="pt-2 border-t border-zen-200/70">
+                <summary class="cursor-pointer text-sm font-semibold text-zen-600 pt-4">Войти по паролю</summary>
+                <div class="space-y-3 pt-4">
+                    <input id="pw-email" type="email" placeholder="Email" class="w-full px-4 py-3 rounded-2xl bg-zen-50 dark:bg-zen-900/80 border border-zen-200 dark:border-zen-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/40">
+                    <input id="pw-pass" type="password" placeholder="Пароль" class="w-full px-4 py-3 rounded-2xl bg-zen-50 dark:bg-zen-900/80 border border-zen-200 dark:border-zen-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/40">
+                    <button id="pw-btn" class="w-full py-3 rounded-2xl bg-zen-800 hover:bg-zen-700 text-white font-semibold transition-all">Войти</button>
+                </div>
+            </details>
+
             <p id="status" class="text-sm text-center text-zen-500 dark:text-zen-300 min-h-[1.25rem]"></p>
         </div>
 
@@ -131,6 +141,15 @@
             await sb.auth.signOut();
             showState(null);
             statusEl.innerText = 'Вы вышли из аккаунта.';
+        };
+
+        document.getElementById('pw-btn').onclick = async () => {
+            const email = document.getElementById('pw-email').value.trim();
+            const password = document.getElementById('pw-pass').value;
+            if (!email || !password) { statusEl.innerText = 'Введите email и пароль.'; return; }
+            statusEl.innerText = 'Входим...';
+            const { error } = await sb.auth.signInWithPassword({ email, password });
+            statusEl.innerText = error ? 'Ошибка: ' + error.message : 'Вход выполнен.';
         };
 
         sb.auth.onAuthStateChange((event, session) => {
