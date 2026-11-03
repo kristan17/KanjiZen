@@ -507,6 +507,12 @@
 <div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-between items-center gap-3">
                 <button id="quiz-next-btn" onclick="nextQuizCard()" class="px-4 py-2 text-sm rounded-xl border border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 font-semibold hover:bg-zen-100 dark:hover:bg-zen-700 transition-all">Следующая карточка →</button>
                 <button id="quiz-check-btn" onclick="revealQuizAnswer()" class="hidden px-5 py-2 text-sm bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Проверить</button>
+                <div id="quiz-rate" class="flex-1 gap-2" style="display:none; grid-template-columns: repeat(4, minmax(0,1fr));">
+                    <button onclick="rateCard(0)" class="py-2 rounded-xl text-sm font-bold bg-rose-100 hover:bg-rose-200 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 transition-colors">Снова</button>
+                    <button onclick="rateCard(1)" class="py-2 rounded-xl text-sm font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 transition-colors">Трудно</button>
+                    <button onclick="rateCard(2)" class="py-2 rounded-xl text-sm font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 transition-colors">Хорошо</button>
+                    <button onclick="rateCard(3)" class="py-2 rounded-xl text-sm font-bold bg-sky-100 hover:bg-sky-200 text-sky-800 dark:bg-sky-950/50 dark:text-sky-300 transition-colors">Легко</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1006,13 +1012,13 @@
                 { kanji: "度", meaning: "градус, раз", onyomi: "ド, ト, タク", kunyomi: "たび", freq: "1.410%", number: 116, mnemonic: "Дом и мера под ним.", examples: [{word: "今度", reading: "kondo", translation: "на этот раз"}] },
                 { kanji: "知", meaning: "знать", onyomi: "チ", kunyomi: "し-る", freq: "1.380%", number: 117, mnemonic: "Стрела (矢) и рот (口) — четкие знания.", examples: [{word: "知る", reading: "shiru", translation: "знать"}] },
                 { kanji: "立", meaning: "стоять", onyomi: "リツ", kunyomi: "た-つ", freq: "1.180%", number: 118, mnemonic: "Человек стоит на твердой поверхности.", examples: [{word: "立つ", reading: "tatsu", translation: "стоять"}] },
-                { kanji: "通", meaning: "проходить, сообщаться", onyomi: "ツウ", kunyomi: "通-う, かよ-う", freq: "1.460%", number: 119, mnemonic: "Дорога и движение.", examples: [{word: "通う", reading: "kayou", translation: "ходить (регулярно)"}] },
+                { kanji: "通", meaning: "проходить, сообщаться", onyomi: "ツウ", kunyomi: "かよ-う", freq: "1.460%", number: 119, mnemonic: "Дорога и движение.", examples: [{word: "通う", reading: "kayou", translation: "ходить (регулярно)"}] },
                 { kanji: "不", meaning: "не- (отрицательная приставка)", onyomi: "フ, ブ", kunyomi: "-", freq: "1.120%", number: 120, mnemonic: "Цветок не распустился.", examples: [{word: "不便", reading: "fuben", translation: "неудобный"}] },
                 { kanji: "員", meaning: "сотрудник, член", onyomi: "イン", kunyomi: "-", freq: "1.190%", number: 121, mnemonic: "Рот (口) в помещении (貝/ракушка).", examples: [{word: "社員", reading: "shain", translation: "сотрудник компании"}] },
                 { kanji: "的", meaning: "цель, суффикс прилагательных", onyomi: "テキ", kunyomi: "まと", freq: "1.890%", number: 122, mnemonic: "Белый (白) блеск на мишени (勺).", examples: [{word: "目的", reading: "mokuteki", translation: "цель"}] },
                 { kanji: "問", meaning: "спрашивать, вопрос", onyomi: "モン", kunyomi: "と-う", freq: "1.340%", number: 123, mnemonic: "Рот (口) у ворот (門) — задавать вопрос.", examples: [{word: "質問", reading: "shitsumon", translation: "вопрос"}] },
                 { kanji: "用", meaning: "использовать, дело", onyomi: "ヨウ", kunyomi: "もち-いる", freq: "1.330%", number: 124, mnemonic: "Забор со входом для хозяйственных нужд.", examples: [{word: "用意", reading: "youi", translation: "подготовка"}] },
-                { kanji: "代", meaning: "заменять, эпоха, плата", onyomi: "ダイ, タイ", kunyomi: "か-わる, 代-える", freq: "1.350%", number: 125, mnemonic: "Человек и смена поколений.", examples: [{word: "代わり", reading: "kawari", translation: "замена"}] },
+                { kanji: "代", meaning: "заменять, эпоха, плата", onyomi: "ダイ, タイ", kunyomi: "か-わる, か-える", freq: "1.350%", number: 125, mnemonic: "Человек и смена поколений.", examples: [{word: "代わり", reading: "kawari", translation: "замена"}] },
                 { kanji: "世", meaning: "мир, эпоха, поколение", onyomi: "セイ, セ", kunyomi: "よ", freq: "1.280%", number: 126, mnemonic: "Три десятка (три поколения).", examples: [{word: "世界", reading: "sekai", translation: "мир"}] },
                 { kanji: "死", meaning: "умирать, смерть", onyomi: "シ", kunyomi: "し-ぬ", freq: "0.820%", number: 127, mnemonic: "Кости под разрушающимся навесом.", examples: [{word: "死ぬ", reading: "shinu", translation: "умирать"}] },
                 { kanji: "無", meaning: "ничто, не-, без", onyomi: "ム, ブ", kunyomi: "な-い", freq: "1.110%", number: 128, mnemonic: "Дерево под сгоревшим огнем.", examples: [{word: "無料", reading: "muryou", translation: "бесплатно"}] },
@@ -1023,13 +1029,13 @@
                 { kanji: "業", meaning: "дело, занятие, индустрия", onyomi: "ギョウ, ゴウ", kunyomi: "わざ", freq: "1.560%", number: 133, mnemonic: "Стойка музыкального инструмента в храме.", examples: [{word: "作業", reading: "sagyou", translation: "работа, операция"}] },
                 { kanji: "題", meaning: "тема, заголовок", onyomi: "ダイ", kunyomi: "-", freq: "1.430%", number: 134, mnemonic: "Голова (頁) и черты под ней.", examples: [{word: "問題", reading: "mondai", translation: "проблема, вопрос"}] },
                 { kanji: "京", meaning: "столица", onyomi: "キョウ, キン", kunyomi: "-", freq: "1.140%", number: 135, mnemonic: "Высокое здание столицы.", examples: [{word: "東京", reading: "toukyou", translation: "Токио"}] },
-                { kanji: "主", meaning: "главный, хозяин", onyomi: "シュ, ス", kunyomi: "おも, 主-人", freq: "1.310%", number: 136, mnemonic: "Пламя свечи на подставке.", examples: [{word: "主人", reading: "shujin", translation: "муж, хозяин"}] },
+                { kanji: "主", meaning: "главный, хозяин", onyomi: "シュ, ス", kunyomi: "おも", freq: "1.310%", number: 136, mnemonic: "Пламя свечи на подставке.", examples: [{word: "主人", reading: "shujin", translation: "муж, хозяин"}] },
                 { kanji: "公", meaning: "общественный, государственный", onyomi: "コウ, ク", kunyomi: "おおやけ", freq: "0.920%", number: 137, mnemonic: "Разделение блага поровну.", examples: [{word: "公園", reading: "kouen", translation: "парк"}] },
                 { kanji: "以", meaning: "посредством, с", onyomi: "イ", kunyomi: "もっ-て", freq: "1.390%", number: 138, mnemonic: "Человек с ношей.", examples: [{word: "以上", reading: "ijou", translation: "сверх того, более"}] },
                 { kanji: "院", meaning: "учреждение, палата", onyomi: "イン", kunyomi: "-", freq: "0.850%", number: 139, mnemonic: "Холм и стена казенного дома.", examples: [{word: "病院", reading: "byouin", translation: "больница"}] },
                 { kanji: "界", meaning: "мир, граница", onyomi: "カイ", kunyomi: "-", freq: "1.850%", number: 140, mnemonic: "Поле и разделение границ.", examples: [{word: "世界", reading: "sekai", translation: "мир"}] },
                 { kanji: "文", meaning: "текст, литература", onyomi: "ブン, モン", kunyomi: "ふみ", freq: "1.490%", number: 141, mnemonic: "Пересекающиеся линии узоров текста.", examples: [{word: "文学", reading: "bungaku", translation: "литература"}] },
-                { kanji: "重", meaning: "тяжелый, важный", onyomi: "ジュウ, チョウ", kunyomi: "おも-い, 重-ねる", freq: "1.100%", number: 142, mnemonic: "Человек под тяжелой ношей.", examples: [{word: "重い", reading: "omoi", translation: "тяжелый"}] },
+                { kanji: "重", meaning: "тяжелый, важный", onyomi: "ジュウ, チョウ", kunyomi: "おも-い, かさ-ねる", freq: "1.100%", number: 142, mnemonic: "Человек под тяжелой ношей.", examples: [{word: "重い", reading: "omoi", translation: "тяжелый"}] },
                 { kanji: "近", meaning: "близкий", onyomi: "キン", kunyomi: "ちか-い", freq: "1.050%", number: 143, mnemonic: "Дорога и близкий ориентир.", examples: [{word: "近い", reading: "chikai", translation: "близкий"}] },
                 { kanji: "考", meaning: "думать, размышлять", onyomi: "コウ", kunyomi: "かんが-える", freq: "1.160%", number: 144, mnemonic: "Старик с палочкой опирается на мысль.", examples: [{word: "考え", reading: "kangae", translation: "мысль, идея"}] },
                 { kanji: "画", meaning: "картина, черта", onyomi: "ガ, カク", kunyomi: "えが-く", freq: "0.950%", number: 145, mnemonic: "Границы поля в рамке.", examples: [{word: "映画", reading: "eiga", translation: "фильм"}] },
@@ -1080,7 +1086,7 @@
                 { kanji: "英", meaning: "английский, выдающийся", onyomi: "エイ", kunyomi: "-", freq: "0.750%", number: 190, mnemonic: "Цветок и человек.", examples: [{word: "英語", reading: "eigo", translation: "английский язык"}] },
                 { kanji: "医", meaning: "медицина, врач", onyomi: "イ", kunyomi: "-", freq: "0.610%", number: 191, mnemonic: "Ящик с лекарствами и стрелы.", examples: [{word: "医者", reading: "isha", translation: "врач"}] },
                 { kanji: "仕", meaning: "служба, делать", onyomi: "シ, ジ", kunyomi: "つか-える", freq: "0.830%", number: 192, mnemonic: "Человек на службе.", examples: [{word: "仕事", reading: "shigoto", translation: "работа"}] },
-                { kanji: "去", meaning: "прошлый, уходить", onyomi: "kyo, ko", kunyomi: "さ-る", freq: "0.710%", number: 193, mnemonic: "Земля и уход с нее.", examples: [{word: "去年", reading: "kyonen", translation: "прошлый год"}] },
+                { kanji: "去", meaning: "прошлый, уходить", onyomi: "キョ, コ", kunyomi: "さ-る", freq: "0.710%", number: 193, mnemonic: "Земля и уход с нее.", examples: [{word: "去年", reading: "kyonen", translation: "прошлый год"}] },
                 { kanji: "味", meaning: "вкус", onyomi: "ミ", kunyomi: "あじ", freq: "0.790%", number: 194, mnemonic: "Рот пробует пищу.", examples: [{word: "意味", reading: "imi", translation: "значение, смысл"}] },
                 { kanji: "写", meaning: "копировать, фотографировать", onyomi: "シャ", kunyomi: "うつ-す", freq: "0.640%", number: 195, mnemonic: "Перенос изображения.", examples: [{word: "写真", reading: "shashin", translation: "фотография"}] },
                 { kanji: "字", meaning: "знак, буква", onyomi: "ジ", kunyomi: "あざ", freq: "0.820%", number: 196, mnemonic: "Ребенок под крышей дома пишет иероглифы.", examples: [{word: "漢字", reading: "kanji", translation: "кандзи"}] },
@@ -1092,7 +1098,7 @@
                 { kanji: "悪", meaning: "плохой, злой", onyomi: "アク, オ", kunyomi: "わる-い", freq: "0.710%", number: 202, mnemonic: "Сердце на вершине — плохие помыслы.", examples: [{word: "悪い", reading: "warui", translation: "плохой"}] },
                 { kanji: "図", meaning: "чертеж, план", onyomi: "ズ, ト", kunyomi: "はか-る", freq: "0.820%", number: 203, mnemonic: "Границы ограждения и внутренний план.", examples: [{word: "図書館", reading: "toshokan", translation: "библиотека"}] },
                 { kanji: "室", meaning: "комната", onyomi: "シツ", kunyomi: "むろ", freq: "0.850%", number: 204, mnemonic: "Крыша и земля (помещение).", examples: [{word: "教室", reading: "kyoushitsu", translation: "классная комната"}] },
-                { kanji: "歩", meaning: "идти пешком", onyomi: "ホ, ブ, フ", kunyomi: "ある-く, 歩-む", freq: "0.770%", number: 205, mnemonic: "Ноги в поле.", examples: [{word: "歩く", reading: "aruku", translation: "идти пешком"}] },
+                { kanji: "歩", meaning: "идти пешком", onyomi: "ホ, ブ, フ", kunyomi: "ある-く, あゆ-む", freq: "0.770%", number: 205, mnemonic: "Ноги в поле.", examples: [{word: "歩く", reading: "aruku", translation: "идти пешком"}] },
                 { kanji: "風", meaning: "ветер, стиль", onyomi: "フウ, フ", kunyomi: "かぜ", freq: "0.830%", number: 206, mnemonic: "Насекомое под парусом ветра.", examples: [{word: "風", reading: "kaze", translation: "ветер"}] },
                 { kanji: "纸", meaning: "бумага", onyomi: "シ", kunyomi: "かみ", freq: "0.640%", number: 207, mnemonic: "Нить и волокна бумаги.", examples: [{word: "手紙", reading: "tegami", translation: "письмо"}] },
                 { kanji: "黒", meaning: "черный", onyomi: "コク", kunyomi: "くろ-い", freq: "0.590%", number: 208, mnemonic: "Дым от очага обугливает дымоход.", examples: [{word: "白い", reading: "shiroi", translation: "белый"}] },
@@ -1101,8 +1107,8 @@
                 { kanji: "青", meaning: "синий, зеленый", onyomi: "セイ, ショウ", kunyomi: "あお-い", freq: "0.650%", number: 211, mnemonic: "Росток под луной — синева.", examples: [{word: "青い", reading: "aoi", translation: "синий"}] },
                 { kanji: "館", meaning: "общественное здание", onyomi: "カン", kunyomi: "-", freq: "0.620%", number: 212, mnemonic: "Убежище для приема гостей.", examples: [{word: "図書館", reading: "toshokan", translation: "библиотека"}] },
                 { kanji: "屋", meaning: "здание, лавка", onyomi: "オク", kunyomi: "や", freq: "0.710%", number: 213, mnemonic: "Крыша над ценным товаром.", examples: [{word: "本屋", reading: "honya", translation: "книжный магазин"}] },
-                { kanji: "色", meaning: "цвет", onyomi: "ショ₋, シキ", kunyomi: "いろ", freq: "0.760%", number: 214, mnemonic: "Человек на человеке — выражение лица, краска.", examples: [{word: "色", reading: "iro", translation: "цвет"}] },
-                { kanji: "走", meaning: "бежать", onyomi: "ソウ", kunyomi: "hasi-ru", freq: "0.730%", number: 215, mnemonic: "Человек стремительно бежит.", examples: [{word: "走る", reading: "hashiru", translation: "бежать"}] },
+                { kanji: "色", meaning: "цвет", onyomi: "ショク, シキ", kunyomi: "いろ", freq: "0.760%", number: 214, mnemonic: "Человек на человеке — выражение лица, краска.", examples: [{word: "色", reading: "iro", translation: "цвет"}] },
+                { kanji: "走", meaning: "бежать", onyomi: "ソウ", kunyomi: "はし-る", freq: "0.730%", number: 215, mnemonic: "Человек стремительно бежит.", examples: [{word: "走る", reading: "hashiru", translation: "бежать"}] },
                 { kanji: "秋", meaning: "осень", onyomi: "シュウ", kunyomi: "あき", freq: "0.610%", number: 216, mnemonic: "Зерно и огонь под конец сезона урожая.", examples: [{word: "秋", reading: "aki", translation: "осень"}] },
                 { kanji: "夏", meaning: "лето", onyomi: "カ, ガ", kunyomi: "なつ", freq: "0.640%", number: 217, mnemonic: "Жаркое солнце над человеком летом.", examples: [{word: "夏", reading: "natsu", translation: "лето"}] },
                 { kanji: "習", meaning: "учиться, практиковать", onyomi: "シュウ", kunyomi: "なら-う", freq: "0.720%", number: 218, mnemonic: "Птица учится махать крыльями.", examples: [{word: "勉強", reading: "benkyou", translation: "учеба"}] },
@@ -1198,7 +1204,8 @@
                 const chips = done.length
                     ? done.map(k => `<span class="font-jp text-lg px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">${k.kanji}</span>`).join('')
                     : '<span class="text-xs text-zen-400">пока ничего не отмечено</span>';
-                const btn = `<button onclick="startReview('${lvl}')" ${done.length ? '' : 'disabled'} class="text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-500/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"><i class="fa-solid fa-shuffle mr-1"></i>Повторить</button>`;
+                const dueN = done.filter(k => isDue(k.kanji)).length;
+                const btn = `<button onclick="startReview('${lvl}')" ${done.length ? '' : 'disabled'} class="text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-500/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"><i class="fa-solid fa-shuffle mr-1"></i>Повторить${dueN ? ` · ${dueN}` : ''}</button>`;
                 return `<div><div class="flex items-center justify-between mb-2"><p class="text-xs font-bold uppercase tracking-wider text-zen-400">${lvl} · ${done.length} из ${list.length}</p>${btn}</div><div class="flex flex-wrap gap-2">${chips}</div></div>`;
             }).join('');
             document.getElementById('nb-notes').value = localStorage.getItem(NOTES_KEY) || '';
@@ -1252,59 +1259,7 @@
         })();
 
         // ===== Повторение выученных кандзи (как в Anki) =====
-        function startReview(level) {
-            const learned = new Set(getLearned());
-            const pool = kanjiDatabase[level] || [];
-            const list = pool.filter(k => learned.has(k.kanji));
-            if (!list.length) return;
-            closeNotebook();
-            quizPool = pool;
-            quizLevel = level;
-            quizIsReview = true;
-            setQuizAccent(true);
-            quizDeck = shuffleArr(list);
-            quizIndex = 0;
-            document.getElementById('quiz-title').innerText = `Повторение · ${level} · ${list.length} выученных`;
-            const m = document.getElementById('quiz-modal');
-            m.classList.remove('hidden');
-            m.classList.add('flex');
-            nextQuizCard();
-        }
-
-        // ===== Порядок черт: поэтапная прорисовка (данные KanjiVG) =====
-        async function loadStrokeAnim(ch) {
-            const box = document.getElementById('stroke-box');
-            if (!box || !ch) return;
-            box.innerHTML = '<p class="text-xs text-zen-400">Загружаем схему…</p>';
-            const hex = ch.codePointAt(0).toString(16).padStart(5, '0');
-            try {
-                const res = await fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`);
-                if (!res.ok) throw new Error('not found');
-                const raw = await res.text();
-                box.innerHTML = raw.slice(raw.indexOf('<svg'));
-                const svg = box.querySelector('svg');
-                if (!svg) throw new Error('no svg');
-                svg.removeAttribute('width');
-                svg.removeAttribute('height');
-                svg.querySelectorAll('rect').forEach(el => el.remove());
-                svg.querySelectorAll('path').forEach(p => {
-                    if (!p.closest('[id*="StrokePaths"]')) p.remove();
-                });
-                let t = 0;
-                svg.querySelectorAll('[id*="StrokePaths"] path').forEach(p => {
-                    const len = p.getTotalLength();
-                    p.style.strokeDasharray = len;
-                    p.style.strokeDashoffset = len;
-                    p.style.animation = 'drawStroke .7s ease forwards';
-                    p.style.animationDelay = t + 's';
-                    t += 0.8;
-                });
-            } catch (e) {
-                box.innerHTML = '<p class="text-xs text-zen-400 text-center">Схема недоступна без интернета</p>';
-            }
-        }
-
-        // ===== Копирование иероглифа и номера черт =====
+        // ===== Уведомления и копирование =====
         function showToast(msg) {
             let t = document.getElementById('toast');
             if (!t) {
@@ -1342,7 +1297,40 @@
             document.getElementById('nums-toggle').innerText = hidden ? 'Показать номера' : 'Скрыть номера';
         }
 
-        // ===== Озвучка японского (встроенный синтез речи браузера) =====
+        // ===== Порядок черт (данные KanjiVG) =====
+        async function loadStrokeAnim(ch) {
+            const box = document.getElementById('stroke-box');
+            if (!box || !ch) return;
+            box.innerHTML = '<p class="text-xs text-zen-400">Загружаем схему…</p>';
+            const hex = ch.codePointAt(0).toString(16).padStart(5, '0');
+            try {
+                const res = await fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`);
+                if (!res.ok) throw new Error('not found');
+                const raw = await res.text();
+                box.innerHTML = raw.slice(raw.indexOf('<svg'));
+                const svg = box.querySelector('svg');
+                if (!svg) throw new Error('no svg');
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.querySelectorAll('rect').forEach(el => el.remove());
+                svg.querySelectorAll('path').forEach(p => {
+                    if (!p.closest('[id*="StrokePaths"]')) p.remove();
+                });
+                let t = 0;
+                svg.querySelectorAll('[id*="StrokePaths"] path').forEach(p => {
+                    const len = p.getTotalLength();
+                    p.style.strokeDasharray = len;
+                    p.style.strokeDashoffset = len;
+                    p.style.animation = 'drawStroke .7s ease forwards';
+                    p.style.animationDelay = t + 's';
+                    t += 0.8;
+                });
+            } catch (e) {
+                box.innerHTML = '<p class="text-xs text-zen-400 text-center">Схема недоступна без интернета</p>';
+            }
+        }
+
+        // ===== Озвучка: записи по чтению, запасной вариант — синтез речи =====
         function speakJa(text) {
             if (!('speechSynthesis' in window)) { showToast('Озвучка недоступна в этом браузере'); return; }
             const parts = String(text).split(/[,、]/).map(t => t.replace(/[-.\s]/g, '').trim()).filter(Boolean);
@@ -1355,8 +1343,8 @@
                 speechSynthesis.speak(u);
             });
         }
-        // ===== Записи носителей (VOICEVOX): поиск по чтению, а не по номеру =====
         let AUDIO_MANIFEST = null;
+        let currentAudio = null;
         async function loadManifest() {
             if (!AUDIO_MANIFEST) {
                 try { AUDIO_MANIFEST = await (await fetch('manifest.json')).json(); }
@@ -1371,25 +1359,20 @@
             const f = AUDIO_MANIFEST && AUDIO_MANIFEST[kana];
             return f ? f : null;
         }
+        function reading_parts(text) {
+            return String(text).split(/[,、]/).map(t => t.replace(/[-.\s]/g, '').trim()).filter(Boolean);
+        }
         async function speakReadingEl(id) {
             const el = document.getElementById(id);
             if (!el) return;
             await loadManifest();
-            const items = reading_parts(el.innerText).map(p => {
-                const kana = kata2hira(p);
-                return { url: audioFor(kana), fallback: p };
-            });
+            const items = reading_parts(el.innerText).map(p => ({ url: audioFor(kata2hira(p)), fallback: p }));
             playSeq(items);
         }
         async function speakExample(reading, word) {
             await loadManifest();
-            const kana = romajiToHira(reading);
-            playSeq([{ url: audioFor(kana), fallback: word }]);
+            playSeq([{ url: audioFor(romajiToHira(reading)), fallback: word }]);
         }
-        function reading_parts(text) {
-            return String(text).split(/[,、]/).map(t => t.replace(/[-.\s]/g, '').trim()).filter(Boolean);
-        }
-        let currentAudio = null;
         function playOne(item) {
             return new Promise(resolve => {
                 if (!item.url) { speakJa(item.fallback); resolve(); return; }
@@ -1401,9 +1384,53 @@
             });
         }
         async function playSeq(items) {
-            if (currentAudio) { currentAudio.pause(); }
+            if (currentAudio) currentAudio.pause();
             if ('speechSynthesis' in window) speechSynthesis.cancel();
             for (const item of items) await playOne(item);
+        }
+
+        // ===== Интервальное повторение (упрощённый SM-2) =====
+        const SRS_KEY = 'kanjizen_srs';
+        function srsAll() { try { return JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch (e) { return {}; } }
+        function todayStr() { return new Date().toISOString().slice(0, 10); }
+        function addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+        function isDue(ch) { const s = srsAll()[ch]; return !s || s.due <= todayStr(); }
+        function rateCard(q) {
+            if (!quizCard) return;
+            const ch = quizCard.kanji;
+            const d = srsAll();
+            const cur = d[ch] || { ease: 2.5, interval: 0 };
+            let ease = cur.ease, iv = cur.interval;
+            if (q === 0) { iv = 0; ease = Math.max(1.3, ease - 0.2); }
+            else if (q === 1) { iv = Math.max(1, Math.round(iv * 1.2)); ease = Math.max(1.3, ease - 0.15); }
+            else if (q === 2) { iv = iv === 0 ? 1 : iv === 1 ? 3 : Math.round(iv * ease); }
+            else { iv = Math.round((iv === 0 ? 2 : iv === 1 ? 4 : iv * ease) * 1.3); ease += 0.15; }
+            d[ch] = { ease: Math.round(ease * 100) / 100, interval: iv, due: q === 0 ? todayStr() : addDays(iv) };
+            localStorage.setItem(SRS_KEY, JSON.stringify(d));
+            // «Снова» — карточка вернётся в конец этой же сессии
+            if (q === 0 && quizIsReview) quizDeck.push(quizCard);
+            nextQuizCard();
+        }
+        function startReview(level) {
+            const learned = new Set(getLearned());
+            const pool = kanjiDatabase[level] || [];
+            const all = pool.filter(k => learned.has(k.kanji));
+            if (!all.length) return;
+            const due = all.filter(k => isDue(k.kanji));
+            const use = due.length ? due : all;
+            if (!due.length) showToast('На сегодня всё повторено. Можно потренироваться ещё раз');
+            closeNotebook();
+            quizPool = pool;
+            quizLevel = level;
+            quizIsReview = true;
+            setQuizAccent(true);
+            quizDeck = shuffleArr(use);
+            quizIndex = 0;
+            document.getElementById('quiz-title').innerText = `Повторение · ${level} · ${use.length} ${due.length ? 'к повтору' : 'выученных'}`;
+            const m = document.getElementById('quiz-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            nextQuizCard();
         }
 
         let currentMainCat = 'jlpt';
@@ -1704,6 +1731,8 @@
             document.getElementById('quiz-progress').innerText = `Карточка ${quizIndex} из ${quizDeck.length}`;
             document.getElementById('quiz-answer').classList.add('hidden');
             document.getElementById('quiz-check-btn').classList.add('hidden');
+            document.getElementById('quiz-rate').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = '';
             rollQuizCard(quizCard);
         }
 
@@ -1764,6 +1793,8 @@
             document.getElementById('quiz-answer').classList.remove('hidden');
             document.getElementById('quiz-hint').innerText = '';
             document.getElementById('quiz-check-btn').classList.add('hidden');
+            document.getElementById('quiz-rate').style.display = quizIsReview ? 'grid' : 'none';
+            document.getElementById('quiz-next-btn').style.display = quizIsReview ? 'none' : '';
         }
 
         function closeModal() {
