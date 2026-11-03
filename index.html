@@ -1355,27 +1355,44 @@
                 speechSynthesis.speak(u);
             });
         }
-        function speakReadingEl(id) {
+        // ===== Записи носителей (VOICEVOX): поиск по чтению, а не по номеру =====
+        let AUDIO_MANIFEST = null;
+        async function loadManifest() {
+            if (!AUDIO_MANIFEST) {
+                try { AUDIO_MANIFEST = await (await fetch('audio/manifest.json')).json(); }
+                catch (e) { AUDIO_MANIFEST = {}; }
+            }
+            return AUDIO_MANIFEST;
+        }
+        function kata2hira(str) {
+            return String(str).replace(/[\u30a1-\u30f6]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
+        }
+        function audioFor(kana) {
+            const f = AUDIO_MANIFEST && AUDIO_MANIFEST[kana];
+            return f ? 'audio/' + f : null;
+        }
+        async function speakReadingEl(id) {
             const el = document.getElementById(id);
-            if (!el || !currentModalKanji) return;
-            const kind = id.includes('on') ? 'on' : 'kun';
-            const parts = reading_parts(el.innerText);
-            playSeq(parts.map((p, i) => ({
-                url: `audio/r/${hexOf(currentModalKanji)}-${kind}-${i + 1}.mp3`,
-                fallback: p
-            })));
+            if (!el) return;
+            await loadManifest();
+            const items = reading_parts(el.innerText).map(p => {
+                const kana = kata2hira(p);
+                return { url: audioFor(kana), fallback: p };
+            });
+            playSeq(items);
         }
-        function speakExample(j, word) {
-            if (!currentModalKanji) return;
-            playSeq([{ url: `audio/w/${hexOf(currentModalKanji)}-${j + 1}.mp3`, fallback: word }]);
+        async function speakExample(reading, word) {
+            await loadManifest();
+            const kana = romajiToHira(reading);
+            playSeq([{ url: audioFor(kana), fallback: word }]);
         }
-        function hexOf(ch) { return ch.codePointAt(0).toString(16).padStart(5, '0'); }
         function reading_parts(text) {
             return String(text).split(/[,、]/).map(t => t.replace(/[-.\s]/g, '').trim()).filter(Boolean);
         }
         let currentAudio = null;
         function playOne(item) {
             return new Promise(resolve => {
+                if (!item.url) { speakJa(item.fallback); resolve(); return; }
                 const a = new Audio(item.url);
                 currentAudio = a;
                 a.onended = resolve;
@@ -1617,7 +1634,7 @@
                     <div>
                         <span class="font-bold text-amber-700 dark:text-amber-400 mr-2 text-sm">${ex.word}</span>
                         <span class="text-zen-400 font-mono">(${ex.reading})</span>
-                        <button type="button" onclick="speakExample(${j}, '${ex.word}')" title="Послушать" class="ml-2 align-middle inline-flex items-center justify-center w-7 h-7 rounded-full bg-zen-100 hover:bg-amber-100 dark:bg-zen-700 dark:hover:bg-amber-900/40 text-zen-600 dark:text-zen-300 transition-colors"><i class="fa-solid fa-volume-high text-xs"></i></button>
+                        <button type="button" onclick="speakExample('${ex.reading}', '${ex.word}')" title="Послушать" class="ml-2 align-middle inline-flex items-center justify-center w-7 h-7 rounded-full bg-zen-100 hover:bg-amber-100 dark:bg-zen-700 dark:hover:bg-amber-900/40 text-zen-600 dark:text-zen-300 transition-colors"><i class="fa-solid fa-volume-high text-xs"></i></button>
                     </div>
                     <span class="font-medium text-zen-700 dark:text-zen-300">${ex.translation}</span>
                 `;
