@@ -1359,7 +1359,7 @@
         let AUDIO_MANIFEST = null;
         async function loadManifest() {
             if (!AUDIO_MANIFEST) {
-                try { AUDIO_MANIFEST = await (await fetch('audio/manifest.json')).json(); }
+                try { AUDIO_MANIFEST = await (await fetch('manifest.json')).json(); }
                 catch (e) { AUDIO_MANIFEST = {}; }
             }
             return AUDIO_MANIFEST;
@@ -1369,7 +1369,7 @@
         }
         function audioFor(kana) {
             const f = AUDIO_MANIFEST && AUDIO_MANIFEST[kana];
-            return f ? 'audio/' + f : null;
+            return f ? f : null;
         }
         async function speakReadingEl(id) {
             const el = document.getElementById(id);
