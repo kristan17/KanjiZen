@@ -51,6 +51,29 @@
         .dark ::-webkit-scrollbar-thumb { background: #3d3122; }
         html { scrollbar-gutter: stable both-edges; }
         html { font-size: 17px; }
+
+        @keyframes copyBubble {
+            0%   { opacity: 0; transform: translate(-50%, -30%) scale(.5); }
+            25%  { opacity: 1; transform: translate(-50%, -70%) scale(1.08); }
+            70%  { opacity: 1; transform: translate(-50%, -110%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(.96); }
+        }
+        .copy-bubble { position: fixed; z-index: 220; pointer-events: none; animation: copyBubble 1.3s cubic-bezier(.2,.8,.2,1) forwards; }
+        @keyframes copyParticle { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.6) rotate(0deg); } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.3) rotate(160deg); } }
+        .copy-particle { position: fixed; z-index: 219; pointer-events: none; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; animation: copyParticle .95s ease-out forwards; }
+
+
+        /* ===== Светлая тема: тёплая бумажная палитра ===== */
+        html:not(.dark), html:not(.dark) body { background-color: #f6efe3; }
+        html:not(.dark) body { background: transparent; }
+        html:not(.dark) body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background: radial-gradient(ellipse at 50% 0%, #fbf6ec 0%, #f6efe3 55%, #efe5d3 100%); }
+        html:not(.dark) .bg-white.rounded-3xl { box-shadow: 0 12px 32px -18px rgba(146, 64, 14, .35); border-color: rgba(217, 119, 6, .18) !important; }
+        html:not(.dark) thead, html:not(.dark) th { color: #9a6b2f; }
+        html:not(.dark) tbody tr:hover { background: rgba(251, 191, 36, .08) !important; }
+        html:not(.dark) .text-zen-900 { color: #3b2a14 !important; }
+        html:not(.dark) input::placeholder { color: #b08a55; }
+
         @keyframes drawStroke { to { stroke-dashoffset: 0; } }
         #stroke-box svg { width: 14rem; height: 14rem; }
         #stroke-box path { stroke: #221b12; stroke-width: 3.2; stroke-linecap: round; fill: none; }
@@ -151,20 +174,30 @@
             <!-- Левая колонка (на ПК): Кандзи дня -->
             <div class="space-y-6 lg:col-span-1">
                 <!-- Слово / Кандзи дня -->
-                <div class="bg-gradient-to-br from-amber-600 to-zen-800 text-white p-6 rounded-3xl shadow-md relative overflow-hidden group">
-                    <div class="absolute -right-6 -bottom-6 text-white/10 font-black text-8xl font-jp select-none pointer-events-none group-hover:scale-110 transition-transform" id="daily-bg-char">日</div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full font-semibold backdrop-blur-sm">Кандзи дня</span>
+                <div class="relative overflow-hidden bg-gradient-to-br from-amber-600 to-zen-800 text-white p-6 rounded-3xl shadow-md group">
+                    <!-- Фоновый иероглиф в правом нижнем углу -->
+                    <div id="daily-bg-char" class="absolute right-5 bottom-4 text-[7.5rem] leading-none font-black font-jp text-white/15 select-none pointer-events-none"></div>
+
+                    <div class="relative z-10 flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Кандзи дня</span>
                     </div>
-                    <div onclick="openModal(dailyKanjiObj)" class="mt-2 flex items-baseline space-x-3 cursor-pointer hover:opacity-95 transition-opacity" title="Нажмите, чтобы изучить подробнее">
-                        <span class="text-5xl font-black font-jp" id="daily-kanji">日</span>
-                        <div>
-                            <h4 class="font-bold text-base text-amber-100" id="daily-meaning">день, солнце</h4>
-                            <p class="text-xs text-amber-100/80 mt-0.5" id="daily-onyomi">Оны: ニチ, ジツ</p>
-                            <p class="text-xs text-amber-200 font-medium mt-0.5" id="daily-kunyomi">Куны: ひ</p>
+
+                    <div onclick="openModal(dailyKanjiObj)" class="relative z-10 flex items-start gap-4 cursor-pointer hover:opacity-95 transition-opacity" title="Нажмите, чтобы изучить подробнее">
+                        <span id="daily-kanji" class="font-black font-jp leading-none shrink-0" style="font-size: 76px;"></span>
+                        <div class="pt-1 min-w-0 space-y-2.5">
+                            <h4 id="daily-meaning" class="font-bold text-base leading-tight"></h4>
+                            <div>
+                                <p class="text-[9px] font-bold uppercase tracking-[0.18em] text-amber-100/70 mb-1">Оны</p>
+                                <div id="daily-onyomi" class="flex flex-wrap gap-1"></div>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-bold uppercase tracking-[0.18em] text-amber-100/70 mb-1">Куны</p>
+                                <div id="daily-kunyomi" class="flex flex-wrap gap-1"></div>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-xs mt-4 pt-4 border-t border-white/15 text-amber-100/90 italic" id="daily-mnemonic">Солнце с точкой внутри.</p>
+
+                    <p id="daily-mnemonic" class="relative z-10 text-xs mt-5 pt-4 border-t border-white/20 text-amber-50/90 italic leading-relaxed"></p>
                 </div>
 
 
@@ -245,7 +278,7 @@
                                     <th class="py-4 px-6 font-medium border-r border-zen-200/60 dark:border-zen-700/60">Куны</th>
                                     <th class="py-4 px-6 text-right font-medium border-r border-zen-200/60 dark:border-zen-700/60">Сумма</th>
                                     <th class="py-4 px-6 text-center font-medium border-r border-zen-200/60 dark:border-zen-700/60">Номер</th>
-                                    <th class="py-4 px-6 text-center font-medium">Ссылки</th>
+                                    <th class="py-4 px-6 text-center font-medium">Статус</th>
                                 </tr>
                             </thead>
                             <tbody id="kanji-table-body" class="text-sm">
@@ -270,7 +303,7 @@
         <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl overflow-hidden flex flex-col transform transition-all">
             <div class="p-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between bg-zen-50/50 dark:bg-zen-900/40">
                 <div class="flex items-center space-x-5">
-                    <span id="modal-kanji" onclick="copyKanji(this.innerText)" title="Нажмите, чтобы скопировать" class="text-8xl font-medium text-black dark:text-white font-jp leading-none cursor-copy select-none hover:opacity-80 transition-opacity">一</span>
+                    <span id="modal-kanji" onclick="copyKanji(this.innerText, event)" title="Нажмите, чтобы скопировать" class="text-8xl font-medium text-black dark:text-white font-jp leading-none cursor-copy select-none hover:opacity-80 transition-opacity">一</span>
                     <div>
                         <h3 id="modal-meaning" class="text-xl font-bold tracking-tight text-zen-900 dark:text-amber-50">один</h3>
                         <span id="modal-level" class="inline-block mt-1 text-xs px-3 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-200 font-semibold border border-amber-200/60 dark:border-amber-800/60">JLPT N5</span>
@@ -1273,8 +1306,36 @@
             clearTimeout(t._timer);
             t._timer = setTimeout(() => t.classList.remove('show'), 1400);
         }
-        function copyKanji(text) {
-            const done = () => showToast(`Скопировано: ${text}`);
+        function burstAt(x, y, ch) {
+            const b = document.createElement('div');
+            b.className = 'copy-bubble';
+            b.style.left = x + 'px';
+            b.style.top = y + 'px';
+            b.innerHTML = `<div class="flex items-center gap-2.5 rounded-2xl bg-zen-900 text-white px-4 py-2.5 shadow-2xl border border-amber-400/30">
+                <span class="text-3xl font-jp font-black leading-none text-amber-300">${ch}</span>
+                <span class="text-sm font-semibold">скопировано</span></div>`;
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 1300);
+            const colors = ['#f59e0b', '#fbbf24', '#d97706', '#fde68a'];
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('span');
+                p.className = 'copy-particle';
+                p.textContent = ch;
+                const ang = (Math.PI * 2 * i) / 12 + Math.random() * 0.5;
+                const dist = 55 + Math.random() * 55;
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                p.style.fontSize = (12 + Math.random() * 14) + 'px';
+                p.style.color = colors[i % colors.length];
+                p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+                p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+        function copyKanji(text, ev) {
+            const done = () => burstAt(ev && ev.clientX != null ? ev.clientX : innerWidth / 2,
+                                       ev && ev.clientY != null ? ev.clientY : innerHeight / 2, text);
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
             } else {
@@ -1460,8 +1521,10 @@
             document.getElementById('daily-kanji').innerText = dailyKanjiObj.kanji;
             document.getElementById('daily-bg-char').innerText = dailyKanjiObj.kanji;
             document.getElementById('daily-meaning').innerText = dailyKanjiObj.meaning;
-            document.getElementById('daily-onyomi').innerText = `Оны: ${dailyKanjiObj.onyomi}`;
-            document.getElementById('daily-kunyomi').innerText = `Куны: ${dailyKanjiObj.kunyomi}`;
+            const chips = str => String(str || '—').split(',').map(t => t.trim()).filter(Boolean)
+                .map(t => `<span class="px-2 py-0.5 rounded-md bg-white/15 border border-white/20 font-jp text-xs font-semibold">${t}</span>`).join('');
+            document.getElementById('daily-onyomi').innerHTML = chips(dailyKanjiObj.onyomi);
+            document.getElementById('daily-kunyomi').innerHTML = chips(dailyKanjiObj.kunyomi);
             document.getElementById('daily-mnemonic').innerText = dailyKanjiObj.mnemonic;
         }
 
@@ -1567,6 +1630,16 @@
             return out;
         }
 
+        // Статус кандзи: Новое / Учу / Выучено / Знаю (по расписанию повторения)
+        function statusPill(ch, learned) {
+            const base = 'inline-block px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide';
+            if (!learned) return `<span class="${base} bg-zen-100 text-zen-400 dark:bg-zen-800 dark:text-zen-500">Новое</span>`;
+            const rec = srsAll()[ch];
+            if (!rec) return `<span class="${base} bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">Выучено</span>`;
+            if (rec.interval < 7) return `<span class="${base} bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">Учу</span>`;
+            return `<span class="${base} bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300">Знаю</span>`;
+        }
+
         function renderTable() {
             const tbody = document.getElementById('kanji-table-body');
             const emptyState = document.getElementById('table-empty');
@@ -1628,9 +1701,7 @@
                     <td class="py-4 px-6 border-r border-zen-100 dark:border-zen-700/40">${kunyomiHtml}</td>
                     <td class="py-4 px-6 text-right text-xs text-zen-400 font-mono border-r border-zen-100 dark:border-zen-700/40">${k.cumul}</td>
                     <td class="py-4 px-6 text-center text-xs text-zen-400 font-mono border-r border-zen-100 dark:border-zen-700/40">${k.number}</td>
-                    <td class="py-4 px-6 text-center text-xs" onclick="event.stopPropagation()">
-                        <a href="https://jisho.org/search/${k.kanji}%20%23kanji" target="_blank" class="text-amber-600 dark:text-amber-400 hover:underline font-medium">Яркси</a>
-                    </td>
+                    <td class="py-4 px-6 text-center text-xs">${statusPill(k.kanji, learnedSet.has(k.kanji))}</td>
                 `;
                 tr.querySelectorAll('[data-open]').forEach(cell => {
                     cell.classList.add('cursor-pointer');
