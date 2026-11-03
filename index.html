@@ -49,6 +49,20 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d9cfbe; border-radius: 9999px; }
         .dark ::-webkit-scrollbar-thumb { background: #3d3122; }
+        html { scrollbar-gutter: stable both-edges; }
+        html { font-size: 17px; }
+        #nb-highlight:checked + span .hl-knob { transform: translateX(24px); }
+        #nb-highlight:focus-visible + span { outline: 2px solid #10b981; outline-offset: 2px; }
+        body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(16,185,129,.10), rgba(16,185,129,.03)); box-shadow: inset 4px 0 0 #10b981; }
+        body.hl-learned tr[data-learned="1"] td:first-child span { color: #059669 !important; }
+        body.hl-learned.dark tr[data-learned="1"], .dark body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(16,185,129,.16), rgba(16,185,129,.04)); }
+        body.hl-learned tr[data-learned="1"] td:first-child span { text-shadow: 0 0 18px rgba(16,185,129,.25); }
+
+        #rain span { position: absolute; top: -12%; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; color: rgba(180, 83, 9, 0.10); animation: kanjiFall linear infinite; user-select: none; }
+        .dark #rain span { color: rgba(251, 191, 36, 0.09); }
+        @keyframes kanjiFall { to { transform: translateY(120vh); } }
+        @media (prefers-reduced-motion: reduce) { #rain { display: none; } }
+
         .zen-gradient {
             background: linear-gradient(135deg, #3d3122 0%, #5c4b35 100%);
         }
@@ -70,66 +84,50 @@
         }
     </style>
 </head>
-<body class="bg-zen-100/70 text-zen-800 dark:bg-zen-900 dark:text-zen-100 h-full flex flex-col transition-colors duration-300">
+<body class="bg-zen-100/70 text-zen-800 dark:bg-zen-900 dark:text-zen-100 min-h-screen flex flex-col transition-colors duration-300">
+    <div id="rain" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true"></div>
 
     <!-- Верхняя навигация / Шапка -->
     <header class="zen-gradient text-white shadow-xl relative overflow-hidden flex-shrink-0">
         <div class="absolute -right-12 -top-12 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-4 relative z-10">
-            
-            <!-- Левая часть: Логотип и заголовок -->
-            <div class="flex items-center space-x-4 cursor-pointer group" onclick="switchMainTab('jlpt')">
-                <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/25 flex items-center justify-center font-black text-xl text-amber-100 shadow-inner group-hover:scale-105 transition-transform font-jp flex-shrink-0 overflow-hidden leading-none pt-0.5">
-                    漢字
-                </div>
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-5 relative z-10">
+
+            <!-- Логотип -->
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="switchMainTab('jlpt')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-200/20 to-white/5 border border-white/20 flex items-center justify-center font-black text-xl text-amber-100 shadow-inner group-hover:scale-105 transition-transform font-jp leading-none pt-0.5">漢字</div>
                 <div>
                     <h1 class="font-extrabold text-lg tracking-wide text-amber-50 leading-tight">KanjiZen</h1>
-                    <p class="text-[11px] text-amber-100/70 font-medium">Справочник кандзи JLPT N5-N1</p>
+                    <p class="text-[11px] text-amber-100/70 font-medium tracking-wide">Справочник кандзи JLPT N5–N1</p>
                 </div>
             </div>
 
-            <!-- Центральная часть: Уровни JLPT и категории -->
-            <div class="flex flex-wrap items-center justify-center gap-3">
-                <div class="flex gap-1.5 text-xs font-medium bg-black/20 p-1 rounded-2xl backdrop-blur-md border border-white/10 shadow-inner">
-                    <button onclick="setMainCategory('jlpt')" id="cat-jlpt" class="px-3.5 py-2 rounded-xl bg-white/25 font-semibold shadow-sm transition-all text-white border border-white/20">JLPT</button>
-                </div>
-
-                <!-- Подменю уровней JLPT (N5 - N1) -->
-                <div id="jlpt-submenu" class="flex items-center space-x-1.5 text-xs font-semibold bg-black/20 p-1 rounded-2xl backdrop-blur-md border border-white/10 shadow-inner">
-                    <button onclick="setJlptLevel('N5')" id="jlpt-n5" class="px-3.5 py-2 rounded-xl bg-amber-50 text-zen-900 shadow-md transform hover:scale-105 transition-all font-bold">N5</button>
-                    <button onclick="setJlptLevel('N4')" id="jlpt-n4" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all">N4</button>
-                    <button onclick="setJlptLevel('N3')" id="jlpt-n3" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all">N3</button>
-                    <button onclick="setJlptLevel('N2')" id="jlpt-n2" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all">N2</button>
-                    <button onclick="setJlptLevel('N1')" id="jlpt-n1" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all">N1</button>
+            <!-- Уровни JLPT: один сегментированный переключатель -->
+            <div class="flex items-center gap-1 p-1 rounded-2xl bg-black/25 border border-white/10 shadow-inner">
+                <button onclick="setMainCategory('jlpt')" id="cat-jlpt" class="h-9 px-4 rounded-xl text-sm font-semibold text-amber-50 bg-white/15 border border-white/15 shadow-sm transition-all">JLPT</button>
+                <div id="jlpt-submenu" class="flex items-center gap-1">
+                    <button onclick="setJlptLevel('N5')" id="jlpt-n5" class="h-9 px-3.5 rounded-xl text-sm font-bold bg-gradient-to-br from-amber-200 to-amber-500 text-zen-900 shadow-md shadow-amber-500/30 transition-all">N5</button>
+                    <button onclick="setJlptLevel('N4')" id="jlpt-n4" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N4</button>
+                    <button onclick="setJlptLevel('N3')" id="jlpt-n3" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N3</button>
+                    <button onclick="setJlptLevel('N2')" id="jlpt-n2" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N2</button>
+                    <button onclick="setJlptLevel('N1')" id="jlpt-n1" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N1</button>
                 </div>
             </div>
 
-            <!-- Правая часть: Водяной знак ТГК и переключатель тем -->
-            <div class="flex items-center space-x-3">
-                <!-- Задания JLPT -->
-                <a href="tasks.html" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-amber-50 text-xs font-bold transition-all">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Задания JLPT</span>
+            <!-- Действия: задания, вход, телеграм, тема -->
+            <div class="flex items-center gap-2.5">
+                <a href="tasks.html" class="h-11 flex items-center gap-2 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-semibold text-amber-50 transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-pen-to-square text-amber-200"></i>
+                    <span>Задания</span>
                 </a>
 
-                <!-- Вход / Профиль -->
-                <a id="auth-btn" href="login.html" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl bg-amber-500/90 hover:bg-amber-500 text-white text-xs font-bold shadow-sm transition-all">
+                <a id="auth-btn" href="login.html" class="h-11 flex items-center gap-2 px-5 rounded-2xl bg-gradient-to-r from-amber-300 to-amber-500 hover:from-amber-200 hover:to-amber-400 text-zen-900 text-sm font-bold shadow-lg shadow-amber-500/25 transition-all whitespace-nowrap">
                     <i class="fa-solid fa-user"></i>
-                    <span id="auth-btn-text">Войти / Регистрация</span>
+                    <span id="auth-btn-text">Войти</span>
                 </a>
 
-                <!-- Водяной знак ТГК с детализированным логотипом Telegram -->
-                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all shadow-sm backdrop-blur-sm group" title="Перейти в Telegram-канал">
-                    <div class="w-6 h-6 rounded-xl bg-gradient-to-tr from-[#2aabee] to-[#229ed9] flex items-center justify-center text-white flex-shrink-0 shadow-md group-hover:scale-110 transition-transform">
-                        <svg class="w-3.5 h-3.5 translate-x-px translate-y-px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.82C16.44 11.01 15.35 17.39 14.8 19.34C14.56 20.18 14.25 20.45 13.95 20.48C13.3 20.54 12.8 20.06 12.15 19.63C11.13 18.96 10.56 18.54 9.59 17.9C8.47 17.16 9.19 16.75 9.83 16.08C9.99 15.92 12.75 13.42 12.81 13.17C12.82 13.13 12.82 12.98 12.73 12.9C12.64 12.83 12.51 12.86 12.41 12.88C12.28 12.91 10.22 14.27 6.24 16.94C5.66 17.33 5.14 17.51 4.68 17.5C4.19 17.49 3.24 17.22 2.54 16.99C1.69 16.72 1.02 16.57 1.08 16.1C1.11 15.86 1.44 15.61 2.08 15.35C6.07 13.52 8.73 12.38 10.06 11.82C13.8 10.25 14.58 9.98 15.09 9.97C15.2 9.97 15.45 10 15.61 10.13C15.74 10.24 15.78 10.39 15.79 10.5C15.81 10.65 15.79 10.87 16.64 8.82Z" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <span class="text-xs font-bold text-amber-50 tracking-wide group-hover:text-white transition-colors">Kristan_jp</span>
-                </a>
+                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" title="Telegram-канал" aria-label="Telegram-канал" class="w-11 h-11 rounded-2xl overflow-hidden shadow-lg shadow-sky-500/25 transition-all hover:scale-105"><img src="telegram.jpg" alt="Telegram" class="w-full h-full object-cover"></a>
 
-                <!-- Существующий переключатель тем -->
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all shadow-sm backdrop-blur-sm group" title="Сменить тему">
+                <button onclick="toggleDarkMode()" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all group" title="Сменить тему">
                     <i class="fa-solid fa-moon dark:hidden text-amber-100 group-hover:rotate-12 transition-transform"></i>
                     <i class="fa-solid fa-sun hidden dark:block text-amber-300 group-hover:rotate-90 transition-transform"></i>
                 </button>
@@ -138,7 +136,7 @@
     </header>
 
     <!-- Основной контент с двухколоночным макетом для ПК -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 overflow-y-auto">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             
             <!-- Левая колонка (на ПК): Кандзи дня -->
@@ -159,6 +157,15 @@
                     </div>
                     <p class="text-xs mt-4 pt-4 border-t border-white/15 text-amber-100/90 italic" id="daily-mnemonic">Солнце с точкой внутри.</p>
                 </div>
+
+
+                <!-- Как учить: короткие советы -->
+                <div class="bg-white dark:bg-zen-800 rounded-3xl shadow-sm border border-zen-200/80 dark:border-zen-700/60 p-6 space-y-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zen-400">Как учить</h4>
+                    <div class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-black flex items-center justify-center">1</span><p class="text-sm text-zen-600 dark:text-zen-300">Сначала вспомните чтение в голове, потом проверьте в карточках.</p></div>
+                    <div class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-black flex items-center justify-center">2</span><p class="text-sm text-zen-600 dark:text-zen-300">Мнемоника помогает запомнить кандзи по частям. Читайте её, если не можете вспомнить.</p></div>
+                    <div class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-black flex items-center justify-center">3</span><p class="text-sm text-zen-600 dark:text-zen-300">Повторяйте по 10–15 кандзи в день, а не сразу сотню.</p></div>
+                </div>
             </div>
 
             <!-- Правая колонка (на ПК): Основная таблица и поиск -->
@@ -167,20 +174,30 @@
                 <div class="bg-white dark:bg-zen-800 p-6 rounded-3xl shadow-sm border border-zen-200/80 dark:border-zen-700/60 flex flex-col gap-5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <!-- Премиальный переключатель режима обучения -->
-                        <label class="relative inline-flex items-center cursor-pointer select-none group bg-zen-50 dark:bg-zen-900/60 px-5 py-3 rounded-2xl border border-zen-200/80 dark:border-zen-700 w-full sm:w-auto shadow-sm">
+                        <label class="relative inline-flex items-center whitespace-nowrap cursor-pointer select-none group bg-zen-50 dark:bg-zen-900/60 px-5 py-3 rounded-2xl border border-zen-200/80 dark:border-zen-700 w-full sm:w-auto shadow-sm">
                             <input type="checkbox" id="study-mode-toggle" onchange="toggleStudyMode()" class="sr-only peer">
-                            <div class="w-12 h-6 bg-zen-300 peer-focus:outline-none rounded-full peer dark:bg-zen-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[14px] after:left-[22px] sm:after:top-[14px] sm:after:left-[22px] after:bg-white after:border-zen-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600 shadow-inner"></div>
+                            <div class="relative w-12 h-6 bg-zen-300 peer-focus:outline-none rounded-full peer dark:bg-zen-700 peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zen-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600 shadow-inner"></div>
                             <div class="ml-3 flex items-center space-x-2">
                                 <i class="fa-solid fa-graduation-cap text-amber-600"></i>
-                                <span class="text-sm font-bold text-zen-800 dark:text-zen-200">Режим обучения</span>
+                                <span class="whitespace-nowrap text-sm font-bold text-zen-800 dark:text-zen-200">Режим обучения</span>
                             </div>
                         </label>
 
                         <!-- Режим карточек (как в Anki) для текущей колоды -->
-                        <button onclick="openQuiz()" class="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-sm shadow-amber-600/30 transition-all w-full sm:w-auto">
+                        <div class="flex items-center gap-2 flex-nowrap shrink-0">
+                        <button onclick="openQuiz()" class="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-sm shadow-amber-600/30 transition-all whitespace-nowrap">
                             <i class="fa-solid fa-shuffle"></i>
                             <span>Карточки <span id="quiz-level-label">N5</span></span>
                         </button>
+                        <button id="guide-btn" onclick="openGuide()" class="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl whitespace-nowrap border-2 border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold transition-all whitespace-nowrap">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Гайд по кандзи</span>
+                        </button>
+                        <button onclick="openNotebook()" class="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl whitespace-nowrap border-2 border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-bold transition-all">
+                            <i class="fa-solid fa-book"></i>
+                            <span>Блокнот</span>
+                        </button>
+                        </div>
 
                         <!-- Поиск -->
                         <div class="relative w-full sm:w-72">
@@ -282,14 +299,154 @@
 
             <div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-between items-center text-xs">
                 <span id="modal-freq" class="text-zen-500 font-medium">Сумма: —</span>
-                <button onclick="closeModal()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Закрыть</button>
+                <div class="flex items-center gap-2">
+                    <button id="modal-learn-btn" onclick="toggleCurrentLearned()" class="px-4 py-2.5 rounded-xl border-2 font-semibold transition-all"></button>
+                    <button onclick="closeModal()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блокнот: выученные кандзи и заметки -->
+    <div id="notebook-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col max-h-[88vh]">
+            <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">Блокнот</p>
+                    <h3 class="font-black text-xl text-zen-900 dark:text-amber-50">Ваш прогресс</h3>
+                </div>
+                <button onclick="closeNotebook()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-zen-600 dark:text-zen-300"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="text-sm font-semibold text-zen-600 dark:text-zen-300">Выучено всего</span>
+                        <span id="nb-count" class="font-black text-emerald-600 dark:text-emerald-400">0 из 0</span>
+                    </div>
+                    <div class="h-3 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden">
+                        <div id="nb-bar" class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-500" style="width:0%"></div>
+                    </div>
+                </div>
+                <button id="nb-review" onclick="startReview()" class="w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-300 hover:to-emerald-500 text-white font-bold shadow-lg shadow-emerald-500/25 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"></button>
+                <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60 cursor-pointer">
+                    <span>
+                        <span class="block text-sm font-bold text-zen-900 dark:text-amber-50">Подсвечивать выученные в таблице</span>
+                        <span class="block text-xs text-zen-400 mt-0.5">Зелёная полоса слева и подсветка строки</span>
+                    </span>
+                    <input type="checkbox" id="nb-highlight" onchange="setHighlight(this.checked)" class="sr-only peer">
+                    <span class="relative w-12 h-6 shrink-0 rounded-full bg-zen-300 dark:bg-zen-700 peer-checked:bg-emerald-500 transition-colors">
+                        <span class="hl-knob absolute top-[2px] left-[2px] w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+                    </span>
+                </label>
+                <div id="nb-levels" class="space-y-5"></div>
+                <div>
+                    <label for="nb-notes" class="text-sm font-bold text-zen-900 dark:text-amber-50">Мои заметки</label>
+                    <textarea id="nb-notes" rows="4" placeholder="Что трудно запоминается? Запишите здесь." class="mt-2 w-full p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200 dark:border-zen-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40"></textarea>
+                    <p class="text-[11px] text-zen-400 mt-2">Заметки и отметки сохраняются в этом браузере.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Гайд: как учить кандзи N5 -->
+    <div id="guide-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[88vh]">
+            <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">Гайд</p>
+                    <h3 class="font-black text-xl text-zen-900 dark:text-amber-50">Как учить кандзи</h3>
+                </div>
+                <button onclick="closeGuide()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-zen-600 dark:text-zen-300"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8 overflow-y-auto space-y-8 text-[15px] leading-relaxed text-zen-700 dark:text-zen-200">
+
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Главное правило</h4>
+                    <p>Не учите кандзи по одному, учите их <b>в словах</b>. Один иероглиф почти всегда что-то значит только внутри слова: 日 сам по себе «день», а в 日本 (Япония) и 日曜日 (воскресенье) он превращается в часть названия.</p>
+                </section>
+
+                <section class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-900/40 p-5 space-y-3">
+                    <h4 class="font-black text-amber-800 dark:text-amber-300 text-lg">Главное правило чтения</h4>
+                    <p><b>Онное чтение (оны)</b> используется, когда кандзи стоит <b>вместе с другими кандзи в слове</b>, то есть в слове два и более иероглифа: 日本 → にほん, 日曜日 → にちようび.</p>
+                    <p><b>Кунное чтение (куны)</b> используется, когда кандзи стоит <b>один</b>, то есть слово состоит из одного иероглифа (возможно, с хираганой): 山 → やま, 木 → き, 水 → みず.</p>
+                    <p class="text-sm">Правило работает в большинстве случаев. Исключения, например числа 一 (いち), 二 (に), 三 (さん), которые читаются по-китайски даже одни, запоминайте сразу вместе со словом.</p>
+                </section>
+
+                <section class="space-y-3">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 1. Разберите иероглиф на части</h4>
+                    <p>Многие кандзи состоят из более простых деталей. Найдите знакомые части и сложите смысл.</p>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
+                            <p class="font-jp text-3xl font-black text-zen-900 dark:text-white">休</p>
+                            <p class="text-sm mt-1"><b>отдых</b> = 人 (человек) + 木 (дерево). Человек прислонился к дереву, значит, отдыхает.</p>
+                        </div>
+                        <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
+                            <p class="font-jp text-3xl font-black text-zen-900 dark:text-white">林</p>
+                            <p class="text-sm mt-1"><b>роща</b> = 木 + 木. Два дерева рядом.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="space-y-3">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 2. Запомните два чтения</h4>
+                    <p>У каждого кандзи есть <b>оны</b> (китайское чтение, обычно в катакане) и <b>куны</b> (японское, в хирагане). Какое чтение использовать, зависит от слова. Пример с 日:</p>
+                    <div class="overflow-x-auto rounded-2xl border border-zen-200/70 dark:border-zen-700/60">
+                        <table class="w-full text-sm">
+                            <thead class="bg-zen-50 dark:bg-zen-900/50 text-zen-500 text-xs uppercase">
+                                <tr><th class="text-left px-4 py-2">Слово</th><th class="text-left px-4 py-2">Чтение</th><th class="text-left px-4 py-2">Значение</th></tr>
+                            </thead>
+                            <tbody class="font-jp">
+                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日本</td><td class="px-4 py-2">にほん</td><td class="px-4 py-2 font-sans">Япония</td></tr>
+                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日曜日</td><td class="px-4 py-2">にちようび</td><td class="px-4 py-2 font-sans">воскресенье</td></tr>
+                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日</td><td class="px-4 py-2">ひ</td><td class="px-4 py-2 font-sans">день, солнце</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 3. Придумайте картинку</h4>
+                    <p>Мнемоника работает лучше всего, если она яркая и смешная. Например: <b>山</b> (гора) похожа на три вершины, а <b>木</b> (дерево) выглядит как дерево с корнями и ветками. Придумайте свою историю, и кандзи запомнится за пару повторений.</p>
+                </section>
+
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 4. Пишите от руки</h4>
+                    <p>Пишите каждый иероглиф несколько раз, соблюдая порядок черт: сверху вниз и слева направо. Простые кандзи вроде <b>一</b> (одна горизонтальная черта) и <b>人</b> (две черты) пишутся за секунду, но без порядка черт сложные иероглифы потом не узнаются.</p>
+                </section>
+
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 5. Повторяйте через интервалы</h4>
+                    <p>Не учите 98 кандзи подряд. Лучше 10–15 новых в день и регулярный повтор: в режиме карточек называйте чтения в голове, потом проверяйте. Трудные кандзи возвращайте через день, лёгкие через неделю.</p>
+                </section>
+
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Примеры для старта</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-jp">
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">山</p><p class="text-xs mt-1">やま · гора</p></div>
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">水</p><p class="text-xs mt-1">みず · вода</p></div>
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">木</p><p class="text-xs mt-1">き · дерево</p></div>
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">人</p><p class="text-xs mt-1">ひと · человек</p></div>
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">一</p><p class="text-xs mt-1">いち · один</p></div>
+                        <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 p-3 text-center"><p class="text-3xl font-black">日</p><p class="text-xs mt-1">ひ · день</p></div>
+                    </div>
+                </section>
+
+                <section class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-5 border border-zen-200/70 dark:border-zen-700/60 space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50">Что делать прямо сейчас</h4>
+                    <p>Откройте режим карточек и пройдите 10 карточек. Для каждой сначала назовите чтения вслух или в голове, затем проверьте. Не пропускайте сложные: это именно те, что нужно повторить.</p>
+                </section>
             </div>
         </div>
     </div>
 
     <!-- Модальное окно: режим карточек -->
     <div id="quiz-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col">
             <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between bg-zen-50/50 dark:bg-zen-900/40">
                 <span id="quiz-title" class="font-bold text-zen-900 dark:text-amber-50">Карточки</span>
                 <button onclick="closeQuiz()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
@@ -301,7 +458,7 @@
                 <p id="quiz-progress" class="text-xs text-zen-400 font-medium"></p>
 
                 <div class="h-44 flex items-center justify-center rounded-3xl bg-gradient-to-br from-zen-50 to-amber-50/60 dark:from-zen-900/60 dark:to-amber-950/20 border border-zen-200/70 dark:border-zen-700">
-                    <span id="quiz-kanji" class="text-8xl font-black font-jp text-black dark:text-white select-none transition-opacity">一</span>
+                    <span id="quiz-kanji" class="text-9xl font-black font-jp text-black dark:text-white select-none transition-opacity">一</span>
                 </div>
 
                 <p id="quiz-hint" class="text-sm text-zen-500 dark:text-zen-300"></p>
@@ -328,9 +485,9 @@
                 </div>
             </div>
 
-            <div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-end gap-3">
+            <div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-between items-center gap-3">
+                <button id="quiz-next-btn" onclick="nextQuizCard()" class="px-5 py-2.5 rounded-xl border border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 font-semibold hover:bg-zen-100 dark:hover:bg-zen-700 transition-all">Следующая карточка →</button>
                 <button id="quiz-check-btn" onclick="revealQuizAnswer()" class="hidden px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Проверить</button>
-                <button id="quiz-next-btn" onclick="nextQuizCard()" class="hidden px-6 py-2.5 bg-zen-800 hover:bg-zen-700 dark:bg-zen-600 dark:hover:bg-zen-500 text-white font-semibold rounded-xl transition-all">Следующая</button>
             </div>
         </div>
     </div>
@@ -976,6 +1133,121 @@
             all.filter(k => k.number > 610).forEach(k => { k.cumul = '—'; });
         })();
 
+        // Фон: тихо падающие кандзи (можно отключить в prefers-reduced-motion)
+        (function startRain() {
+            const box = document.getElementById('rain');
+            if (!box) return;
+            const pool = Object.values(kanjiDatabase).flat().map(k => k.kanji);
+            for (let i = 0; i < 26; i++) {
+                const el = document.createElement('span');
+                el.textContent = pool[Math.floor(Math.random() * pool.length)];
+                el.style.left = (Math.random() * 100) + '%';
+                el.style.fontSize = (14 + Math.random() * 22) + 'px';
+                el.style.animationDuration = (22 + Math.random() * 28) + 's';
+                el.style.animationDelay = (-Math.random() * 45) + 's';
+                box.appendChild(el);
+            }
+        })();
+
+        // ===== Блокнот: выученные кандзи и заметки (хранятся в браузере) =====
+        const LEARNED_KEY = 'kanjizen_learned';
+        const NOTES_KEY = 'kanjizen_notes';
+        function getLearned() {
+            try { return JSON.parse(localStorage.getItem(LEARNED_KEY)) || []; } catch (e) { return []; }
+        }
+        function toggleLearned(ch) {
+            const arr = getLearned();
+            const i = arr.indexOf(ch);
+            if (i >= 0) arr.splice(i, 1); else arr.push(ch);
+            localStorage.setItem(LEARNED_KEY, JSON.stringify(arr));
+            renderTable();
+        }
+        function renderNotebook() {
+            const learned = new Set(getLearned());
+            const all = Object.values(kanjiDatabase).flat();
+            const got = all.filter(k => learned.has(k.kanji)).length;
+            document.getElementById('nb-count').innerText = `${got} из ${all.length}`;
+            document.getElementById('nb-bar').style.width = (all.length ? got / all.length * 100 : 0) + '%';
+            document.getElementById('nb-levels').innerHTML = ['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => {
+                const list = kanjiDatabase[lvl] || [];
+                if (!list.length) return '';
+                const done = list.filter(k => learned.has(k.kanji));
+                const chips = done.length
+                    ? done.map(k => `<span class="font-jp text-lg px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">${k.kanji}</span>`).join('')
+                    : '<span class="text-xs text-zen-400">пока ничего не отмечено</span>';
+                return `<div><p class="text-xs font-bold uppercase tracking-wider text-zen-400 mb-2">${lvl} · ${done.length} из ${list.length}</p><div class="flex flex-wrap gap-2">${chips}</div></div>`;
+            }).join('');
+            document.getElementById('nb-notes').value = localStorage.getItem(NOTES_KEY) || '';
+            const rb = document.getElementById('nb-review');
+            rb.disabled = got === 0;
+            rb.innerHTML = got ? `<i class="fa-solid fa-shuffle mr-2"></i>Повторить выученные (${got})` : 'Отметьте кандзи, чтобы повторять';
+            document.getElementById('nb-highlight').checked = document.body.classList.contains('hl-learned');
+        }
+        function openNotebook() {
+            renderNotebook();
+            const m = document.getElementById('notebook-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closeNotebook() {
+            const m = document.getElementById('notebook-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+        document.getElementById('notebook-modal').addEventListener('click', e => {
+            if (e.target.id === 'notebook-modal') closeNotebook();
+        });
+        document.getElementById('nb-notes').addEventListener('input', e => {
+            localStorage.setItem(NOTES_KEY, e.target.value);
+        });
+
+        // ===== Отметка «выучено» и подсветка =====
+        let currentModalKanji = null;
+        function isLearnedChar(ch) { return getLearned().includes(ch); }
+        function renderLearnBtn() {
+            const btn = document.getElementById('modal-learn-btn');
+            if (!btn || !currentModalKanji) return;
+            const on = isLearnedChar(currentModalKanji);
+            btn.innerHTML = on
+                ? '<i class="fa-solid fa-check mr-1.5"></i>Выучено'
+                : 'Отметить выученным';
+            btn.className = 'px-4 py-2.5 rounded-xl border-2 font-semibold transition-all ' + (on
+                ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/30 hover:bg-emerald-600'
+                : 'border-emerald-500/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30');
+        }
+        function toggleCurrentLearned() {
+            if (!currentModalKanji) return;
+            toggleLearned(currentModalKanji);
+            renderLearnBtn();
+        }
+        function setHighlight(on) {
+            document.body.classList.toggle('hl-learned', on);
+            localStorage.setItem('kanjizen_hl', on ? '1' : '0');
+        }
+        (function initHighlight() {
+            const on = localStorage.getItem('kanjizen_hl') === '1';
+            document.getElementById('nb-highlight').checked = on;
+            setHighlight(on);
+        })();
+
+        // ===== Повторение выученных кандзи (как в Anki) =====
+        function startReview() {
+            const learned = new Set(getLearned());
+            const all = Object.values(kanjiDatabase).flat();
+            const list = all.filter(k => learned.has(k.kanji));
+            if (!list.length) return;
+            closeNotebook();
+            quizPool = all;
+            quizLevel = 'REVIEW';
+            quizDeck = shuffleArr(list);
+            quizIndex = 0;
+            document.getElementById('quiz-title').innerText = `Повторение · ${list.length} выученных`;
+            const m = document.getElementById('quiz-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            nextQuizCard();
+        }
+
         let currentMainCat = 'jlpt';
         let currentJlpt = 'N5';
         let studyModeActive = false;
@@ -1028,9 +1300,9 @@
             ['N5', 'N4', 'N3', 'N2', 'N1'].forEach(l => {
                 const btn = document.getElementById(`jlpt-${l.toLowerCase()}`);
                 if (l === lvl) {
-                    btn.className = "px-3.5 py-2 rounded-xl bg-amber-50 text-zen-900 shadow-md transform hover:scale-105 transition-all font-bold";
+                    btn.className = "h-9 px-3.5 rounded-xl text-sm font-bold bg-gradient-to-br from-amber-200 to-amber-500 text-zen-900 shadow-md shadow-amber-500/30 transition-all";
                 } else {
-                    btn.className = "px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all";
+                    btn.className = "h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all";
                 }
             });
             renderTable();
@@ -1141,31 +1413,32 @@
                 emptyState.classList.add('hidden');
             }
 
+            const learnedSet = new Set(getLearned());
             list.forEach(k => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-amber-50/40 dark:hover:bg-zen-700/25 transition-all cursor-pointer group border-b border-zen-100/80 dark:border-zen-700/40 last:border-none";
-                tr.onclick = () => openModal(k);
+                tr.className = "hover:bg-amber-50/40 dark:hover:bg-zen-700/25 transition-all group border-b border-zen-100/80 dark:border-zen-700/40 last:border-none";
+                tr.dataset.learned = learnedSet.has(k.kanji) ? '1' : '0';
 
                 let kanjiHtml = `<span class="font-black text-3xl text-black dark:text-white font-jp group-hover:scale-110 transition-transform inline-block">${k.kanji}</span>`;
                 if (hideKanji) {
                     kanjiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded-lg px-3 py-1 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block" title="Нажмите, чтобы увидеть">${k.kanji}</span>`;
                 }
 
-                let meaningHtml = `<span class="font-semibold text-zen-800 dark:text-zen-100">${k.meaning}</span>`;
+                let meaningHtml = `<span class="font-semibold text-zen-800 dark:text-zen-100">${k.meaning || '—'}</span>`;
                 if (hideMeaning) {
                     meaningHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block" title="Нажмите, чтобы увидеть">${k.meaning}</span>`;
                 }
 
-                let onyomiHtml = `<span class="text-zen-600 dark:text-zen-300 font-medium">${k.onyomi}</span>`;
-                let kunyomiHtml = `<span class="text-amber-700 dark:text-amber-400 font-medium">${k.kunyomi}</span>`;
+                let onyomiHtml = `<span onclick="event.stopPropagation()" class="select-text cursor-text text-zen-600 dark:text-zen-300 font-medium">${k.onyomi || '—'}</span>`;
+                let kunyomiHtml = `<span onclick="event.stopPropagation()" class="select-text cursor-text text-amber-700 dark:text-amber-400 font-medium">${k.kunyomi || '—'}</span>`;
                 if (hideReadings) {
                     onyomiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block">скрыто</span>`;
                     kunyomiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block">скрыто</span>`;
                 }
 
                 tr.innerHTML = `
-                    <td class="py-4 px-6 text-center border-r border-zen-100 dark:border-zen-700/40">${kanjiHtml}</td>
-                    <td class="py-4 px-6 border-r border-zen-100 dark:border-zen-700/40">${meaningHtml}</td>
+                    <td class="py-4 px-6 text-center border-r border-zen-100 dark:border-zen-700/40" data-open="kanji">${kanjiHtml}</td>
+                    <td class="py-4 px-6 border-r border-zen-100 dark:border-zen-700/40" data-open="meaning">${meaningHtml}</td>
                     <td class="py-4 px-6 border-r border-zen-100 dark:border-zen-700/40">${onyomiHtml}</td>
                     <td class="py-4 px-6 border-r border-zen-100 dark:border-zen-700/40">${kunyomiHtml}</td>
                     <td class="py-4 px-6 text-right text-xs text-zen-400 font-mono border-r border-zen-100 dark:border-zen-700/40">${k.cumul}</td>
@@ -1174,6 +1447,10 @@
                         <a href="https://jisho.org/search/${k.kanji}%20%23kanji" target="_blank" class="text-amber-600 dark:text-amber-400 hover:underline font-medium">Яркси</a>
                     </td>
                 `;
+                tr.querySelectorAll('[data-open]').forEach(cell => {
+                    cell.classList.add('cursor-pointer');
+                    cell.onclick = () => openModal(k);
+                });
                 tbody.appendChild(tr);
             });
         }
@@ -1186,6 +1463,8 @@
             document.getElementById('modal-kunyomi').innerText = k.kunyomi;
             document.getElementById('modal-mnemonic').innerText = k.mnemonic;
             document.getElementById('modal-freq').innerText = `Сумма: ${k.cumul} | Номер: ${k.number}`;
+            currentModalKanji = k.kanji;
+            renderLearnBtn();
 
             const expContainer = document.getElementById('modal-examples');
             expContainer.innerHTML = '';
@@ -1206,8 +1485,23 @@
             document.getElementById('kanji-modal').classList.add('flex');
         }
 
+        // ===== Гайд по кандзи N5 =====
+        function openGuide() {
+            const m = document.getElementById('guide-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closeGuide() {
+            const m = document.getElementById('guide-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+        document.getElementById('guide-modal').addEventListener('click', e => {
+            if (e.target.id === 'guide-modal') closeGuide();
+        });
+
         // ===== Режим карточек (как в Anki) =====
-        let quizDeck = [], quizIndex = 0, quizLevel = 'N5', quizCard = null, quizRollId = 0;
+        let quizDeck = [], quizIndex = 0, quizLevel = 'N5', quizCard = null, quizRollId = 0, quizPool = [];
 
         function shuffleArr(arr) {
             const a = arr.slice();
@@ -1221,6 +1515,7 @@
         function openQuiz() {
             quizLevel = currentJlpt;
             quizDeck = shuffleArr(kanjiDatabase[quizLevel] || []);
+            quizPool = kanjiDatabase[quizLevel] || [];
             quizIndex = 0;
             document.getElementById('quiz-title').innerText = `Карточки · JLPT ${quizLevel}`;
             const m = document.getElementById('quiz-modal');
@@ -1247,14 +1542,13 @@
             document.getElementById('quiz-progress').innerText = `Карточка ${quizIndex} из ${quizDeck.length}`;
             document.getElementById('quiz-answer').classList.add('hidden');
             document.getElementById('quiz-check-btn').classList.add('hidden');
-            document.getElementById('quiz-next-btn').classList.add('hidden');
             rollQuizCard(quizCard);
         }
 
         function rollQuizCard(target) {
             const el = document.getElementById('quiz-kanji');
             const hint = document.getElementById('quiz-hint');
-            const pool = kanjiDatabase[quizLevel] || [];
+            const pool = quizPool;
             const myId = ++quizRollId;
             const steps = 18;
             let step = 0, delay = 35;
@@ -1291,7 +1585,6 @@
             document.getElementById('quiz-answer').classList.remove('hidden');
             document.getElementById('quiz-hint').innerText = '';
             document.getElementById('quiz-check-btn').classList.add('hidden');
-            document.getElementById('quiz-next-btn').classList.remove('hidden');
         }
 
         function closeModal() {
@@ -1305,7 +1598,7 @@
                 'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS'
             );
             const setBtn = session => {
-                document.getElementById('auth-btn-text').innerText = session ? 'Профиль' : 'Войти / Регистрация';
+                document.getElementById('auth-btn-text').innerText = session ? 'Профиль' : 'Войти';
             };
             sb.auth.getSession().then(({ data }) => setBtn(data.session));
             sb.auth.onAuthStateChange((_event, session) => setBtn(session));
@@ -1313,8 +1606,8 @@
     </script>
 
     <!-- Футер: юридические страницы и контакты -->
-    <footer class="border-t border-zen-200/70 bg-white/60 mt-10">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-zen-500">
+    <footer class="relative z-10 border-t border-zen-200/70 dark:border-zen-700/50 bg-white/50 dark:bg-transparent mt-12">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-3 text-[11px] text-zen-400 dark:text-zen-600">
             <span>© KanjiZen, 2026. Самозанятый Лёвин И. И., ИНН 972100452162</span>
             <nav class="flex flex-wrap gap-x-5 gap-y-1">
                 <a href="requisites.html" class="hover:text-amber-700">Реквизиты</a>
