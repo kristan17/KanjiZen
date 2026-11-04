@@ -106,6 +106,13 @@
             </div>
         </nav>
 
+        <!-- Категории заданий -->
+        <div class="flex justify-center gap-2 mb-8 flex-wrap">
+            <button data-cat="kanji" class="cat-btn group h-11 px-5 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-pen-nib text-xs"></i>Кандзи</button>
+            <button data-cat="grammar" class="cat-btn group h-11 px-5 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-book-open text-xs"></i>Грамматика</button>
+            <button data-cat="reading" class="cat-btn group h-11 px-5 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-scroll text-xs"></i>Чтение</button>
+        </div>
+
         <!-- Содержимое уровня -->
         <div id="content" class="space-y-6">
             <div class="glass rounded-3xl p-8 text-center text-sm text-zen-500">Загружаем задания…</div>
@@ -116,7 +123,9 @@
 const sb = supabase.createClient('https://stnxwbuozduhphftfqri.supabase.co', 'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS');
 const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
 const content = document.getElementById('content');
-let tasks = [], owned = [], counts = [], answers = {}, activeLevel = 'N5', signedIn = false;
+let tasks = [], owned = [], counts = [], answers = {}, activeLevel = 'N5', activeCat = 'kanji', signedIn = false;
+const CAT_NAME = { kanji: 'Кандзи', grammar: 'Грамматика', reading: 'Чтение' };
+const catOf = t => t.category || 'kanji';
 
 function esc(x) { return String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function plural(n, f) { const a = n % 10, b = n % 100; if (a === 1 && b !== 11) return f[0]; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return f[1]; return f[2]; }
@@ -132,7 +141,12 @@ function taskVisible(t) { return t.is_free || isOpen(t.level); }
 // ---------- Карточка задания ----------
 function taskCard(t, idx) {
     const a = answers[t.id];
-    const k = kanjiIn(t.question);
+    const cat = catOf(t);
+    const k = cat === 'kanji' ? kanjiIn(t.question) : null;
+    const pm = String(t.question).match(/「([\s\S]*?)」/);
+    const passage = cat === 'reading' && pm ? pm[1] : null;
+    const qText = passage ? String(t.question).replace(/「[\s\S]*?」/, '').trim() : String(t.question);
+    const qHtml = cat === 'grammar' ? esc(qText).replace('___', '<span class="inline-block mx-1 px-3 border-b-4 border-amber-400 text-amber-600 dark:text-amber-300">&nbsp;&nbsp;&nbsp;&nbsp;</span>') : esc(qText);
     const letters = ['А', 'Б', 'В', 'Г'];
     const opts = (t.options || []).map((o, i) => {
         let cls = 'opt flex items-center gap-3 p-4 rounded-2xl border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900/60 text-left';
@@ -157,9 +171,10 @@ function taskCard(t, idx) {
                 <span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200">${t.level} · ${idx + 1}</span>
                 ${t.is_free ? '<span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-matcha-100 dark:bg-matcha-300/15 text-matcha-700 dark:text-matcha-200">Бесплатно</span>' : ''}
             </div>
+            ${passage ? `<div class="mb-5 rounded-2xl bg-gradient-to-br from-amber-50 to-white dark:from-amber-400/10 dark:to-zen-900 border border-amber-200/70 dark:border-amber-500/20 p-5"><p class="font-jp text-lg leading-loose text-zen-900 dark:text-amber-50">${esc(passage)}</p></div>` : ''}
             <div class="flex items-center gap-5 mb-6">
                 ${k ? `<div class="kanji-hero shrink-0 w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-400/15 dark:to-zen-900 border border-amber-200/70 dark:border-amber-500/20 flex items-center justify-center text-6xl font-black font-jp text-zen-900 dark:text-amber-50">${k}</div>` : ''}
-                <h3 class="text-xl md:text-2xl font-bold leading-snug">${esc(t.question)}</h3>
+                <h3 class="text-xl md:text-2xl font-bold leading-snug">${qHtml}</h3>
             </div>
             <div class="grid sm:grid-cols-2 gap-3">${opts}</div>
             <div class="mt-5 flex items-center gap-4 min-h-[44px]">
@@ -189,38 +204,36 @@ function lockedCard(level, n) {
 
 // ---------- Вывод уровня ----------
 function renderLevel() {
-    const list = tasks.filter(t => t.level === activeLevel);
+    const inCat = tasks.filter(t => t.level === activeLevel && catOf(t) === activeCat);
+    const list = inCat.filter(taskVisible);
     const total = (counts.find(c => c.level === activeLevel) || {}).total || 0;
-    const visible = list.filter(taskVisible);
-    const locked = Math.max(0, total - visible.length);
+    const hiddenInLevel = Math.max(0, total - tasks.filter(t => t.level === activeLevel && taskVisible(t)).length);
     const open = isOpen(activeLevel);
-    const answered = visible.filter(t => answers[t.id]).length;
-    const pct = visible.length ? Math.round(answered / visible.length * 100) : 0;
+    const answered = list.filter(t => answers[t.id]).length;
+    const pct = list.length ? Math.round(answered / list.length * 100) : 0;
     const head = `
         <div class="glass rounded-3xl p-5 border border-zen-200/70 dark:border-zen-700/60 flex items-center gap-5">
             <div class="relative w-16 h-16 shrink-0">
-                <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90"><circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" class="text-zen-200 dark:text-zen-700" stroke-width="3"/><circle id="ring-${activeLevel}" class="ring" cx="18" cy="18" r="15.5" fill="none" stroke="#7a9c4a" stroke-width="3" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="${97.4 * (1 - pct / 100)}"/></svg>
+                <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90"><circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" class="text-zen-200 dark:text-zen-700" stroke-width="3"/><circle class="ring" cx="18" cy="18" r="15.5" fill="none" stroke="#7a9c4a" stroke-width="3" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="${97.4 * (1 - pct / 100)}"/></svg>
                 <span class="absolute inset-0 flex items-center justify-center text-xs font-black">${pct}%</span>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="font-black text-lg">Уровень ${activeLevel} ${open ? '<span class="text-matcha-700 dark:text-matcha-300 text-sm font-bold">· открыт</span>' : ''}</p>
-                <p class="text-sm text-zen-500 dark:text-zen-300">Отвечено ${answered} из ${visible.length} ${plural(visible.length, ['доступного задания', 'доступных заданий', 'доступных заданий'])}${locked ? ` · ещё ${locked} в доступе` : ''}</p>
+                <p class="font-black text-lg">${CAT_NAME[activeCat]} · ${activeLevel} ${open ? '<span class="text-matcha-700 dark:text-matcha-300 text-sm font-bold">· открыт</span>' : ''}</p>
+                <p class="text-sm text-zen-500 dark:text-zen-300">Отвечено ${answered} из ${list.length}${hiddenInLevel ? ` · ещё ${hiddenInLevel} в полном доступе` : ''}</p>
                 <div class="mt-3 h-2 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden"><div class="bar h-full rounded-full bg-gradient-to-r from-matcha-400 to-matcha-600" style="width:${pct}%"></div></div>
             </div>
         </div>`;
-    let body = visible.map((t, i) => taskCard(t, i)).join('');
-    if (!visible.length && !locked) body = '<div class="glass rounded-3xl p-8 text-center text-zen-500">Задания этого уровня скоро появятся.</div>';
-    if (locked > 0) body += lockedCard(activeLevel, locked);
-    if (visible.length && answered === visible.length && !open) {
-        body += `
-            <div class="rim rise"><div class="rounded-3xl bg-gradient-to-br from-zen-900 to-zen-800 dark:from-zen-950 dark:to-zen-900 p-7 text-center text-white">
-                <p class="gold-text text-3xl font-black font-jp mb-1">よくできました！</p>
-                <p class="text-zen-200 text-sm mb-5">Бесплатная часть уровня ${activeLevel} пройдена. Продолжите весь уровень в полном доступе.</p>
-                <button disabled class="px-7 h-12 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-600 text-zen-900 font-black opacity-70 cursor-not-allowed">Полный доступ — скоро</button>
-            </div></div>`;
-    }
+    let body = list.map((t, i) => taskCard(t, i)).join('');
+    if (!list.length && !hiddenInLevel) body = '<div class="glass rounded-3xl p-8 text-center text-zen-500">Задания этой категории скоро появятся.</div>';
+    if (hiddenInLevel > 0 && !open) body += lockedCard(activeLevel, hiddenInLevel);
     content.innerHTML = head + body;
-    document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('text-zen-900', b.dataset.lvl === activeLevel) || b.classList.toggle('text-zen-500', b.dataset.lvl !== activeLevel));
+    document.querySelectorAll('.cat-btn').forEach(b => {
+        const on = b.dataset.cat === activeCat;
+        b.className = 'cat-btn group h-11 px-5 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all ' + (on
+            ? 'border-amber-400 bg-gradient-to-r from-amber-300 to-amber-500 text-zen-900 shadow-lg shadow-amber-500/30'
+            : 'border-zen-200 dark:border-zen-700 bg-white/60 dark:bg-zen-900/50 text-zen-500 dark:text-zen-300 hover:border-amber-400');
+    });
+    document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('text-zen-900', b.dataset.lvl === activeLevel));
     moveGlider();
     updateStats();
 }
@@ -274,6 +287,7 @@ function celebrate() {
     }
 }
 document.querySelectorAll('.lvl-btn').forEach(b => b.addEventListener('click', () => { activeLevel = b.dataset.lvl; renderLevel(); }));
+document.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => { activeCat = b.dataset.cat; renderLevel(); }));
 window.addEventListener('resize', moveGlider);
 document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
@@ -300,6 +314,7 @@ async function init() {
         counts = c || [];
         const firstWithTasks = LEVELS.find(l => tasks.some(x => x.level === l && taskVisible(x)) || (counts.find(x => x.level === l) || {}).total);
         activeLevel = firstWithTasks || 'N5';
+        activeCat = 'kanji';
         if (!signedIn) {
             const hint = document.createElement('div');
             hint.className = 'glass rounded-2xl p-4 text-sm flex items-center justify-between gap-4 flex-wrap mb-6 border border-zen-200/70 dark:border-zen-700/60';

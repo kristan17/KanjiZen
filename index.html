@@ -54,6 +54,14 @@
         html { scrollbar-gutter: stable both-edges; }
         html { font-size: 17px; }
 
+        .wr-chip { display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: .9rem; font-weight: 800; font-size: .85rem; border: 1.5px solid; transition: transform .3s cubic-bezier(.2,.9,.3,1.4); }
+        .wr-chip.ok { background: #7a9c4a; border-color: #5f7d35; color: #fff; box-shadow: 0 6px 16px -6px rgba(95,125,53,.8); animation: wrPop .5s cubic-bezier(.2,.9,.3,1.4); }
+        .wr-chip.bad { background: rgba(180,83,9,.12); border-color: #b45309; color: #92400e; animation: wrShake .4s ease; }
+        .wr-chip.miss { background: transparent; border-color: #d6cbb8; color: #a8987a; border-style: dashed; }
+        @keyframes wrPop { 0% { transform: scale(.7); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+        @keyframes wrShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+
         .dark body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(169,199,123,.16), rgba(169,199,123,.03)); box-shadow: inset 4px 0 0 #a9c77b; }
         .dark body.hl-learned tr[data-learned="1"] td:first-child span { color: #c9dca8 !important; }
         /* Кнопка «Задания»: премиальная рамка с переливом и блик */
@@ -367,6 +375,7 @@
                             <i class="fa-solid fa-book"></i>
                             <span>Блокнот</span>
                         </button>
+                        <button onclick="openWrite()" class="write-btn flex items-center justify-center gap-2 px-4 py-3 rounded-2xl whitespace-nowrap border-2 border-amber-300/70 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold transition-all"><i class="fa-solid fa-paintbrush"></i><span>Написание</span></button>
                         </div>
 
                         <!-- Поиск -->
@@ -546,6 +555,46 @@
                 </button>
             </div>
             <div id="forecast-body" class="p-6 overflow-y-auto relative"></div>
+        </div>
+    </div>
+
+    <!-- Проверка написания кандзи -->
+    <div id="write-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-md rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
+            <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center shadow-lg shadow-amber-500/30"><i class="fa-solid fa-paintbrush"></i></div>
+                    <div>
+                        <h3 class="font-black text-lg text-zen-900 dark:text-amber-50">Проверка написания</h3>
+                        <p class="text-xs text-zen-400">Нарисуйте черты в правильном порядке</p>
+                    </div>
+                </div>
+                <button onclick="closeWrite()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors"><i class="fa-solid fa-xmark text-zen-600 dark:text-zen-300"></i></button>
+            </div>
+            <div class="p-5 space-y-4 overflow-y-auto">
+                <div class="flex items-center gap-3 p-3 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60">
+                    <div id="wr-kanji" class="w-14 h-14 rounded-2xl bg-white dark:bg-zen-800 flex items-center justify-center text-3xl font-black font-jp text-zen-900 dark:text-amber-50 shadow-inner"></div>
+                    <div class="flex-1 min-w-0">
+                        <p id="wr-meaning" class="font-bold text-zen-900 dark:text-amber-50 truncate"></p>
+                        <p id="wr-readings" class="text-xs text-zen-400 font-jp truncate"></p>
+                    </div>
+                    <button onclick="newWriteKanji()" class="px-3 h-9 rounded-xl bg-amber-100 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200 text-xs font-bold hover:bg-amber-200 transition-colors"><i class="fa-solid fa-shuffle mr-1"></i>Другой</button>
+                </div>
+
+                <div class="relative mx-auto rounded-3xl p-[1.5px] bg-gradient-to-br from-amber-300 via-amber-500 to-matcha-400" style="width:300px">
+                    <canvas id="wr-canvas" width="300" height="300" class="block w-[300px] h-[300px] rounded-[22px] bg-white dark:bg-zen-900 touch-none cursor-crosshair"></canvas>
+                </div>
+
+                <div class="flex items-center justify-center gap-2">
+                    <button onclick="wrPlayRef()" class="h-10 px-4 rounded-xl bg-zen-100 dark:bg-zen-700 text-zen-700 dark:text-zen-100 text-xs font-bold hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors"><i class="fa-solid fa-play mr-1 text-[10px]"></i>Показать порядок</button>
+                    <button id="wr-guide-btn" onclick="wrToggleGuide()" class="h-10 px-4 rounded-xl border border-zen-200 dark:border-zen-600 text-zen-700 dark:text-zen-100 text-xs font-bold hover:border-amber-400 transition-colors"><i class="fa-regular fa-eye mr-1"></i>Скрыть контур</button>
+                    <button onclick="wrClear()" class="h-10 px-4 rounded-xl border border-zen-200 dark:border-zen-600 text-zen-700 dark:text-zen-100 text-xs font-bold hover:border-amber-400 transition-colors"><i class="fa-solid fa-rotate-left mr-1"></i>Заново</button>
+                </div>
+
+                <div id="wr-result" class="rounded-2xl p-4 border border-zen-200/70 dark:border-zen-700/60 bg-zen-50/60 dark:bg-zen-900/50 text-sm text-zen-600 dark:text-zen-300 min-h-[64px]"></div>
+
+                <button onclick="wrCheck()" class="w-full h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold shadow-lg shadow-amber-600/30 transition-all">Проверить написание</button>
+            </div>
         </div>
     </div>
 
@@ -1667,6 +1716,219 @@
             m.classList.remove('flex');
         }
 
+        // ===== Проверка написания кандзи (по эталону KanjiVG) =====
+        const WR = { kanji: '', ref: [], strokes: [], cur: null, drawing: false, guide: true, status: null, anim: false };
+        const WR_K = 300 / 109;
+        const wrCanvas = () => document.getElementById('wr-canvas');
+        function wrScale(p) { return [p[0] * WR_K, p[1] * WR_K]; }
+        function wrGrid(x) {
+            x.strokeStyle = 'rgba(180,83,9,.12)'; x.lineWidth = 1; x.setLineDash([4, 6]);
+            x.beginPath(); x.moveTo(150, 0); x.lineTo(150, 300); x.moveTo(0, 150); x.lineTo(300, 150); x.stroke();
+            x.setLineDash([]);
+        }
+        function wrStroke(x, pts, color, width) {
+            if (pts.length < 2) return;
+            x.strokeStyle = color; x.lineWidth = width; x.lineCap = 'round'; x.lineJoin = 'round';
+            x.beginPath(); x.moveTo(pts[0][0], pts[0][1]);
+            for (let i = 1; i < pts.length; i++) x.lineTo(pts[i][0], pts[i][1]);
+            x.stroke();
+        }
+        function wrDraw() {
+            const x = wrCanvas().getContext('2d');
+            x.clearRect(0, 0, 300, 300);
+            wrGrid(x);
+            if (WR.guide) WR.ref.forEach(r => wrStroke(x, r.map(wrScale), 'rgba(120,80,40,.16)', 12));
+            WR.strokes.forEach((s, i) => {
+                const col = WR.status && WR.status[i] ? WR.status[i].color : '#3d3122';
+                wrStroke(x, s, col, 7);
+            });
+        }
+        async function wrLoadRef(ch) {
+            const hex = ch.codePointAt(0).toString(16).padStart(5, '0');
+            const res = await fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`);
+            if (!res.ok) throw new Error('nf');
+            const raw = await res.text();
+            const holder = document.createElement('div');
+            holder.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;visibility:hidden';
+            holder.innerHTML = raw.slice(raw.indexOf('<svg'));
+            document.body.appendChild(holder);
+            const paths = [...holder.querySelectorAll('[id*="StrokePaths"] path')];
+            const ref = paths.map(p => {
+                const L = p.getTotalLength(), pts = [];
+                for (let i = 0; i <= 30; i++) { const q = p.getPointAtLength(L * i / 30); pts.push([q.x, q.y]); }
+                return pts;
+            });
+            holder.remove();
+            return ref;
+        }
+        function openWrite() {
+            const m = document.getElementById('write-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            newWriteKanji();
+        }
+        function closeWrite() {
+            const m = document.getElementById('write-modal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+        }
+        async function newWriteKanji(ch) {
+            const pool = Object.values(kanjiDatabase).flat().filter(k => k.number <= 610);
+            const pick = ch ? pool.find(k => k.kanji === ch) : pool[Math.floor(Math.random() * pool.length)];
+            WR.kanji = pick.kanji;
+            WR.strokes = []; WR.status = null; WR.cur = null; WR.ref = [];
+            document.getElementById('wr-kanji').innerText = pick.kanji;
+            document.getElementById('wr-meaning').innerText = pick.meaning || '';
+            document.getElementById('wr-readings').innerText = [pick.onyomi, pick.kunyomi].filter(Boolean).join(' · ');
+            wrSay('Загружаем эталон…');
+            wrDraw();
+            try {
+                WR.ref = await wrLoadRef(pick.kanji);
+                wrSay('Нарисуйте черты по порядку. Когда закончите — нажмите «Проверить написание».');
+            } catch (e) {
+                wrSay('Эталон недоступен без интернета. Рисовать можно, проверка не будет работать.');
+            }
+            wrDraw();
+        }
+        function wrSay(html) { document.getElementById('wr-result').innerHTML = `<p>${html}</p>`; }
+
+        // рисование мышкой и пальцем
+        (function wrInput() {
+            const c = wrCanvas();
+            const pos = e => { const r = c.getBoundingClientRect(); return [(e.clientX - r.left) * 300 / r.width, (e.clientY - r.top) * 300 / r.height]; };
+            c.addEventListener('pointerdown', e => {
+                if (WR.anim) return;
+                WR.status = null; WR.drawing = true;
+                WR.cur = [pos(e)]; WR.strokes.push(WR.cur);
+                c.setPointerCapture(e.pointerId);
+                wrDraw();
+            });
+            c.addEventListener('pointermove', e => { if (!WR.drawing) return; WR.cur.push(pos(e)); wrDraw(); });
+            ['pointerup', 'pointercancel'].forEach(ev => c.addEventListener(ev, () => { WR.drawing = false; WR.cur = null; }));
+        })();
+
+        function wrResample(pts, n) {
+            if (pts.length < 2) return null;
+            const seg = [0];
+            let L = 0;
+            for (let i = 1; i < pts.length; i++) { L += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(L); }
+            if (L < 1.5) return null;
+            const out = [];
+            for (let k = 0; k <= n; k++) {
+                const t = L * k / n;
+                let i = 1;
+                while (i < seg.length - 1 && seg[i] < t) i++;
+                const span = (seg[i] - seg[i - 1]) || 1;
+                const a = (t - seg[i - 1]) / span;
+                out.push([pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * a, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * a]);
+            }
+            return out;
+        }
+        function wrDirDist(a, b) {
+            let s = 0;
+            for (const p of a) { let m = 1e9; for (const q of b) { const d = Math.hypot(p[0] - q[0], p[1] - q[1]); if (d < m) m = d; } s += m; }
+            return s / a.length;
+        }
+        function wrSim(a, b) { return (wrDirDist(a, b) + wrDirDist(b, a)) / 2; }
+
+        function wrCheck() {
+            if (!WR.ref.length) { wrSay('Эталон не загрузился. Проверьте интернет и выберите другой иероглиф.'); return; }
+            const valid = [];
+            const user = [];
+            WR.strokes.forEach((s, i) => {
+                const r = wrResample(s.map(p => [p[0] / WR_K, p[1] / WR_K]), 30);
+                if (r) { user.push(r); valid.push(i); }
+            });
+            if (!user.length) { wrSay('Сначала нарисуйте хотя бы одну черту.'); return; }
+            const T = 14; // допуск в единицах эталона
+            const per = user.map((u, k) => {
+                const exp = WR.ref[k];
+                const sExp = exp ? wrSim(u, exp) : 1e9;
+                let best = -1, bs = 1e9;
+                WR.ref.forEach((r, j) => { const sc = wrSim(u, r); if (sc < bs) { bs = sc; best = j; } });
+                if (exp && sExp < T) return { ok: true, label: 'Верно', color: '#7a9c4a' };
+                if (best !== k && bs < T) return { ok: false, label: 'Не тот порядок', color: '#d97706' };
+                return { ok: false, label: 'Форма черты', color: '#b45309' };
+            });
+            WR.status = [];
+            valid.forEach((idx, k) => { WR.status[idx] = per[k]; });
+            const okCount = per.filter(p => p.ok).length;
+            const total = WR.ref.length;
+            const extra = user.length - total;
+            const missing = total - user.length;
+            const perfect = okCount === total && extra <= 0;
+            const chips = Array.from({ length: Math.max(total, user.length) }, (_, k) => {
+                if (k >= total) return `<span class="wr-chip bad" title="Лишняя черта">+</span>`;
+                const st = per[k];
+                if (!st) return `<span class="wr-chip miss" title="Не нарисована">${k + 1}</span>`;
+                return `<span class="wr-chip ${st.ok ? 'ok' : 'bad'}" title="${st.label}">${k + 1}</span>`;
+            }).join('');
+            let verdict;
+            if (perfect) verdict = '<span class="font-black text-matcha-700 dark:text-matcha-300">Идеально!</span> Все черты верные и в правильном порядке.';
+            else {
+                const hints = [];
+                if (missing > 0) hints.push(`не хватает ${missing} ${missing === 1 ? 'черты' : 'черт'}`);
+                if (extra > 0) hints.push(`лишних черт: ${extra}`);
+                const wrong = per.filter(p => !p.ok).map(p => p.label);
+                if (wrong.includes('Не тот порядок')) hints.push('порядок черт сбит');
+                if (wrong.includes('Форма черты')) hints.push('некоторые черты не совпадают по форме');
+                verdict = `Верно ${okCount} из ${total}. ${hints.length ? hints.join(', ') + '.' : ''}`;
+            }
+            document.getElementById('wr-result').innerHTML = `<div class="flex flex-wrap gap-2 mb-3">${chips}</div><p>${verdict}</p>`;
+            wrDraw();
+            if (perfect) { wrBurst(); markActivity(); }
+        }
+        function wrClear() {
+            if (WR.anim) return;
+            WR.strokes = []; WR.status = null; WR.cur = null;
+            wrSay('Нарисуйте черты по порядку. Когда закончите — нажмите «Проверить написание».');
+            wrDraw();
+        }
+        function wrToggleGuide() {
+            WR.guide = !WR.guide;
+            document.getElementById('wr-guide-btn').innerHTML = WR.guide ? '<i class="fa-regular fa-eye mr-1"></i>Скрыть контур' : '<i class="fa-regular fa-eye-slash mr-1"></i>Показать контур';
+            wrDraw();
+        }
+        function wrPlayRef() {
+            if (!WR.ref.length || WR.anim) return;
+            WR.anim = true; WR.strokes = []; WR.status = null;
+            const per = 650;
+            let start = null;
+            const step = now => {
+                if (start === null) start = now;
+                const el = now - start;
+                const idx = Math.floor(el / per);
+                if (idx >= WR.ref.length) { WR.anim = false; wrDraw(); return; }
+                wrAnimFrame(idx, (el % per) / per);
+                requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+        function wrAnimFrame(idx, frac) {
+            const x = wrCanvas().getContext('2d');
+            x.clearRect(0, 0, 300, 300);
+            wrGrid(x);
+            for (let i = 0; i < idx; i++) wrStroke(x, WR.ref[i].map(wrScale), '#3d3122', 7);
+            const p = WR.ref[idx].map(wrScale);
+            const n = Math.max(1, Math.floor(frac * (p.length - 1)));
+            wrStroke(x, p.slice(0, n + 1), '#d97706', 8);
+        }
+        function wrBurst() {
+            const c = wrCanvas().getBoundingClientRect();
+            const glyphs = ['正', '良', '完', '花', '光'];
+            for (let i = 0; i < 16; i++) {
+                const p = document.createElement('span');
+                p.className = 'celebrate-particle';
+                p.textContent = glyphs[i % glyphs.length];
+                const ang = (Math.PI * 2 * i) / 16, dist = 80 + Math.random() * 60;
+                p.style.left = (c.left + c.width / 2) + 'px';
+                p.style.top = (c.top + c.height / 2) + 'px';
+                p.style.color = ['#d97706', '#f59e0b', '#7a9c4a', '#fde68a'][i % 4];
+                p.style.fontSize = (14 + Math.random() * 12) + 'px';
+                p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+                p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1400);
+            }
+        }
         // ===== Озвучка: записи по чтению, запасной вариант — синтез речи =====
         function speakJa(text) {
             if (!('speechSynthesis' in window)) { showToast('Озвучка недоступна в этом браузере'); return; }
