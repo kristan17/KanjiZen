@@ -12,6 +12,8 @@
             theme: {
                 extend: {
                     colors: {
+                        matcha: { 50:'#f3f7ec',100:'#e4eed3',200:'#c9dca8',300:'#a9c77b',400:'#8fb35a',500:'#7a9c4a',600:'#5f7d35',700:'#4b6329',800:'#3b4e21',900:'#2c3b19',950:'#1d2a12' },
+                        sea: { 300:'#8dd3cf',400:'#5fb3ae',500:'#3b9490',600:'#2b7a78',700:'#22625f',800:'#1b4e4c' },
                         zen: {
                             50: '#fcfbfa',
                             100: '#f5f2ec',
@@ -52,6 +54,100 @@
         html { scrollbar-gutter: stable both-edges; }
         html { font-size: 17px; }
 
+        .dark body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(169,199,123,.16), rgba(169,199,123,.03)); box-shadow: inset 4px 0 0 #a9c77b; }
+        .dark body.hl-learned tr[data-learned="1"] td:first-child span { color: #c9dca8 !important; }
+        /* Кнопка «Задания»: премиальная рамка с переливом и блик */
+        .tasks-btn { position: relative; display: inline-flex; padding: 1.5px; border-radius: 16px; background: linear-gradient(120deg, #fde68a, #f59e0b 35%, #a9c77b 70%, #fde68a); background-size: 220% 220%; animation: rim 6s linear infinite; transition: transform .3s ease, box-shadow .3s ease; }
+        @keyframes rim { to { background-position: 220% 50%; } }
+        .tasks-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -8px rgba(245,158,11,.7), 0 0 0 4px rgba(245,158,11,.12); }
+        .tasks-inner { position: relative; overflow: hidden; display: flex; align-items: center; gap: .6rem; height: 2.75rem; padding: 0 1.1rem 0 .9rem; border-radius: 14.5px; background: linear-gradient(160deg, #3d3122, #221b12); color: #fef3c7; font-weight: 800; font-size: .875rem; white-space: nowrap; }
+        .tasks-inner::after { content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.28), transparent); transform: skewX(-20deg); }
+        .tasks-btn:hover .tasks-inner::after { animation: deckSweep .9s ease; }
+        .tasks-icon { display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center; border-radius: 9px; background: linear-gradient(135deg, #fde68a, #f59e0b); color: #3d3122; font-size: .75rem; transition: transform .4s cubic-bezier(.2,.9,.3,1.4); }
+        .tasks-btn:hover .tasks-icon { transform: rotate(-12deg) scale(1.1); }
+        .tasks-dot { width: .45rem; height: .45rem; border-radius: 9999px; background: #a9c77b; box-shadow: 0 0 0 0 rgba(169,199,123,.7); animation: dotPulse 1.8s ease-out infinite; }
+        @keyframes dotPulse { 0% { box-shadow: 0 0 0 0 rgba(169,199,123,.7); } 100% { box-shadow: 0 0 0 9px rgba(169,199,123,0); } }
+
+
+        .deck-stack { position: relative; width: 22px; height: 20px; flex-shrink: 0; }
+        .deck-stack b { position: absolute; inset: 0; border-radius: 5px; background: #fff; border: 1px solid rgba(120,53,15,.18); box-shadow: 0 2px 6px rgba(120,53,15,.25); transition: transform .45s cubic-bezier(.2,.9,.3,1.35); }
+        .deck-stack .c1 { transform: rotate(-8deg) translate(-2px,1px); background: #fde68a; }
+        .deck-stack .c2 { transform: rotate(4deg) translate(1px,-1px); background: #fef3c7; }
+        .deck-stack .c3 { transform: none; }
+        .group:hover .deck-stack .c1 { transform: rotate(-22deg) translate(-9px,2px); }
+        .group:hover .deck-stack .c2 { transform: rotate(14deg) translate(8px,-3px); }
+        .group:hover .deck-stack .c3 { transform: translateY(-3px) rotate(2deg); }
+        .deck-shine { position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-20deg); pointer-events: none; }
+        .group:hover .deck-shine { animation: deckSweep .9s ease; }
+        @keyframes deckSweep { to { left: 130%; } }
+
+
+        .notebook-btn { transition: all .3s ease; }
+        .notebook-btn:hover { border-color: #7a9c4a !important; color: #5f7d35 !important; background: rgba(122,156,74,.12) !important; box-shadow: 0 0 22px rgba(122,156,74,.5); transform: translateY(-1px); }
+        .dark .notebook-btn:hover { color: #b5cf8c !important; }
+        /* Режим обучения: свечение и пульсация при включении */
+        .study-switch:has(#study-mode-toggle:checked) { border-color: rgba(245,158,11,.7); animation: switchPulse 2.8s ease-in-out infinite; }
+        @keyframes switchPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,.0), 0 8px 24px -12px rgba(245,158,11,.5); } 50% { box-shadow: 0 0 0 6px rgba(245,158,11,.12), 0 10px 30px -10px rgba(245,158,11,.8); } }
+        .study-switch:has(#study-mode-toggle:checked) .sw-knob { animation: knobBeat 2.8s ease-in-out infinite; }
+        @keyframes knobBeat { 0%,100% { box-shadow: 0 0 14px rgba(251,191,36,.9); } 50% { box-shadow: 0 0 4px rgba(251,191,36,.4); } }
+
+
+        #study-mode-toggle:checked + .sw-track { background: linear-gradient(90deg, #fbbf24, #d97706); box-shadow: 0 0 24px rgba(245,158,11,.6); }
+        #study-mode-toggle:checked + .sw-track .sw-knob { transform: translateX(20px) rotate(360deg); color: #b45309; box-shadow: 0 0 14px rgba(251,191,36,.9); }
+        .sw-state::after { content: 'выключен'; }
+        #study-mode-toggle:checked ~ span .sw-state::after { content: 'включён · скрывайте и вспоминайте'; color: #b45309; }
+        .study-switch:hover { border-color: rgba(245,158,11,.6); }
+        .dark #study-mode-toggle:checked ~ span .sw-state::after { color: #fbbf24; }
+        /* Переключатель уровней: скользящая капсула */
+        #jlpt-glider { position: absolute; top: 4px; bottom: 4px; border-radius: 9999px; background: linear-gradient(90deg, #fde68a, #fbbf24, #f59e0b); box-shadow: 0 0 22px rgba(251,191,36,.6); transition: left .5s cubic-bezier(.2,.9,.3,1.2), width .5s cubic-bezier(.2,.9,.3,1.2); }
+
+
+        .veil { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 3.5rem; min-height: 1.9rem; padding: .15rem .6rem; border-radius: .9rem; cursor: pointer; overflow: hidden; background: linear-gradient(110deg, rgba(120,85,40,.10) 30%, rgba(251,191,36,.45) 50%, rgba(120,85,40,.10) 70%) ; background-size: 250% 100%; animation: sheen 3.6s linear infinite; border: 1px dashed rgba(180,83,9,.35); transition: all .35s cubic-bezier(.2,.8,.2,1); }
+        .dark .veil { background: linear-gradient(110deg, rgba(255,255,255,.04) 30%, rgba(251,191,36,.22) 50%, rgba(255,255,255,.04) 70%); background-size: 250% 100%; border-color: rgba(251,191,36,.3); }
+        @keyframes sheen { from { background-position: 150% 0; } to { background-position: -150% 0; } }
+        .veil-text { filter: blur(7px); color: transparent; user-select: none; transition: filter .35s ease; }
+        .veil-eye { position: absolute; font-size: 11px; color: rgba(120,53,15,.8); transition: opacity .3s ease, transform .3s ease; }
+        .dark .veil-eye { color: #fde68a; }
+        .veil:hover .veil-text, .veil.veil-open .veil-text { filter: none; color: inherit; }
+        .veil:hover .veil-eye, .veil.veil-open .veil-eye { opacity: 0; transform: scale(.6); }
+        .veil:hover, .veil.veil-open { border-style: solid; border-color: rgba(251,191,36,.6); }
+
+        header.zen-gradient { overflow-x: clip; }
+
+        .streak-pill.streak-active { background: linear-gradient(135deg, rgba(251,191,36,.30), rgba(217,119,6,.16)); box-shadow: 0 0 0 1px rgba(251,191,36,.5), 0 10px 28px -10px rgba(251,191,36,.8); animation: glowPulse 2.6s ease-in-out infinite; }
+        @keyframes glowPulse { 0%,100% { box-shadow: 0 0 0 1px rgba(251,191,36,.5), 0 10px 28px -12px rgba(251,191,36,.7); } 50% { box-shadow: 0 0 0 1px rgba(251,191,36,.8), 0 10px 34px -6px rgba(251,191,36,1); } }
+        .flame-svg { filter: drop-shadow(0 0 6px rgba(251,191,36,.7)); animation: flameDance 1.4s ease-in-out infinite; transform-origin: 50% 100%; }
+        @keyframes flameDance { 0%,100% { transform: scale(1,1) rotate(-4deg); } 33% { transform: scale(1.08,1.12) rotate(3deg); } 66% { transform: scale(.96,1.05) rotate(-2deg); } }
+        .spark { position: absolute; width: 4px; height: 4px; border-radius: 9999px; background: #fde68a; box-shadow: 0 0 6px #fbbf24; opacity: 0; bottom: 60%; left: 50%; }
+        .spark.sp1 { animation: sparkUp 1.8s ease-out infinite; }
+        .spark.sp2 { animation: sparkUp 1.8s ease-out .6s infinite; left: 35%; }
+        .spark.sp3 { animation: sparkUp 1.8s ease-out 1.2s infinite; left: 65%; }
+        @keyframes sparkUp { 0% { opacity: 0; transform: translate(-50%,0) scale(.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + 6px),-26px) scale(.2); } }
+        .streak-tip { opacity: 0; transform: translateY(-6px) scale(.97); transition: opacity .25s ease, transform .25s ease; }
+        .streak-wrap:hover .streak-tip { opacity: 1; transform: translateY(0) scale(1); }
+        .streak-wrap:hover .flame-svg { animation-duration: .7s; }
+        .streak-bump { animation: bump .8s cubic-bezier(.2,.9,.3,1.4); }
+        @keyframes bump { 0% { transform: scale(1); } 30% { transform: scale(1.3) rotate(-4deg); } 60% { transform: scale(.95) rotate(3deg); } 100% { transform: scale(1); } }
+        .streak-milestone { animation: milestoneFlash 1.2s ease-out; }
+        @keyframes milestoneFlash { 0% { box-shadow: 0 0 0 0 rgba(251,191,36,.9); } 100% { box-shadow: 0 0 0 26px rgba(251,191,36,0); } }
+
+
+        .flame { display: inline-block; transform-origin: 50% 90%; animation: flicker 1.6s ease-in-out infinite; }
+        @keyframes flicker { 0%,100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.12) rotate(3deg); } }
+        .streak-pill { transition: box-shadow .4s ease, background .4s ease; }
+        .streak-pill.streak-active { background: linear-gradient(135deg, rgba(251,191,36,.28), rgba(217,119,6,.14)); box-shadow: 0 0 0 1px rgba(251,191,36,.45), 0 10px 26px -12px rgba(251,191,36,.7); }
+        .streak-bump { animation: bump .75s cubic-bezier(.2,.9,.3,1.4); }
+        @keyframes bump { 0% { transform: scale(1); } 35% { transform: scale(1.22); } 100% { transform: scale(1); } }
+        .check-draw { stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawCheck .6s .15s ease forwards; }
+        @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+        .celebrate-ring { position: absolute; inset: 0; margin: auto; width: 120px; height: 120px; border-radius: 9999px; border: 3px solid rgba(251,191,36,.6); animation: ringPulse 1.2s ease-out forwards; }
+        @keyframes ringPulse { 0% { transform: scale(.4); opacity: 1; } 100% { transform: scale(2.6); opacity: 0; } }
+        .celebrate-particle { position: fixed; pointer-events: none; z-index: 230; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; animation: celebrateFly 1.4s cubic-bezier(.15,.7,.3,1) forwards; }
+        @keyframes celebrateFly { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.4) rotate(0deg); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 60px)) scale(1) rotate(var(--rot)); } }
+        .gold-text { background: linear-gradient(90deg, #f59e0b, #fde68a, #d97706); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% auto; animation: shine 2.4s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
+
+
         @keyframes copyBubble {
             0%   { opacity: 0; transform: translate(-50%, -30%) scale(.5); }
             25%  { opacity: 1; transform: translate(-50%, -70%) scale(1.08); }
@@ -84,11 +180,11 @@
         @keyframes kanjiPop { from { opacity: 0; transform: scale(.88); } to { opacity: 1; transform: none; } }
         .kanji-flip { animation: kanjiPop .45s ease both; }
         #nb-highlight:checked + span .hl-knob { transform: translateX(24px); }
-        #nb-highlight:focus-visible + span { outline: 2px solid #10b981; outline-offset: 2px; }
-        body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(16,185,129,.10), rgba(16,185,129,.03)); box-shadow: inset 4px 0 0 #10b981; }
-        body.hl-learned tr[data-learned="1"] td:first-child span { color: #059669 !important; }
-        body.hl-learned.dark tr[data-learned="1"], .dark body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(16,185,129,.16), rgba(16,185,129,.04)); }
-        body.hl-learned tr[data-learned="1"] td:first-child span { text-shadow: 0 0 18px rgba(16,185,129,.25); }
+        #nb-highlight:focus-visible + span { outline: 2px solid #7a9c4a; outline-offset: 2px; }
+        body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(122,156,74,.10), rgba(122,156,74,.03)); box-shadow: inset 4px 0 0 #7a9c4a; }
+        body.hl-learned tr[data-learned="1"] td:first-child span { color: #5f7d35 !important; }
+        body.hl-learned.dark tr[data-learned="1"], .dark body.hl-learned tr[data-learned="1"] { background: linear-gradient(90deg, rgba(122,156,74,.16), rgba(122,156,74,.04)); }
+        body.hl-learned tr[data-learned="1"] td:first-child span { text-shadow: 0 0 18px rgba(122,156,74,.25); }
 
         #rain span { position: absolute; top: -12%; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; color: rgba(180, 83, 9, 0.10); animation: kanjiFall linear infinite; user-select: none; }
         .dark #rain span { color: rgba(251, 191, 36, 0.09); }
@@ -120,9 +216,9 @@
     <div id="rain" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true"></div>
 
     <!-- Верхняя навигация / Шапка -->
-    <header class="zen-gradient text-white shadow-xl relative overflow-hidden flex-shrink-0">
+    <header class="zen-gradient text-white shadow-xl relative flex-shrink-0">
         <div class="absolute -right-12 -top-12 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-5 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-5 relative">
 
             <!-- Логотип -->
             <div class="flex items-center gap-4 cursor-pointer group" onclick="switchMainTab('jlpt')">
@@ -134,22 +230,48 @@
             </div>
 
             <!-- Уровни JLPT: один сегментированный переключатель -->
-            <div class="flex items-center gap-1 p-1 rounded-2xl bg-black/25 border border-white/10 shadow-inner">
-                <button onclick="setMainCategory('jlpt')" id="cat-jlpt" class="h-9 px-4 rounded-xl text-sm font-semibold text-amber-50 bg-white/15 border border-white/15 shadow-sm transition-all">JLPT</button>
+            <div id="jlpt-switch" class="relative flex items-center gap-1 p-1 rounded-full bg-black/35 border border-white/10 shadow-inner">
+                    <div id="jlpt-glider"></div>
+                <button onclick="setMainCategory('jlpt')" id="cat-jlpt" class="relative z-10 h-9 px-4 rounded-full text-[11px] font-black tracking-[0.25em] uppercase text-amber-200/90">JLPT</button>
                 <div id="jlpt-submenu" class="flex items-center gap-1">
-                    <button onclick="setJlptLevel('N5')" id="jlpt-n5" class="h-9 px-3.5 rounded-xl text-sm font-bold bg-gradient-to-br from-amber-200 to-amber-500 text-zen-900 shadow-md shadow-amber-500/30 transition-all">N5</button>
-                    <button onclick="setJlptLevel('N4')" id="jlpt-n4" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N4</button>
-                    <button onclick="setJlptLevel('N3')" id="jlpt-n3" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N3</button>
-                    <button onclick="setJlptLevel('N2')" id="jlpt-n2" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N2</button>
-                    <button onclick="setJlptLevel('N1')" id="jlpt-n1" class="h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all">N1</button>
+                    <button onclick="setJlptLevel('N5')" id="jlpt-n5" class="relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors">N5</button>
+                    <button onclick="setJlptLevel('N4')" id="jlpt-n4" class="relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors">N4</button>
+                    <button onclick="setJlptLevel('N3')" id="jlpt-n3" class="relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors">N3</button>
+                    <button onclick="setJlptLevel('N2')" id="jlpt-n2" class="relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors">N2</button>
+                    <button onclick="setJlptLevel('N1')" id="jlpt-n1" class="relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors">N1</button>
                 </div>
             </div>
 
             <!-- Действия: задания, вход, телеграм, тема -->
             <div class="flex items-center gap-2.5">
-                <a href="tasks.html" class="h-11 flex items-center gap-2 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-semibold text-amber-50 transition-all whitespace-nowrap">
-                    <i class="fa-solid fa-pen-to-square text-amber-200"></i>
-                    <span>Задания</span>
+                <div id="streak-wrap" class="streak-wrap relative group">
+                    <div id="streak-pill" class="streak-pill relative h-11 pl-1 pr-4 flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-white/15 to-white/5 border border-white/20 backdrop-blur-sm text-amber-100 cursor-default overflow-visible">
+                        <div class="relative w-10 h-10 flex items-center justify-center">
+                            <svg class="absolute inset-0 w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="3"/>
+                                <circle id="streak-ring" cx="18" cy="18" r="15.5" fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4" style="transition: stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1);"/>
+                            </svg>
+                            <svg class="flame-svg w-7 h-7" viewBox="0 0 24 24">
+                                <defs><linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f59e0b"/><stop offset=".55" stop-color="#fbbf24"/><stop offset="1" stop-color="#fef3c7"/></linearGradient></defs>
+                                <path d="M12 2c.6 3.2 3.6 5 3.6 9.2a3.6 3.6 0 0 1-7.2 0c0-1.8.8-2.9 1.7-3.8.1 1.5.7 2.4 1.6 2.8C11.2 7.4 10.9 4.8 12 2z" fill="url(#flameGrad)"/>
+                            </svg>
+                            <span class="spark sp1"></span><span class="spark sp2"></span><span class="spark sp3"></span>
+                        </div>
+                        <div class="flex items-baseline gap-1">
+                            <span id="streak-count" class="gold-text text-lg font-black tabular-nums">0</span>
+                            <span class="text-[11px] font-semibold opacity-80">дн.</span>
+                        </div>
+                    </div>
+                    <div id="streak-tip" class="streak-tip absolute right-0 top-full mt-3 w-72 rounded-2xl bg-zen-900 text-white p-4 shadow-2xl border border-amber-400/25 z-[150] pointer-events-none">
+                        <div id="streak-tip-body"></div>
+                    </div>
+                </div>
+                <a href="tasks.html" class="tasks-btn group" title="Задания JLPT">
+                    <span class="tasks-inner">
+                        <span class="tasks-icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                        <span>Задания</span>
+                        <span class="tasks-dot"></span>
+                    </span>
                 </a>
 
                 <a id="auth-btn" href="login.html" class="h-11 flex items-center gap-2 px-5 rounded-2xl bg-gradient-to-r from-amber-300 to-amber-500 hover:from-amber-200 hover:to-amber-400 text-zen-900 text-sm font-bold shadow-lg shadow-amber-500/25 transition-all whitespace-nowrap">
@@ -157,8 +279,11 @@
                     <span id="auth-btn-text">Войти</span>
                 </a>
 
-                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" title="Telegram-канал" aria-label="Telegram-канал" class="w-11 h-11 rounded-full overflow-hidden shadow-lg shadow-sky-500/25 transition-all hover:scale-105 flex-shrink-0"><img src="telegram.jpg" alt="Telegram" class="w-full h-full object-cover scale-[1.25]"></a>
+                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" title="Telegram-канал" aria-label="Telegram-канал" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 text-zen-900 shadow-lg shadow-amber-500/30 hover:scale-105 hover:shadow-amber-400/50 transition-all">
+                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor"><path d="M9.04 15.6l-.4 5.6c.57 0 .82-.25 1.12-.55l2.7-2.58 5.6 4.1c1.03.57 1.76.27 2.04-.95l3.7-17.3c.33-1.52-.55-2.12-1.56-1.74L1.9 9.5c-1.48.58-1.46 1.41-.25 1.79l5.36 1.67L19.4 5.6c.6-.4 1.14-.18.7.22z"/></svg>
+                </a>
 
+                <button id="sound-toggle" onclick="toggleSound()" title="Звуки" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all"><i id="sound-icon" class="fa-solid fa-volume-high text-amber-100"></i></button>
                 <button onclick="toggleDarkMode()" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all group" title="Сменить тему">
                     <i class="fa-solid fa-moon dark:hidden text-amber-100 group-hover:rotate-12 transition-transform"></i>
                     <i class="fa-solid fa-sun hidden dark:block text-amber-300 group-hover:rotate-90 transition-transform"></i>
@@ -216,26 +341,29 @@
                 <div class="bg-white dark:bg-zen-800 p-6 rounded-3xl shadow-sm border border-zen-200/80 dark:border-zen-700/60 flex flex-col gap-5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <!-- Премиальный переключатель режима обучения -->
-                        <label class="relative inline-flex items-center whitespace-nowrap cursor-pointer select-none group bg-zen-50 dark:bg-zen-900/60 px-4 h-11 rounded-2xl border border-zen-200/80 dark:border-zen-700 w-full sm:w-auto shadow-sm">
-                            <input type="checkbox" id="study-mode-toggle" onchange="toggleStudyMode()" class="sr-only peer">
-                            <div class="relative w-12 h-6 bg-zen-300 peer-focus:outline-none rounded-full peer dark:bg-zen-700 peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zen-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600 shadow-inner"></div>
-                            <div class="ml-3 flex items-center space-x-2">
-                                <i class="fa-solid fa-graduation-cap text-amber-600"></i>
-                                <span class="whitespace-nowrap text-sm font-bold text-zen-800 dark:text-zen-200">Режим обучения</span>
-                            </div>
+                        <label class="study-switch relative inline-flex items-center gap-3 h-12 pl-1.5 pr-5 rounded-full border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900 shadow-sm cursor-pointer select-none w-full sm:w-auto">
+                            <input type="checkbox" id="study-mode-toggle" onchange="toggleStudyMode()" class="sr-only">
+                            <span class="sw-track relative w-14 h-9 rounded-full bg-zen-200 dark:bg-zen-700 transition-all duration-500">
+                                <span class="sw-knob absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow-md flex items-center justify-center text-amber-600 transition-all duration-500"><i class="fa-solid fa-graduation-cap text-xs"></i></span>
+                            </span>
+                            <span class="flex flex-col leading-tight">
+                                <span class="text-sm font-black text-zen-800 dark:text-zen-100">Режим обучения</span>
+                                <span class="sw-state text-[10px] uppercase tracking-[0.2em] text-zen-400"></span>
+                            </span>
                         </label>
 
                         <!-- Режим карточек (как в Anki) для текущей колоды -->
                         <div class="flex items-center gap-2 flex-nowrap shrink-0">
-                        <button onclick="openQuiz()" class="flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-sm shadow-amber-600/30 transition-all">
-                            <i class="fa-solid fa-shuffle"></i>
-                            <span>Карточки <span id="quiz-level-label">N5</span></span>
+                        <button onclick="openQuiz()" class="group relative h-11 pl-3.5 pr-5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold shadow-lg shadow-amber-600/30 flex items-center gap-3 overflow-hidden whitespace-nowrap transition-all">
+                            <span class="deck-stack"><b class="c1"></b><b class="c2"></b><b class="c3"></b></span>
+                            <span class="flex flex-col items-start leading-tight text-left"><span class="text-sm">Карточки</span><span class="text-[10px] font-semibold tracking-[0.18em] uppercase opacity-80">уровень <span id="quiz-level-label">N5</span></span></span>
+                            <span class="deck-shine"></span>
                         </button>
                         <button id="guide-btn" onclick="openGuide()" class="flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap border-2 border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold transition-all">
                             <i class="fa-solid fa-book-open"></i>
                             <span>Гайд по кандзи</span>
                         </button>
-                        <button onclick="openNotebook()" class="flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap border-2 border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-bold transition-all">
+                        <button onclick="openNotebook()" class="notebook-btn flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap border-2 border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 hover:border-amber-500 hover:text-amber-600 dark:hover:text-amber-400 text-sm font-bold transition-all">
                             <i class="fa-solid fa-book"></i>
                             <span>Блокнот</span>
                         </button>
@@ -248,23 +376,24 @@
                         </div>
                     </div>
 
-                    <!-- Панель чекбоксов режима обучения -->
-                    <div id="study-options-panel" class="hidden flex flex-wrap items-center gap-3 pt-4 border-t border-zen-100 dark:border-zen-700/60 text-xs font-medium animate-fadeIn">
-                        <label class="flex items-center space-x-2.5 cursor-pointer bg-zen-50 dark:bg-zen-900/60 px-4 py-2.5 rounded-xl border border-zen-200/80 dark:border-zen-700 hover:border-amber-500/80 transition-all select-none shadow-sm group">
-                            <input type="checkbox" id="hide-kanji" onchange="renderTable()" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-zen-300 cursor-pointer accent-amber-600">
-                            <span class="text-zen-800 dark:text-zen-200 group-hover:text-amber-600 font-semibold">Скрыть кандзи</span>
+                    <!-- Панель скрытия: слепой режим -->
+                    <div id="study-options-panel" class="hidden flex flex-wrap items-center gap-2.5 pt-4 border-t border-zen-100 dark:border-zen-700/60 animate-fadeIn">
+                        <label class="group relative cursor-pointer select-none">
+                            <input type="checkbox" id="hide-kanji" onchange="renderTable()" class="peer sr-only">
+                            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900 text-zen-600 dark:text-zen-300 text-xs font-bold tracking-wide transition-all group-hover:border-amber-400 peer-checked:bg-gradient-to-r peer-checked:from-amber-300 peer-checked:to-amber-500 peer-checked:text-zen-900 peer-checked:border-amber-400 peer-checked:shadow-[0_0_18px_rgba(251,191,36,.5)]"><i class="fa-solid fa-eye-slash text-[11px]"></i>Кандзи</span>
                         </label>
-                        <label class="flex items-center space-x-2.5 cursor-pointer bg-zen-50 dark:bg-zen-900/60 px-4 py-2.5 rounded-xl border border-zen-200/80 dark:border-zen-700 hover:border-amber-500/80 transition-all select-none shadow-sm group">
-                            <input type="checkbox" id="hide-meaning" onchange="renderTable()" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-zen-300 cursor-pointer accent-amber-600">
-                            <span class="text-zen-800 dark:text-zen-200 group-hover:text-amber-600 font-semibold">Скрыть значения</span>
+                        <label class="group relative cursor-pointer select-none">
+                            <input type="checkbox" id="hide-meaning" onchange="renderTable()" class="peer sr-only">
+                            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900 text-zen-600 dark:text-zen-300 text-xs font-bold tracking-wide transition-all group-hover:border-amber-400 peer-checked:bg-gradient-to-r peer-checked:from-amber-300 peer-checked:to-amber-500 peer-checked:text-zen-900 peer-checked:border-amber-400 peer-checked:shadow-[0_0_18px_rgba(251,191,36,.5)]"><i class="fa-solid fa-eye-slash text-[11px]"></i>Значения</span>
                         </label>
-                        <label class="flex items-center space-x-2.5 cursor-pointer bg-zen-50 dark:bg-zen-900/60 px-4 py-2.5 rounded-xl border border-zen-200/80 dark:border-zen-700 hover:border-amber-500/80 transition-all select-none shadow-sm group">
-                            <input type="checkbox" id="hide-readings" onchange="renderTable()" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-zen-300 cursor-pointer accent-amber-600">
-                            <span class="text-zen-800 dark:text-zen-200 group-hover:text-amber-600 font-semibold">Скрыть чтения</span>
+                        <label class="group relative cursor-pointer select-none">
+                            <input type="checkbox" id="hide-readings" onchange="renderTable()" class="peer sr-only">
+                            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900 text-zen-600 dark:text-zen-300 text-xs font-bold tracking-wide transition-all group-hover:border-amber-400 peer-checked:bg-gradient-to-r peer-checked:from-amber-300 peer-checked:to-amber-500 peer-checked:text-zen-900 peer-checked:border-amber-400 peer-checked:shadow-[0_0_18px_rgba(251,191,36,.5)]"><i class="fa-solid fa-eye-slash text-[11px]"></i>Чтения</span>
                         </label>
-                        <span class="text-zen-400 text-[11px] ml-auto italic hidden md:inline">Наведите на скрытое поле для подсказки</span>
+                                                <span class="text-zen-400 text-[11px] ml-auto italic hidden md:inline">Наведите или нажмите на вуаль, чтобы открыть</span>
                     </div>
                 </div>
+
 
                 <!-- Таблица кандзи -->
                 <div class="bg-white dark:bg-zen-800 rounded-3xl shadow-sm border border-zen-200/80 dark:border-zen-700/60 overflow-hidden">
@@ -278,7 +407,7 @@
                                     <th class="py-4 px-6 font-medium border-r border-zen-200/60 dark:border-zen-700/60">Куны</th>
                                     <th class="py-4 px-6 text-right font-medium border-r border-zen-200/60 dark:border-zen-700/60">Сумма</th>
                                     <th class="py-4 px-6 text-center font-medium border-r border-zen-200/60 dark:border-zen-700/60">Номер</th>
-                                    <th class="py-4 px-6 text-center font-medium">Статус</th>
+                                    <th class="py-4 px-6 text-center font-medium" title="Новое — не отмечено. Учу — отмечено, ещё закрепляется. Выучено — закреплено, повторяется через дни. Знаю — помните хорошо, интервал неделя и больше.">Статус</th>
                                 </tr>
                             </thead>
                             <tbody id="kanji-table-body" class="text-sm">
@@ -320,7 +449,7 @@
                     <div class="flex items-center gap-4"><button id="nums-toggle" onclick="toggleStrokeNumbers()" class="text-[11px] font-bold text-zen-500 dark:text-zen-400 hover:underline">Скрыть номера</button><button onclick="loadStrokeAnim(currentModalKanji)" class="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline">Посмотреть ещё раз</button></div>
                 </div>
                 <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60 p-5 flex items-center justify-center min-h-[220px]">
-                    <div id="stroke-box" class="w-56 h-56 flex items-center justify-center"></div>
+                    <div id="stroke-box" onclick="replayStrokes()" title="Нажмите, чтобы нарисовать заново" class="w-56 h-56 flex items-center justify-center cursor-pointer"></div>
                 </div>
             </div>
 
@@ -364,7 +493,7 @@
         <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col max-h-[88vh]">
             <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
                 <div>
-                    <p class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">Блокнот</p>
+                    <p class="text-xs uppercase tracking-wider text-matcha-600 dark:text-matcha-400 font-bold">Блокнот</p>
                     <h3 class="font-black text-xl text-zen-900 dark:text-amber-50">Ваш прогресс</h3>
                 </div>
                 <button onclick="closeNotebook()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
@@ -375,10 +504,10 @@
                 <div>
                     <div class="flex justify-between items-baseline mb-2">
                         <span class="text-sm font-semibold text-zen-600 dark:text-zen-300">Выучено всего</span>
-                        <span id="nb-count" class="font-black text-emerald-600 dark:text-emerald-400">0 из 0</span>
+                        <span id="nb-count" class="font-black text-matcha-600 dark:text-matcha-400">0 из 0</span>
                     </div>
                     <div class="h-3 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden">
-                        <div id="nb-bar" class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-500" style="width:0%"></div>
+                        <div id="nb-bar" class="h-full rounded-full bg-gradient-to-r from-matcha-400 to-matcha-600 transition-all duration-500" style="width:0%"></div>
                     </div>
                 </div>
                 <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60 cursor-pointer">
@@ -387,21 +516,40 @@
                         <span class="block text-xs text-zen-400 mt-0.5">Зелёная полоса слева и подсветка строки</span>
                     </span>
                     <input type="checkbox" id="nb-highlight" onchange="setHighlight(this.checked)" class="sr-only peer">
-                    <span class="relative w-12 h-6 shrink-0 rounded-full bg-zen-300 dark:bg-zen-700 peer-checked:bg-emerald-500 transition-colors">
+                    <span class="relative w-12 h-6 shrink-0 rounded-full bg-zen-300 dark:bg-zen-700 peer-checked:bg-matcha-500 transition-colors">
                         <span class="hl-knob absolute top-[2px] left-[2px] w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
                     </span>
                 </label>
+                <button onclick="openForecast()" class="w-full h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-white font-bold shadow-lg shadow-amber-600/25 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i><span>Прогноз подготовки к JLPT</span><span class="text-[10px] font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Премиум</span>
+                </button>
                 <div id="nb-levels" class="space-y-5"></div>
                 <div>
                     <label for="nb-notes" class="text-sm font-bold text-zen-900 dark:text-amber-50">Мои заметки</label>
-                    <textarea id="nb-notes" rows="4" placeholder="Что трудно запоминается? Запишите здесь." class="mt-2 w-full p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200 dark:border-zen-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40"></textarea>
+                    <textarea id="nb-notes" rows="4" placeholder="Что трудно запоминается? Запишите здесь." class="mt-2 w-full p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200 dark:border-zen-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/40"></textarea>
                     <p class="text-[11px] text-zen-400 mt-2">Заметки и отметки сохраняются в этом браузере.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Гайд: как учить кандзи N5 -->
+    <!-- Прогноз подготовки к JLPT (платная функция) -->
+    <div id="forecast-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">Премиум</p>
+                    <h3 class="font-black text-xl text-zen-900 dark:text-amber-50">Прогноз подготовки к JLPT</h3>
+                </div>
+                <button onclick="closeForecast()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-zen-600 dark:text-zen-300"></i>
+                </button>
+            </div>
+            <div id="forecast-body" class="p-6 overflow-y-auto relative"></div>
+        </div>
+    </div>
+
+    <!-- Гайд: как учить кандзи -->
     <div id="guide-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[88vh]">
             <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
@@ -418,61 +566,53 @@
 
                 <section class="space-y-2">
                     <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Главное правило</h4>
-                    <p>Не учите кандзи по одному, учите их <b>в словах</b>. Один иероглиф почти всегда что-то значит только внутри слова: 日 сам по себе «день», а в 日本 (Япония) и 日曜日 (воскресенье) он превращается в часть названия.</p>
+                    <p>Учите кандзи вместе со словами, а не по одному. Так проще понять, что он значит.</p>
+                    <p>Например, 日 значит «день». В словах 日本 (Япония) и 日曜日 (воскресенье) он стоит как часть слова.</p>
                 </section>
 
                 <section class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-900/40 p-5 space-y-3">
-                    <h4 class="font-black text-amber-800 dark:text-amber-300 text-lg">Главное правило чтения</h4>
-                    <p><b>Онное чтение (оны)</b> используется, когда кандзи стоит <b>вместе с другими кандзи в слове</b>, то есть в слове два и более иероглифа: 日本 → にほん, 日曜日 → にちようび.</p>
-                    <p><b>Кунное чтение (куны)</b> используется, когда кандзи стоит <b>один</b>, то есть слово состоит из одного иероглифа (возможно, с хираганой): 山 → やま, 木 → き, 水 → みず.</p>
-                    <p class="text-sm">Правило работает в большинстве случаев. Исключения, например числа 一 (いち), 二 (に), 三 (さん), которые читаются по-китайски даже одни, запоминайте сразу вместе со словом.</p>
+                    <h4 class="font-black text-amber-800 dark:text-amber-300 text-lg">Как читать кандзи</h4>
+                    <p><b>Оны</b> — китайское чтение. Его используют, когда в слове два или больше кандзи: 日本 читается «にほん».</p>
+                    <p><b>Куны</b> — японское чтение. Его используют, когда кандзи один: 山 читается «やま».</p>
+                    <p class="text-sm">Есть исключения. Например, 一 (いち), 二 (に) и 三 (さん) читаются по-китайски, даже когда стоят одни. Такие запоминайте сразу со словом.</p>
                 </section>
 
                 <section class="space-y-3">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 1. Разберите иероглиф на части</h4>
-                    <p>Многие кандзи состоят из более простых деталей. Найдите знакомые части и сложите смысл.</p>
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 1. Найдите знакомые части</h4>
+                    <p>Многие кандзи состоят из простых частей. Если знаете части, легче запомнить весь иероглиф.</p>
                     <div class="grid sm:grid-cols-2 gap-3">
                         <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
                             <p class="font-jp text-3xl font-black text-zen-900 dark:text-white">休</p>
-                            <p class="text-sm mt-1"><b>отдых</b> = 人 (человек) + 木 (дерево). Человек прислонился к дереву, значит, отдыхает.</p>
+                            <p class="text-sm mt-1"><b>отдых</b>. Это человек 人 рядом с деревом 木. Человек прислонился к дереву и отдыхает.</p>
                         </div>
                         <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
                             <p class="font-jp text-3xl font-black text-zen-900 dark:text-white">林</p>
-                            <p class="text-sm mt-1"><b>роща</b> = 木 + 木. Два дерева рядом.</p>
+                            <p class="text-sm mt-1"><b>роща</b>. Это два дерева 木 рядом.</p>
                         </div>
                     </div>
                 </section>
 
-                <section class="space-y-3">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 2. Запомните два чтения</h4>
-                    <p>У каждого кандзи есть <b>оны</b> (китайское чтение, обычно в катакане) и <b>куны</b> (японское, в хирагане). Какое чтение использовать, зависит от слова. Пример с 日:</p>
-                    <div class="overflow-x-auto rounded-2xl border border-zen-200/70 dark:border-zen-700/60">
-                        <table class="w-full text-sm">
-                            <thead class="bg-zen-50 dark:bg-zen-900/50 text-zen-500 text-xs uppercase">
-                                <tr><th class="text-left px-4 py-2">Слово</th><th class="text-left px-4 py-2">Чтение</th><th class="text-left px-4 py-2">Значение</th></tr>
-                            </thead>
-                            <tbody class="font-jp">
-                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日本</td><td class="px-4 py-2">にほん</td><td class="px-4 py-2 font-sans">Япония</td></tr>
-                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日曜日</td><td class="px-4 py-2">にちようび</td><td class="px-4 py-2 font-sans">воскресенье</td></tr>
-                                <tr class="border-t border-zen-100 dark:border-zen-700/60"><td class="px-4 py-2">日</td><td class="px-4 py-2">ひ</td><td class="px-4 py-2 font-sans">день, солнце</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <section class="space-y-2">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 2. Придумайте картинку</h4>
+                    <p>Придумайте короткую историю, которая напоминает иероглиф. Например, 山 (гора) похож на три вершины. 木 (дерево) похож на ствол с ветками.</p>
                 </section>
 
                 <section class="space-y-2">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 3. Придумайте картинку</h4>
-                    <p>Мнемоника работает лучше всего, если она яркая и смешная. Например: <b>山</b> (гора) похожа на три вершины, а <b>木</b> (дерево) выглядит как дерево с корнями и ветками. Придумайте свою историю, и кандзи запомнится за пару повторений.</p>
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 3. Пишите от руки</h4>
+                    <p>Напишите иероглиф несколько раз. Пишите сверху вниз и слева направо. Порядок черт важен: по нему иероглиф легче запомнить.</p>
+                </section>
+
+                <section class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-5 border border-zen-200/70 dark:border-zen-700/60 space-y-3">
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Что значат статусы</h4>
+                    <p><b>Новое</b> — кандзи ещё не отмечен.</p>
+                    <p><b>Учу</b> — вы отметили кандзи, он на этапе запоминания.</p>
+                    <p><b>Выучено</b> — вы несколько раз правильно вспомнили его, он повторяется через дни.</p>
+                    <p><b>Знаю</b> — вы хорошо помните его, повторяете редко.</p>
                 </section>
 
                 <section class="space-y-2">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 4. Пишите от руки</h4>
-                    <p>Пишите каждый иероглиф несколько раз, соблюдая порядок черт: сверху вниз и слева направо. Простые кандзи вроде <b>一</b> (одна горизонтальная черта) и <b>人</b> (две черты) пишутся за секунду, но без порядка черт сложные иероглифы потом не узнаются.</p>
-                </section>
-
-                <section class="space-y-2">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 5. Повторяйте через интервалы</h4>
-                    <p>Не учите 98 кандзи подряд. Лучше 10–15 новых в день и регулярный повтор: в режиме карточек называйте чтения в голове, потом проверяйте. Трудные кандзи возвращайте через день, лёгкие через неделю.</p>
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50 text-lg">Шаг 4. Повторяйте понемногу</h4>
+                    <p>Лучше 10–15 новых кандзи в день, чем 100 за раз. Повторяйте через день, потом через неделю.</p>
                 </section>
 
                 <section class="space-y-2">
@@ -488,8 +628,8 @@
                 </section>
 
                 <section class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-5 border border-zen-200/70 dark:border-zen-700/60 space-y-2">
-                    <h4 class="font-bold text-zen-900 dark:text-amber-50">Что делать прямо сейчас</h4>
-                    <p>Откройте режим карточек и пройдите 10 карточек. Для каждой сначала назовите чтения вслух или в голове, затем проверьте. Не пропускайте сложные: это именно те, что нужно повторить.</p>
+                    <h4 class="font-bold text-zen-900 dark:text-amber-50">Что сделать сейчас</h4>
+                    <p>Откройте карточки и пройдите 10 штук. Сначала вспомните чтение, потом нажмите «Проверить».</p>
                 </section>
             </div>
         </div>
@@ -497,7 +637,7 @@
 
     <!-- Модальное окно: режим карточек -->
     <div id="quiz-modal" class="fixed inset-0 z-50 bg-zen-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col">
             <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between bg-zen-50/50 dark:bg-zen-900/40">
                 <span id="quiz-title" class="font-bold text-zen-900 dark:text-amber-50">Карточки</span>
                 <button onclick="closeQuiz()" class="w-9 h-9 rounded-full bg-zen-100 dark:bg-zen-700 flex items-center justify-center hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors">
@@ -505,7 +645,7 @@
                 </button>
             </div>
 
-            <div class="p-4 space-y-3 overflow-y-auto max-h-[70vh] text-center">
+            <div class="p-4 space-y-3 overflow-y-auto max-h-[calc(90vh-170px)] text-center">
                 <p id="quiz-progress" class="text-xs text-zen-400 font-medium"></p>
 
                 <div class="h-32 flex items-center justify-center rounded-3xl bg-gradient-to-br from-zen-50 to-amber-50/60 dark:from-zen-900/60 dark:to-amber-950/20 border border-zen-200/70 dark:border-zen-700">
@@ -525,7 +665,7 @@
                             <p id="quiz-ans-kun" class="mt-1.5 text-xl font-semibold font-jp text-amber-800 dark:text-amber-300"></p><div class="mt-2"><button type="button" onclick="speakReadingEl('quiz-ans-kun')" title="Послушать" class="ml-2 align-middle inline-flex items-center justify-center w-7 h-7 rounded-full bg-zen-100 hover:bg-amber-100 dark:bg-zen-700 dark:hover:bg-amber-900/40 text-zen-600 dark:text-zen-300 transition-colors"><i class="fa-solid fa-volume-high text-xs"></i></button></div>
                         </div>
                     </div>
-                    <div class="rounded-3xl bg-gradient-to-br from-zen-800 to-zen-900 text-white p-4 shadow-lg">
+                    <div class="rounded-3xl bg-gradient-to-br from-amber-500 to-amber-700 text-white p-4 shadow-md">
                         <span class="text-[11px] font-bold uppercase tracking-[0.15em] text-amber-200/80">Перевод</span>
                         <p id="quiz-ans-meaning" class="mt-1 text-xl font-black"></p>
                     </div>
@@ -537,14 +677,14 @@
                 </div>
 
                             </div>
-<div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-between items-center gap-3">
+<div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-center items-center gap-3">
                 <button id="quiz-next-btn" onclick="nextQuizCard()" class="px-4 py-2 text-sm rounded-xl border border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 font-semibold hover:bg-zen-100 dark:hover:bg-zen-700 transition-all">Следующая карточка →</button>
-                <button id="quiz-check-btn" onclick="revealQuizAnswer()" class="hidden px-5 py-2 text-sm bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Проверить</button>
+                <button id="quiz-check-btn" onclick="revealQuizAnswer()" class="hidden px-6 py-2.5 text-sm bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold rounded-xl transition-all shadow-md shadow-amber-600/30">Проверить</button>
                 <div id="quiz-rate" class="flex-1 gap-2" style="display:none; grid-template-columns: repeat(4, minmax(0,1fr));">
-                    <button onclick="rateCard(0)" class="py-2 rounded-xl text-sm font-bold bg-rose-100 hover:bg-rose-200 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 transition-colors">Снова</button>
-                    <button onclick="rateCard(1)" class="py-2 rounded-xl text-sm font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 transition-colors">Трудно</button>
-                    <button onclick="rateCard(2)" class="py-2 rounded-xl text-sm font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 transition-colors">Хорошо</button>
-                    <button onclick="rateCard(3)" class="py-2 rounded-xl text-sm font-bold bg-sky-100 hover:bg-sky-200 text-sky-800 dark:bg-sky-950/50 dark:text-sky-300 transition-colors">Легко</button>
+                    <button onclick="rateCard(0)" class="py-2 rounded-xl text-sm font-bold bg-zen-100 hover:bg-zen-200 text-zen-800 border border-zen-300 dark:bg-zen-700 dark:text-zen-100 dark:border-zen-600 transition-colors">Снова</button>
+                    <button onclick="rateCard(1)" class="py-2 rounded-xl text-sm font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-200 dark:border-amber-900/50 transition-colors">Трудно</button>
+                    <button onclick="rateCard(2)" class="py-2 rounded-xl text-sm font-bold bg-amber-200 hover:bg-amber-300 text-amber-900 border border-amber-300 dark:bg-amber-700/60 dark:text-amber-50 dark:border-amber-600/50 transition-colors">Хорошо</button>
+                    <button onclick="rateCard(3)" class="py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white border border-amber-600 shadow-sm transition-colors">Легко</button>
                 </div>
             </div>
         </div>
@@ -1221,6 +1361,9 @@
             const arr = getLearned();
             const i = arr.indexOf(ch);
             if (i >= 0) arr.splice(i, 1); else arr.push(ch);
+            const at = JSON.parse(localStorage.getItem('kanjizen_learned_at') || '{}');
+            if (i >= 0) delete at[ch]; else { at[ch] = Date.now(); markActivity(); }
+            localStorage.setItem('kanjizen_learned_at', JSON.stringify(at));
             localStorage.setItem(LEARNED_KEY, JSON.stringify(arr));
             renderTable();
         }
@@ -1235,10 +1378,10 @@
                 if (!list.length) return '';
                 const done = list.filter(k => learned.has(k.kanji));
                 const chips = done.length
-                    ? done.map(k => `<span class="font-jp text-lg px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">${k.kanji}</span>`).join('')
+                    ? done.map(k => `<span class="font-jp text-lg px-2.5 py-1 rounded-xl bg-matcha-50 dark:bg-matcha-950/40 text-matcha-800 dark:text-matcha-200 border border-matcha-200/70 dark:border-matcha-800/60">${k.kanji}</span>`).join('')
                     : '<span class="text-xs text-zen-400">пока ничего не отмечено</span>';
                 const dueN = done.filter(k => isDue(k.kanji)).length;
-                const btn = `<button onclick="startReview('${lvl}')" ${done.length ? '' : 'disabled'} class="text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-500/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"><i class="fa-solid fa-shuffle mr-1"></i>Повторить${dueN ? ` · ${dueN}` : ''}</button>`;
+                const btn = `<button onclick="startReview('${lvl}')" ${done.length ? '' : 'disabled'} class="text-xs font-bold px-3 py-1.5 rounded-full border border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"><i class="fa-solid fa-shuffle mr-1"></i>Повторить${dueN ? ` · ${dueN}` : ''}</button>`;
                 return `<div><div class="flex items-center justify-between mb-2"><p class="text-xs font-bold uppercase tracking-wider text-zen-400">${lvl} · ${done.length} из ${list.length}</p>${btn}</div><div class="flex flex-wrap gap-2">${chips}</div></div>`;
             }).join('');
             document.getElementById('nb-notes').value = localStorage.getItem(NOTES_KEY) || '';
@@ -1273,8 +1416,8 @@
                 ? '<i class="fa-solid fa-check mr-1.5"></i>Выучено'
                 : 'Отметить выученным';
             btn.className = 'px-4 py-2.5 rounded-xl border-2 font-semibold transition-all ' + (on
-                ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/30 hover:bg-emerald-600'
-                : 'border-emerald-500/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30');
+                ? 'bg-matcha-500 border-matcha-500 text-white shadow-md shadow-matcha-500/30 hover:bg-matcha-600'
+                : 'border-matcha-500/60 text-matcha-700 dark:text-matcha-400 hover:bg-matcha-50 dark:hover:bg-matcha-950/30');
         }
         function toggleCurrentLearned() {
             if (!currentModalKanji) return;
@@ -1391,6 +1534,139 @@
             }
         }
 
+        function replayStrokes() {
+            const svg = document.querySelector('#stroke-box svg');
+            if (!svg) { loadStrokeAnim(currentModalKanji); return; }
+            const paths = svg.querySelectorAll('[id*="StrokePaths"] path');
+            paths.forEach(p => { p.style.animation = 'none'; p.style.strokeDashoffset = p.style.strokeDasharray; });
+            void svg.getBoundingClientRect();
+            paths.forEach((p, i) => {
+                p.style.animation = 'drawStroke .7s ease forwards';
+                p.style.animationDelay = (i * 0.8) + 's';
+            });
+        }
+
+        // ===== Прогноз подготовки к JLPT (премиум) =====
+        let _sbClient = null;
+        function getSb() {
+            if (!_sbClient) _sbClient = supabase.createClient('https://stnxwbuozduhphftfqri.supabase.co', 'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS');
+            return _sbClient;
+        }
+        async function hasPremium() {
+            try {
+                const { data: { session } } = await getSb().auth.getSession();
+                if (!session) return false;
+                const { data } = await getSb().from('purchases').select('level');
+                return !!(data && data.length);
+            } catch (e) { return false; }
+        }
+        function getLearnedAt() {
+            try { return JSON.parse(localStorage.getItem('kanjizen_learned_at')) || {}; } catch (e) { return {}; }
+        }
+        function forecastData() {
+            const all = Object.values(kanjiDatabase).flat();
+            const learned = new Set(getLearned());
+            const srs = srsAll();
+            const at = getLearnedAt();
+            const now = Date.now();
+            const levels = ['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => {
+                const list = kanjiDatabase[lvl] || [];
+                const L = list.filter(k => learned.has(k.kanji));
+                const strong = L.filter(k => srs[k.kanji] && srs[k.kanji].interval >= 7).length;
+                const due = L.filter(k => isDue(k.kanji)).length;
+                const coverage = list.length ? L.length / list.length : 0;
+                const retention = L.length ? strong / L.length : 0;
+                return { lvl, total: list.length, learned: L.length, coverage, retention, due,
+                         readiness: Math.round((0.7 * coverage + 0.3 * retention) * 100) };
+            }).filter(x => x.total);
+            const recent = all.filter(k => learned.has(k.kanji) && at[k.kanji] && now - at[k.kanji] < 14 * 864e5).length;
+            const pace = recent / 14;
+            levels.forEach(x => {
+                const need = Math.max(0, Math.ceil(x.total * 0.9) - x.learned);
+                x.days = need === 0 ? 0 : (pace > 0 ? Math.ceil(need / pace) : null);
+            });
+            const totalLearned = all.filter(k => learned.has(k.kanji)).length;
+            const due = levels.reduce((n, x) => n + x.due, 0);
+            const weakest = levels.filter(x => x.learned > 0).sort((a, b) => a.retention - b.retention)[0];
+            return { levels, pace, due, totalLearned, total: all.length,
+                     overall: Math.round(totalLearned / all.length * 100), weakest };
+        }
+        function forecastContent() {
+            const f = forecastData();
+            const bars = f.levels.map(x => `
+                <div>
+                    <div class="flex justify-between items-baseline mb-1.5">
+                        <span class="font-black text-zen-900 dark:text-amber-50">${x.lvl}</span>
+                        <span class="text-xs text-zen-500">${x.learned} из ${x.total} · готовность ${x.readiness}%</span>
+                    </div>
+                    <div class="h-2.5 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-matcha-400 to-matcha-600 transition-all duration-700" style="width:${x.readiness}%"></div>
+                    </div>
+                </div>`).join('');
+            const days = f.levels.filter(x => x.days !== undefined && x.days !== 0 && x.learned > 0);
+            const forecastLines = days.length
+                ? days.map(x => x.days === null ? `${x.lvl}: нужен темп, отметьте кандзи` : `${x.lvl}: 90% примерно через ${x.days} дн.`)
+                : ['Пока мало данных. Отметьте выученные кандзи, и прогноз покажет ваш темп.'];
+            const tips = [];
+            if (f.due > 0) tips.push(`Сегодня к повторению ${f.due} карточек. Это главный шаг.`);
+            if (f.pace === 0 && f.totalLearned > 0) tips.push('За последние 2 недели новых кандзи не отмечено.');
+            if (f.pace > 0 && f.pace < 5) tips.push('Темп ниже 5 кандзи в день. Небольшое увеличение заметно ускорит подготовку.');
+            if (f.weakest && f.weakest.retention < 0.5) tips.push(`Слабое место: ${f.weakest.lvl}. Многие карточки ещё молодые, повторяйте их чаще.`);
+            if (!tips.length) tips.push('Всё идёт ровно. Продолжайте в том же темпе.');
+            return `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
+                            <p class="text-2xl font-black text-zen-900 dark:text-amber-50">${f.overall}%</p>
+                            <p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">Всего кандзи</p>
+                        </div>
+                        <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
+                            <p class="text-2xl font-black text-zen-900 dark:text-amber-50">${f.pace.toFixed(1)}</p>
+                            <p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">Кандзи в день</p>
+                        </div>
+                        <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 p-4 border border-zen-200/70 dark:border-zen-700/60">
+                            <p class="text-2xl font-black text-zen-900 dark:text-amber-50">${f.due}</p>
+                            <p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">К повтору</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-zen-400">Готовность по уровням</p>
+                        ${bars}
+                    </div>
+                    <div class="rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-900/40 p-5 space-y-2">
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">Прогноз</p>
+                        ${forecastLines.map(t => `<p class="text-sm text-zen-800 dark:text-zen-100">${t}</p>`).join('')}
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-xs font-bold uppercase tracking-wider text-zen-400">Рекомендации</p>
+                        ${tips.map(t => `<p class="text-sm text-zen-700 dark:text-zen-200 flex gap-2"><span class="text-amber-600">✦</span>${t}</p>`).join('')}
+                    </div>
+                </div>`;
+        }
+        async function openForecast() {
+            const m = document.getElementById('forecast-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            const body = document.getElementById('forecast-body');
+            body.innerHTML = '<p class="text-sm text-zen-400">Считаем прогноз…</p>';
+            const premium = await hasPremium();
+            const content = forecastContent();
+            body.innerHTML = premium
+                ? content
+                : `<div class="blur-[5px] select-none pointer-events-none">${content}</div>
+                   <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white/70 dark:bg-zen-800/70">
+                       <i class="fa-solid fa-lock text-amber-600 text-2xl mb-3"></i>
+                       <p class="font-black text-lg text-zen-900 dark:text-amber-50 mb-1">Доступно в премиум-подписке</p>
+                       <p class="text-sm text-zen-500 dark:text-zen-300 mb-5 max-w-xs">Полный прогноз по каждому уровню, темп подготовки и персональные рекомендации.</p>
+                       <button disabled class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-700 text-white font-bold opacity-60 cursor-not-allowed">Открыть — скоро</button>
+                   </div>`;
+        }
+        function closeForecast() {
+            const m = document.getElementById('forecast-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
         // ===== Озвучка: записи по чтению, запасной вариант — синтез речи =====
         function speakJa(text) {
             if (!('speechSynthesis' in window)) { showToast('Озвучка недоступна в этом браузере'); return; }
@@ -1455,22 +1731,286 @@
         function srsAll() { try { return JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch (e) { return {}; } }
         function todayStr() { return new Date().toISOString().slice(0, 10); }
         function addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
-        function isDue(ch) { const s = srsAll()[ch]; return !s || s.due <= todayStr(); }
+        function isDue(ch) {
+            const r = srsAll()[ch];
+            if (!r) return true;
+            const t = typeof r.due === 'number' ? r.due : Date.parse(r.due + 'T00:00:00');
+            return t <= Date.now();
+        }
+        function srsNext(cur, q) {
+            const DAY = 864e5, MIN = 6e4;
+            const reps = cur.reps || 0;
+            let ease = cur.ease || 2.5, iv = cur.interval || 0, ms;
+            if (iv === 0) { // этап обучения — минуты
+                if (q === 0) ms = 1 * MIN;
+                else if (q === 1) ms = 6 * MIN;
+                else if (q === 2) { if (reps >= 1) { iv = 1; ms = DAY; } else ms = 10 * MIN; }
+                else { iv = 4; ms = 4 * DAY; }
+            } else { // выученная карточка — дни
+                if (q === 0) { iv = 0; ms = 1 * MIN; ease = Math.max(1.3, ease - 0.2); }
+                else if (q === 1) { iv = Math.max(1, Math.round(iv * 1.2)); ms = iv * DAY; ease = Math.max(1.3, ease - 0.15); }
+                else if (q === 2) { iv = Math.max(2, Math.round(iv * ease)); ms = iv * DAY; }
+                else { iv = Math.max(3, Math.round(iv * ease * 1.3)); ease += 0.15; ms = iv * DAY; }
+            }
+            return { ease: Math.round(ease * 100) / 100, interval: iv, ms };
+        }
+        function fmtDelay(ms) {
+            const m = Math.round(ms / 60000);
+            if (m < 60) return m + ' мин';
+            const h = Math.round(m / 60);
+            if (h < 24) return h + ' ч';
+            return Math.round(h / 24) + ' дн.';
+        }
+        function ratePreview() {
+            if (!quizCard) return;
+            const cur = srsAll()[quizCard.kanji] || { ease: 2.5, interval: 0 };
+            const names = ['Снова', 'Трудно', 'Хорошо', 'Легко'];
+            document.querySelectorAll('#quiz-rate button').forEach((btn, q) => {
+                btn.innerHTML = `${names[q]} · ${fmtDelay(srsNext(cur, q).ms)}`;
+            });
+        }
         function rateCard(q) {
             if (!quizCard) return;
             const ch = quizCard.kanji;
             const d = srsAll();
             const cur = d[ch] || { ease: 2.5, interval: 0 };
-            let ease = cur.ease, iv = cur.interval;
-            if (q === 0) { iv = 0; ease = Math.max(1.3, ease - 0.2); }
-            else if (q === 1) { iv = Math.max(1, Math.round(iv * 1.2)); ease = Math.max(1.3, ease - 0.15); }
-            else if (q === 2) { iv = iv === 0 ? 1 : iv === 1 ? 3 : Math.round(iv * ease); }
-            else { iv = Math.round((iv === 0 ? 2 : iv === 1 ? 4 : iv * ease) * 1.3); ease += 0.15; }
-            d[ch] = { ease: Math.round(ease * 100) / 100, interval: iv, due: q === 0 ? todayStr() : addDays(iv) };
+            const nx = srsNext(cur, q);
+            d[ch] = { ease: nx.ease, interval: nx.interval, reps: (cur.reps || 0) + 1, due: Date.now() + nx.ms };
             localStorage.setItem(SRS_KEY, JSON.stringify(d));
             // «Снова» — карточка вернётся в конец этой же сессии
             if (q === 0 && quizIsReview) quizDeck.push(quizCard);
+            if (quizIsReview) sessionDone++;
+            sfxRate();
+            markActivity();
             nextQuizCard();
+        }
+        document.addEventListener('keydown', e => {
+            const m = document.getElementById('quiz-modal');
+            if (!m || m.classList.contains('hidden')) return;
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            const rateBox = document.getElementById('quiz-rate');
+            const checkBtn = document.getElementById('quiz-check-btn');
+            if (rateBox.style.display !== 'none' && ['1', '2', '3', '4'].includes(e.key)) {
+                rateCard(Number(e.key) - 1);
+            } else if (rateBox.style.display === 'none' && (e.key === ' ' || e.key === 'Enter') && !checkBtn.classList.contains('hidden')) {
+                e.preventDefault();
+                revealQuizAnswer();
+            }
+        });
+        function moveGlider(lvl) {
+            const g = document.getElementById('jlpt-glider');
+            const b = document.getElementById('jlpt-' + lvl.toLowerCase());
+            if (!g || !b) return;
+            g.style.left = b.offsetLeft + 'px';
+            g.style.width = b.offsetWidth + 'px';
+        }
+        window.addEventListener('resize', () => moveGlider(currentJlpt));
+        setTimeout(() => moveGlider(currentJlpt), 0);
+
+        // ===== Звуки (синтез в браузере, без файлов) =====
+        let audioCtx = null;
+        let soundOn = localStorage.getItem('kanjizen_sound') !== '0';
+        function audioCtxGet() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+        function tone(freq, dur, type, vol, when) {
+            if (!soundOn) return;
+            const c = audioCtxGet();
+            const t = c.currentTime + (when || 0);
+            const o = c.createOscillator(), g = c.createGain();
+            o.type = type || 'sine';
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(vol || 0.08, t + 0.012);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            o.connect(g).connect(c.destination);
+            o.start(t);
+            o.stop(t + dur + 0.03);
+        }
+        function sfxFlip() { // шелест бумаги при смене карточки
+            if (!soundOn) return;
+            const c = audioCtxGet();
+            const len = 0.2;
+            const buf = c.createBuffer(1, Math.floor(c.sampleRate * len), c.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length) * 0.6;
+            const src = c.createBufferSource();
+            src.buffer = buf;
+            const f = c.createBiquadFilter();
+            f.type = 'bandpass';
+            f.frequency.value = 1100;
+            const g = c.createGain();
+            g.gain.value = 0.14;
+            src.connect(f).connect(g).connect(c.destination);
+            src.start();
+        }
+        function sfxRoll() { // как рулетка: тихие тики, которые замедляются, и мягкий финальный звон
+            let t = 0;
+            for (let i = 0; i < 14; i++) {
+                tick(t);
+                t += 0.035 + i * i * 0.0028; // интервалы растут — прокрутка замедляется
+            }
+            tone(784, .22, 'sine', .018, t + .02);
+            tone(1175, .3, 'sine', .012, t + .07);
+        }
+        function rollTicks(steps, d0, factor) { // тики ровно в такт картинке, затем короткий звук выдачи
+            let t = 0, d = d0;
+            for (let i = 0; i < steps; i++) {
+                tick(t / 1000);
+                d *= factor;
+                t += d;
+            }
+            tone(784, .12, 'sine', .016, t / 1000);
+            tone(1175, .14, 'sine', .01, t / 1000 + .03);
+        }
+        function tick(when) {
+            if (!soundOn) return;
+            const c = audioCtxGet();
+            const t0 = c.currentTime + (when || 0);
+            const len = .025;
+            const buf = c.createBuffer(1, Math.floor(c.sampleRate * len), c.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+            const src = c.createBufferSource();
+            src.buffer = buf;
+            const f = c.createBiquadFilter();
+            f.type = 'bandpass';
+            f.frequency.value = 1500;
+            f.Q.value = 5;
+            const g = c.createGain();
+            g.gain.value = .09;
+            src.connect(f).connect(g).connect(c.destination);
+            src.start(t0);
+        }
+        function sfxRate() { tone(560, .08, 'sine', .07, 0); tone(840, .1, 'sine', .05, .05); }
+        function sfxDone() { [523, 659, 784, 1046, 1318].forEach((f, i) => tone(f, .3, 'sine', .08, i * .09)); }
+        function sfxOpen() { tone(720, .06, 'sine', .04, 0); }
+        function toggleSound() {
+            soundOn = !soundOn;
+            localStorage.setItem('kanjizen_sound', soundOn ? '1' : '0');
+            document.getElementById('sound-icon').className = 'fa-solid text-amber-100 ' + (soundOn ? 'fa-volume-high' : 'fa-volume-xmark');
+            if (soundOn) sfxRate();
+        }
+        document.getElementById('sound-icon').className = 'fa-solid text-amber-100 ' + (soundOn ? 'fa-volume-high' : 'fa-volume-xmark');
+
+        // ===== Серия дней (🔥) =====
+        function localDay(d) {
+            const dt = d || new Date();
+            return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+        }
+        function getStreakData() {
+            try { return JSON.parse(localStorage.getItem('kanjizen_streak')) || { days: [], best: 0 }; }
+            catch (e) { return { days: [], best: 0 }; }
+        }
+        function currentStreak(days) {
+            const set = new Set(days);
+            const d = new Date();
+            if (!set.has(localDay(d))) d.setDate(d.getDate() - 1); // сегодня ещё не занимались — серия от вчера
+            let n = 0;
+            while (set.has(localDay(d))) { n++; d.setDate(d.getDate() - 1); }
+            return n;
+        }
+        function markActivity() {
+            const st = getStreakData();
+            const t = localDay();
+            if (!st.days.includes(t)) st.days.push(t);
+            st.days = st.days.slice(-400);
+            st.best = Math.max(st.best || 0, currentStreak(st.days));
+            localStorage.setItem('kanjizen_streak', JSON.stringify(st));
+            renderStreak(true);
+        }
+        const MILESTONES = [3, 7, 14, 30, 50, 100];
+        const SUPPORT = [
+            'Каждый день приближает вас к JLPT. Так держать!',
+            'Серия — это привычка, а привычка — это результат.',
+            'Не сбивайте огонь: достаточно одной карточки в день.',
+            'Вы уже сделали то, что делают не все. Продолжайте!',
+            'Маленькие шаги каждый день складываются в большой результат.'
+        ];
+        function renderStreak(animate) {
+            const el = document.getElementById('streak-count');
+            if (!el) return;
+            const st = getStreakData();
+            const n = currentStreak(st.days);
+            const best = Math.max(st.best || 0, n);
+            const prev = Number(el.dataset.v || 0);
+            el.innerText = n;
+            el.dataset.v = n;
+            const pill = document.getElementById('streak-pill');
+            pill.classList.toggle('streak-active', n > 0);
+            const next = MILESTONES.find(m => m > n) || 100;
+            const prevM = [...MILESTONES, 0].filter(m => m <= n).pop() || 0;
+            const frac = next === prevM ? 1 : (n - prevM) / (next - prevM);
+            document.getElementById('streak-ring').style.strokeDashoffset = String(97.4 * (1 - Math.min(1, frac)));
+            const tipBody = document.getElementById('streak-tip-body');
+            const phrase = SUPPORT[new Date().getDate() % SUPPORT.length];
+            tipBody.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <p class="font-black text-base">🔥 Серия: ${n} ${n === 1 ? 'день' : (n >= 2 && n <= 4 ? 'дня' : 'дней')}</p>
+                    <span class="text-[10px] uppercase tracking-wider text-amber-300/80">рекорд ${best}</span>
+                </div>
+                <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mb-2">
+                    <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-200" style="width:${Math.round(frac * 100)}%"></div>
+                </div>
+                <p class="text-xs text-amber-100/80 mb-3">До отметки ${next} дн. осталось ${Math.max(0, next - n)}</p>
+                <p class="text-sm leading-relaxed text-amber-50 italic">«${phrase}»</p>`;
+            if (animate && n > prev) {
+                pill.classList.remove('streak-bump');
+                void pill.offsetWidth;
+                pill.classList.add('streak-bump');
+                if (MILESTONES.includes(n)) {
+                    pill.classList.remove('streak-milestone');
+                    void pill.offsetWidth;
+                    pill.classList.add('streak-milestone');
+                    showToast(`🔥 ${n} дней подряд! Новая отметка открыта`);
+                }
+            }
+        }
+
+        // ===== Праздник в конце повторения =====
+        let sessionDone = 0;
+        function celebrate() {
+            const box = document.getElementById('quiz-kanji');
+            const cx = box.getBoundingClientRect().left + box.offsetWidth / 2;
+            const cy = box.getBoundingClientRect().top + box.offsetHeight / 2;
+            const glyphs = ['優', '良', '完', '花', '星', '光', '楽', '好', '夢', '輝'];
+            const colors = ['#f59e0b', '#fbbf24', '#d97706', '#fde68a', '#fcd34d'];
+            for (let i = 0; i < 26; i++) {
+                const p = document.createElement('span');
+                p.className = 'celebrate-particle';
+                p.textContent = glyphs[i % glyphs.length];
+                const ang = (Math.PI * 2 * i) / 26 + Math.random() * 0.3;
+                const dist = 90 + Math.random() * 110;
+                p.style.left = cx + 'px';
+                p.style.top = cy + 'px';
+                p.style.fontSize = (14 + Math.random() * 16) + 'px';
+                p.style.color = colors[i % colors.length];
+                p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+                p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+                p.style.setProperty('--rot', (Math.random() * 300 - 150) + 'deg');
+                p.style.animationDelay = (Math.random() * 0.15) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1800);
+            }
+            const ring = document.createElement('div');
+            ring.className = 'celebrate-ring';
+            box.parentElement.style.position = 'relative';
+            box.parentElement.appendChild(ring);
+            setTimeout(() => ring.remove(), 1300);
+        }
+        function finishReview() {
+            const kanjiEl = document.getElementById('quiz-kanji');
+            kanjiEl.innerHTML = '<svg viewBox="0 0 100 100" class="w-28 h-28 mx-auto"><path class="check-draw" d="M22 52 L42 72 L78 30" fill="none" stroke="#d97706" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            kanjiEl.style.color = '';
+            document.getElementById('quiz-progress').innerText = 'Готово';
+            document.getElementById('quiz-hint').innerHTML = `<span class="gold-text text-2xl font-black font-jp block mb-1">よくできました！</span>Повторено карточек: ${sessionDone}. Новые появятся, когда придёт их время.`;
+            document.getElementById('quiz-answer').classList.add('hidden');
+            document.getElementById('quiz-check-btn').classList.add('hidden');
+            document.getElementById('quiz-rate').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+            setTimeout(celebrate, 350);
+            sfxDone();
         }
         function startReview(level) {
             const learned = new Set(getLearned());
@@ -1485,6 +2025,9 @@
             quizLevel = level;
             quizIsReview = true;
             setQuizAccent(true);
+            sessionDone = 0;
+            document.getElementById('quiz-kanji').style.color = '';
+            document.getElementById('quiz-next-btn').style.display = 'none';
             quizDeck = shuffleArr(use);
             quizIndex = 0;
             document.getElementById('quiz-title').innerText = `Повторение · ${level} · ${use.length} ${due.length ? 'к повтору' : 'выученных'}`;
@@ -1548,11 +2091,12 @@
             ['N5', 'N4', 'N3', 'N2', 'N1'].forEach(l => {
                 const btn = document.getElementById(`jlpt-${l.toLowerCase()}`);
                 if (l === lvl) {
-                    btn.className = "h-9 px-3.5 rounded-xl text-sm font-bold bg-gradient-to-br from-amber-200 to-amber-500 text-zen-900 shadow-md shadow-amber-500/30 transition-all";
+                    btn.className = "relative z-10 h-9 px-4 rounded-full text-sm font-black text-zen-900 transition-colors";
                 } else {
-                    btn.className = "h-9 px-3.5 rounded-xl text-sm font-semibold text-amber-50/80 hover:text-white hover:bg-white/10 transition-all";
+                    btn.className = "relative z-10 h-9 px-4 rounded-full text-sm font-semibold text-amber-50/70 hover:text-white transition-colors";
                 }
             });
+            moveGlider(lvl);
             renderTable();
         }
 
@@ -1632,12 +2176,15 @@
 
         // Статус кандзи: Новое / Учу / Выучено / Знаю (по расписанию повторения)
         function statusPill(ch, learned) {
-            const base = 'inline-block px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide';
-            if (!learned) return `<span class="${base} bg-zen-100 text-zen-400 dark:bg-zen-800 dark:text-zen-500">Новое</span>`;
+            const base = 'inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide border';
+            if (!learned) return `<span class="${base} border-zen-200 bg-zen-100 text-zen-500 dark:border-zen-700 dark:bg-zen-800 dark:text-zen-400">Новое</span>`;
             const rec = srsAll()[ch];
-            if (!rec) return `<span class="${base} bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">Выучено</span>`;
-            if (rec.interval < 7) return `<span class="${base} bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">Учу</span>`;
-            return `<span class="${base} bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300">Знаю</span>`;
+            // Учу: отмечено, но ещё не закреплено повторениями (или снова сбилось)
+            if (!rec || rec.interval === 0) return `<span class="${base} border-amber-300/70 bg-amber-100 text-amber-800 dark:border-amber-500/40 dark:bg-amber-400/15 dark:text-amber-200">Учу</span>`;
+            // Выучено: закреплено, интервал меньше недели
+            if (rec.interval < 7) return `<span class="${base} border-matcha-400/60 bg-gradient-to-r from-matcha-400 to-matcha-500 text-white shadow-sm dark:border-matcha-500/40">Выучено</span>`;
+            // Знаю: интервал неделя и больше
+            return `<span class="${base} border-matcha-800 bg-matcha-800 text-amber-50 shadow-sm dark:border-matcha-300 dark:bg-matcha-300 dark:text-matcha-950">Знаю</span>`;
         }
 
         function renderTable() {
@@ -1679,19 +2226,19 @@
 
                 let kanjiHtml = `<span class="font-normal text-4xl text-black dark:text-white font-jp group-hover:scale-110 transition-transform inline-block">${k.kanji}</span>`;
                 if (hideKanji) {
-                    kanjiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded-lg px-3 py-1 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block" title="Нажмите, чтобы увидеть">${k.kanji}</span>`;
+                    kanjiHtml = `<span class="veil" onclick="event.stopPropagation(); this.classList.toggle(\'veil-open\')" title="Наведите или нажмите, чтобы открыть"><span class="veil-text font-normal text-4xl font-jp">${k.kanji}</span><i class="fa-solid fa-eye veil-eye"></i></span>`;
                 }
 
                 let meaningHtml = `<span class="font-semibold text-zen-800 dark:text-zen-100">${k.meaning || '—'}</span>`;
                 if (hideMeaning) {
-                    meaningHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block" title="Нажмите, чтобы увидеть">${k.meaning}</span>`;
+                    meaningHtml = `<span class="veil" onclick="event.stopPropagation(); this.classList.toggle(\'veil-open\')" title="Наведите или нажмите, чтобы открыть"><span class="veil-text font-semibold">${k.meaning || '—'}</span><i class="fa-solid fa-eye veil-eye"></i></span>`;
                 }
 
-                let onyomiHtml = `<span onclick="event.stopPropagation()" class="select-text cursor-text text-zen-600 dark:text-zen-300 font-medium">${k.onyomi || '—'}</span>`;
+                let onyomiHtml = `<span onclick="event.stopPropagation()" class="select-text cursor-text text-zen-700 dark:text-zen-200 font-medium">${k.onyomi || '—'}</span>`;
                 let kunyomiHtml = `<span onclick="event.stopPropagation()" class="select-text cursor-text text-amber-700 dark:text-amber-400 font-medium">${k.kunyomi || '—'}</span>`;
                 if (hideReadings) {
-                    onyomiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block">скрыто</span>`;
-                    kunyomiHtml = `<span class="bg-zen-200/80 dark:bg-zen-700/80 text-transparent rounded px-2 py-0.5 select-none blur-sm hover:blur-none transition-all cursor-pointer inline-block">скрыто</span>`;
+                    onyomiHtml = `<span class="veil" onclick="event.stopPropagation(); this.classList.toggle(\'veil-open\')" title="Наведите или нажмите, чтобы открыть"><span class="veil-text font-medium">${k.onyomi || '—'}</span><i class="fa-solid fa-eye veil-eye"></i></span>`;
+                    kunyomiHtml = `<span class="veil" onclick="event.stopPropagation(); this.classList.toggle(\'veil-open\')" title="Наведите или нажмите, чтобы открыть"><span class="veil-text font-medium">${k.kunyomi || '—'}</span><i class="fa-solid fa-eye veil-eye"></i></span>`;
                 }
 
                 tr.innerHTML = `
@@ -1712,6 +2259,7 @@
         }
 
         function openModal(k) {
+            sfxOpen();
             document.getElementById('modal-kanji').innerText = k.kanji;
             document.getElementById('modal-meaning').innerText = k.meaning;
             document.getElementById('modal-level').innerText = `JLPT ${currentJlpt}`;
@@ -1793,8 +2341,9 @@
 
         function nextQuizCard() {
             if (quizDeck.length === 0) return;
-            if (quizIndex >= quizDeck.length) { // колода закончилась — перемешиваем заново
-                quizDeck = shuffleArr(quizDeck);
+            if (quizIndex >= quizDeck.length) {
+                if (quizIsReview) { finishReview(); return; } // повторение закончилось
+                quizDeck = shuffleArr(quizDeck); // обычные карточки — перемешиваем заново
                 quizIndex = 0;
             }
             quizCard = quizDeck[quizIndex];
@@ -1803,21 +2352,18 @@
             document.getElementById('quiz-answer').classList.add('hidden');
             document.getElementById('quiz-check-btn').classList.add('hidden');
             document.getElementById('quiz-rate').style.display = 'none';
-            document.getElementById('quiz-next-btn').style.display = '';
+            document.getElementById('quiz-next-btn').style.display = quizIsReview ? 'none' : '';
             rollQuizCard(quizCard);
         }
 
-        function setQuizAccent(review) {
-            const btn = document.getElementById('quiz-check-btn');
-            const pairs = [['bg-amber-600','bg-emerald-600'],['hover:bg-amber-700','hover:bg-emerald-700'],['shadow-amber-600/30','shadow-emerald-600/30']];
-            pairs.forEach(([a, b]) => review ? btn.classList.replace(a, b) : btn.classList.replace(b, a));
-        }
+        function setQuizAccent(review) { /* единая тёплая палитра для всех режимов */ }
 
         function rollQuizCard(target) {
             const el = document.getElementById('quiz-kanji');
             const hint = document.getElementById('quiz-hint');
             const pool = quizPool;
             const myId = ++quizRollId;
+            if (!quizIsReview) rollTicks(18, 35, 1.12);
             if (quizIsReview) {
                 // Режим повторения: карточка переворачивается, без прокрутки
                 el.innerText = target.kanji;
@@ -1865,6 +2411,7 @@
             document.getElementById('quiz-hint').innerText = '';
             document.getElementById('quiz-check-btn').classList.add('hidden');
             document.getElementById('quiz-rate').style.display = quizIsReview ? 'grid' : 'none';
+            if (quizIsReview) ratePreview();
             document.getElementById('quiz-next-btn').style.display = quizIsReview ? 'none' : '';
         }
 
