@@ -2,281 +2,316 @@
 <html lang="ru" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Задания JLPT — KanjiZen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: { extend: {
                 colors: {
+                    matcha: { 50:'#f3f7ec',100:'#e4eed3',200:'#c9dca8',300:'#a9c77b',400:'#8fb35a',500:'#7a9c4a',600:'#5f7d35',700:'#4b6329',800:'#3b4e21',900:'#2c3b19',950:'#1d2a12' },
                     zen: { 50:'#fcfbfa',100:'#f5f2ec',200:'#ebe5da',300:'#d9cfbe',400:'#b8a68c',500:'#947e61',600:'#7a6448',700:'#5c4b35',800:'#3d3122',900:'#221b12',950:'#140f09' },
-                    accent: { 500:'#d97706', 600:'#b45309' }
+                    amber: { 50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f' }
                 },
                 fontFamily: { sans: ['Inter','sans-serif'], jp: ['Noto Sans JP','sans-serif'] }
             } }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .zen-gradient { background: linear-gradient(135deg, #3d3122 0%, #5c4b35 55%, #7a6448 100%); }
-        .glow { box-shadow: 0 0 0 1px rgba(251,191,36,.25), 0 20px 50px -20px rgba(217,119,6,.45); }
-        .opt { transition: all .15s ease; }
-        .opt:hover:not(:disabled) { transform: translateY(-1px); border-color: #d97706; }
-        .opt.selected { border-color: #d97706; background: #fffbeb; box-shadow: 0 0 0 3px rgba(217,119,6,.15); }
-        .opt.right { border-color: #16a34a; background: #f0fdf4; }
-        .opt.wrong { border-color: #dc2626; background: #fef2f2; }
+        html { font-size: 17px; }
+        body { background: radial-gradient(ellipse at 50% -10%, #fbf6ec 0%, #f6efe3 55%, #efe5d3 100%); min-height: 100vh; }
+        html.dark body { background: radial-gradient(ellipse at 50% -10%, #2a2118 0%, #1c1712 60%, #15110c 100%); }
+        .gold-text { background: linear-gradient(90deg, #f59e0b, #fde68a, #d97706); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% auto; animation: shine 3s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
+        .rim { position: relative; border-radius: 1.5rem; padding: 1.5px; background: linear-gradient(120deg, #fde68a, #f59e0b 35%, #a9c77b 70%, #fde68a); background-size: 220% 220%; animation: rim 8s linear infinite; }
+        @keyframes rim { to { background-position: 220% 50%; } }
+        .glass { background: rgba(255,255,255,.78); backdrop-filter: blur(10px); }
+        html.dark .glass { background: rgba(33,27,20,.8); }
+        .opt { transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease; }
+        .opt:hover:not(:disabled) { transform: translateY(-2px); border-color: #f59e0b; box-shadow: 0 10px 24px -14px rgba(245,158,11,.8); }
+        .opt.sel { border-color: #f59e0b; background: linear-gradient(135deg, rgba(251,191,36,.22), rgba(245,158,11,.06)); box-shadow: 0 0 0 4px rgba(245,158,11,.14); }
+        .opt.right { border-color: #7a9c4a; background: linear-gradient(135deg, rgba(169,199,123,.35), rgba(122,156,74,.12)); box-shadow: 0 0 28px -4px rgba(122,156,74,.7); animation: pop .5s cubic-bezier(.2,.9,.3,1.4); }
+        .opt.wrong { border-color: #b45309; background: rgba(180,83,9,.1); animation: shake .45s ease; }
         .opt:disabled { cursor: default; }
-        .bar { transition: width .6s ease; }
-        @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-        .rise { animation: rise .45s ease both; }
+        @keyframes pop { 0% { transform: scale(.94); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+        .rise { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        .feedback { animation: rise .4s ease both; }
+        .kanji-hero { text-shadow: 0 10px 30px rgba(245,158,11,.25); }
+        .lock-veil { background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,.92)); }
+        html.dark .lock-veil { background: linear-gradient(180deg, rgba(28,23,18,.4), rgba(28,23,18,.94)); }
+        .particle { position: fixed; pointer-events: none; z-index: 90; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; animation: fly 1.5s cubic-bezier(.15,.7,.3,1) forwards; }
+        @keyframes fly { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.4); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 50px)) scale(1) rotate(var(--rot)); } }
+        .ring { transition: stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1); }
+        .bar { transition: width .8s cubic-bezier(.2,.8,.2,1); }
     </style>
 </head>
-<body class="min-h-full bg-zen-100 text-zen-900 font-sans">
+<body class="text-zen-800 dark:text-zen-100 font-sans antialiased">
 
     <!-- Шапка -->
-    <header class="zen-gradient text-white">
-        <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/25 flex items-center justify-center font-black text-amber-100 font-jp">漢字</div>
-                <div>
-                    <h1 class="font-extrabold text-amber-50 leading-tight">KanjiZen</h1>
-                    <p class="text-[11px] text-amber-100/70">Задания JLPT</p>
+    <header class="sticky top-0 z-40 glass border-b border-zen-200/70 dark:border-zen-700/60">
+        <div class="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-600 to-zen-800 text-amber-100 flex items-center justify-center font-black font-jp shadow-md group-hover:scale-105 transition-transform">漢</div>
+                <div class="leading-tight">
+                    <p class="font-extrabold text-zen-900 dark:text-amber-50">KanjiZen</p>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-zen-400">Задания JLPT</p>
                 </div>
             </a>
-            <a href="/" class="text-xs font-semibold text-amber-100 hover:text-white">← Справочник</a>
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="h-11 px-4 inline-flex items-center gap-2 rounded-2xl border border-zen-200 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-arrow-left text-xs"></i>Справочник</a>
+                <button onclick="toggleTheme()" class="w-11 h-11 rounded-2xl border border-zen-200 dark:border-zen-700 flex items-center justify-center hover:border-amber-400 transition-colors" title="Тема"><i class="fa-solid fa-moon dark:hidden"></i><i class="fa-solid fa-sun hidden dark:inline text-amber-300"></i></button>
+            </div>
         </div>
     </header>
 
-    <!-- Герой -->
-    <section class="zen-gradient text-white pb-14 pt-4 relative overflow-hidden">
-        <div class="absolute -right-16 -top-16 w-72 h-72 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="max-w-3xl mx-auto px-5 relative">
-            <p class="text-xs uppercase tracking-[0.2em] text-amber-200/80 font-semibold mb-2">Тренировка</p>
-            <h2 id="hero-title" class="text-3xl font-black leading-tight">Проверьте себя на реальных вопросах JLPT</h2>
-            <p id="hero-sub" class="text-amber-100/80 mt-3 text-sm">Загружаем задания…</p>
-        </div>
-    </section>
+    <main class="max-w-3xl mx-auto px-5 pb-24">
 
-    <main class="max-w-3xl mx-auto px-5 -mt-8 pb-16 space-y-8 relative">
-        <div id="content" class="space-y-8"></div>
+        <!-- Герой и прогресс -->
+        <section class="pt-10 pb-8 text-center">
+            <p class="text-[11px] uppercase tracking-[0.3em] font-bold text-amber-700 dark:text-amber-400">Тренировка</p>
+            <h1 class="text-4xl md:text-5xl font-black mt-2 leading-tight"><span class="gold-text">Проверьте себя</span></h1>
+            <p class="text-zen-500 dark:text-zen-300 mt-3">Вопросы в стиле экзамена JLPT. Бесплатные — открыты всем, остальные — в полном доступе.</p>
+
+            <div class="mt-8 grid grid-cols-3 gap-3">
+                <div class="glass rounded-2xl p-4 border border-zen-200/70 dark:border-zen-700/60">
+                    <p id="st-done" class="text-2xl font-black text-zen-900 dark:text-amber-50">0</p>
+                    <p class="text-[10px] uppercase tracking-wider text-zen-400 mt-1">Пройдено</p>
+                </div>
+                <div class="glass rounded-2xl p-4 border border-zen-200/70 dark:border-zen-700/60">
+                    <p id="st-acc" class="text-2xl font-black text-zen-900 dark:text-amber-50">—</p>
+                    <p class="text-[10px] uppercase tracking-wider text-zen-400 mt-1">Точность</p>
+                </div>
+                <div class="glass rounded-2xl p-4 border border-zen-200/70 dark:border-zen-700/60">
+                    <p id="st-levels" class="text-2xl font-black text-zen-900 dark:text-amber-50">—</p>
+                    <p class="text-[10px] uppercase tracking-wider text-zen-400 mt-1">Открыто</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Переключатель уровней -->
+        <nav class="sticky top-20 z-30 flex justify-center mb-8">
+            <div id="lvl-switch" class="relative flex items-center gap-1 p-1 rounded-full glass border border-zen-200/70 dark:border-zen-700/60 shadow-lg shadow-zen-900/5">
+                <div id="lvl-glider" class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 shadow-[0_0_18px_rgba(251,191,36,.55)] transition-all duration-500" style="left:4px;width:0"></div>
+                <button data-lvl="N5" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N5</button>
+                <button data-lvl="N4" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N4</button>
+                <button data-lvl="N3" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N3</button>
+                <button data-lvl="N2" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N2</button>
+                <button data-lvl="N1" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N1</button>
+            </div>
+        </nav>
+
+        <!-- Содержимое уровня -->
+        <div id="content" class="space-y-6">
+            <div class="glass rounded-3xl p-8 text-center text-sm text-zen-500">Загружаем задания…</div>
+        </div>
     </main>
 
-    <script>
-        const sb = supabase.createClient(
-            'https://stnxwbuozduhphftfqri.supabase.co',
-            'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS'
-        );
-        const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
-        const content = document.getElementById('content');
-        const done = {};        // id задания -> true/false (результат)
-        let allTasks = [], owned = [], counts = [];
+<script>
+const sb = supabase.createClient('https://stnxwbuozduhphftfqri.supabase.co', 'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS');
+const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
+const content = document.getElementById('content');
+let tasks = [], owned = [], counts = [], answers = {}, activeLevel = 'N5', signedIn = false;
 
-        function esc(s) {
-            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function esc(x) { return String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function plural(n, f) { const a = n % 10, b = n % 100; if (a === 1 && b !== 11) return f[0]; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return f[1]; return f[2]; }
+function kanjiIn(q) { const m = String(q).match(/[\u4e00-\u9faf]/); return m ? m[0] : null; }
+
+function theme() { return localStorage.getItem('kanjizen_theme') === 'dark'; }
+function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.setItem('kanjizen_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); }
+if (theme()) document.documentElement.classList.add('dark');
+
+function isOpen(level) { return owned.includes(level); }
+function taskVisible(t) { return t.is_free || isOpen(t.level); }
+
+// ---------- Карточка задания ----------
+function taskCard(t, idx) {
+    const a = answers[t.id];
+    const k = kanjiIn(t.question);
+    const letters = ['А', 'Б', 'В', 'Г'];
+    const opts = (t.options || []).map((o, i) => {
+        let cls = 'opt flex items-center gap-3 p-4 rounded-2xl border border-zen-200 dark:border-zen-700 bg-white dark:bg-zen-900/60 text-left';
+        if (a) {
+            if (o === t.answer) cls += ' right';
+            else if (a.chosen === o && !a.ok) cls += ' wrong';
+        } else if (a === undefined && t._sel === o) cls += ' sel';
+        return `<button ${a ? 'disabled' : ''} onclick="pick('${t.id}', '${esc(o).replace(/'/g, '&#39;')}')" class="${cls}" data-opt="${esc(o)}">
+                    <span class="w-9 h-9 shrink-0 rounded-xl bg-zen-100 dark:bg-zen-800 text-zen-600 dark:text-zen-300 text-xs font-black flex items-center justify-center">${letters[i] || i + 1}</span>
+                    <span class="font-jp text-lg font-semibold">${esc(o)}</span>
+                    ${a && o === t.answer ? '<i class="fa-solid fa-circle-check ml-auto text-matcha-600 dark:text-matcha-300"></i>' : ''}
+                </button>`;
+    }).join('');
+    const feedback = a
+        ? (a.ok
+            ? `<div class="feedback flex items-center gap-2 text-sm font-bold text-matcha-700 dark:text-matcha-300"><i class="fa-solid fa-sparkles"></i>Верно! Отличная работа</div>`
+            : `<div class="feedback text-sm font-semibold text-amber-800 dark:text-amber-300">Ответ: <span class="font-jp">${esc(t.answer)}</span>. Запомните и попробуйте снова позже.</div>`)
+        : '';
+    return `
+        <article class="rise glass rounded-3xl p-6 md:p-7 border border-zen-200/70 dark:border-zen-700/60 shadow-sm" style="animation-delay:${idx * 80}ms">
+            <div class="flex items-center justify-between mb-5">
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200">${t.level} · ${idx + 1}</span>
+                ${t.is_free ? '<span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-matcha-100 dark:bg-matcha-300/15 text-matcha-700 dark:text-matcha-200">Бесплатно</span>' : ''}
+            </div>
+            <div class="flex items-center gap-5 mb-6">
+                ${k ? `<div class="kanji-hero shrink-0 w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-400/15 dark:to-zen-900 border border-amber-200/70 dark:border-amber-500/20 flex items-center justify-center text-6xl font-black font-jp text-zen-900 dark:text-amber-50">${k}</div>` : ''}
+                <h3 class="text-xl md:text-2xl font-bold leading-snug">${esc(t.question)}</h3>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-3">${opts}</div>
+            <div class="mt-5 flex items-center gap-4 min-h-[44px]">
+                ${a ? feedback : `<button onclick="check('${t.id}')" class="rim-btn px-6 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold shadow-lg shadow-amber-600/30 transition-all ${t._sel ? '' : 'opacity-50 pointer-events-none'}">Проверить</button>
+                   <span class="text-xs text-zen-400">Клавиши 1–4 и Enter</span>`}
+            </div>
+        </article>`;
+}
+
+// ---------- Заблокированные задания ----------
+function lockedCard(level, n) {
+    return `
+        <div class="relative rounded-3xl overflow-hidden border border-zen-200/70 dark:border-zen-700/60 glass rise">
+            <div class="p-6 md:p-7 blur-[5px] select-none pointer-events-none">
+                <div class="flex items-center justify-between mb-5"><span class="text-[10px] font-black px-2.5 py-1 rounded-full bg-zen-100 dark:bg-zen-800">${level}</span></div>
+                <div class="flex items-center gap-5 mb-6"><div class="w-24 h-24 rounded-3xl bg-zen-200 dark:bg-zen-800"></div><div class="h-7 w-56 rounded-xl bg-zen-200 dark:bg-zen-800"></div></div>
+                <div class="grid sm:grid-cols-2 gap-3"><div class="h-16 rounded-2xl bg-zen-100 dark:bg-zen-800"></div><div class="h-16 rounded-2xl bg-zen-100 dark:bg-zen-800"></div><div class="h-16 rounded-2xl bg-zen-100 dark:bg-zen-800"></div><div class="h-16 rounded-2xl bg-zen-100 dark:bg-zen-800"></div></div>
+            </div>
+            <div class="lock-veil absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-600 text-zen-900 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-4"><i class="fa-solid fa-lock text-xl"></i></div>
+                <p class="font-black text-xl">Ещё ${n} ${plural(n, ['задание', 'задания', 'заданий'])} уровня ${level}</p>
+                <p class="text-sm text-zen-500 dark:text-zen-300 mt-1 mb-5 max-w-xs">Полный доступ откроет все вопросы уровня, разборы и прогресс.</p>
+                <button disabled class="px-7 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-700 text-white font-bold opacity-70 cursor-not-allowed">Открыть ${level} — скоро</button>
+            </div>
+        </div>`;
+}
+
+// ---------- Вывод уровня ----------
+function renderLevel() {
+    const list = tasks.filter(t => t.level === activeLevel);
+    const total = (counts.find(c => c.level === activeLevel) || {}).total || 0;
+    const visible = list.filter(taskVisible);
+    const locked = Math.max(0, total - visible.length);
+    const open = isOpen(activeLevel);
+    const answered = visible.filter(t => answers[t.id]).length;
+    const pct = visible.length ? Math.round(answered / visible.length * 100) : 0;
+    const head = `
+        <div class="glass rounded-3xl p-5 border border-zen-200/70 dark:border-zen-700/60 flex items-center gap-5">
+            <div class="relative w-16 h-16 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-16 h-16 -rotate-90"><circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" class="text-zen-200 dark:text-zen-700" stroke-width="3"/><circle id="ring-${activeLevel}" class="ring" cx="18" cy="18" r="15.5" fill="none" stroke="#7a9c4a" stroke-width="3" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="${97.4 * (1 - pct / 100)}"/></svg>
+                <span class="absolute inset-0 flex items-center justify-center text-xs font-black">${pct}%</span>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="font-black text-lg">Уровень ${activeLevel} ${open ? '<span class="text-matcha-700 dark:text-matcha-300 text-sm font-bold">· открыт</span>' : ''}</p>
+                <p class="text-sm text-zen-500 dark:text-zen-300">Отвечено ${answered} из ${visible.length} ${plural(visible.length, ['доступного задания', 'доступных заданий', 'доступных заданий'])}${locked ? ` · ещё ${locked} в доступе` : ''}</p>
+                <div class="mt-3 h-2 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden"><div class="bar h-full rounded-full bg-gradient-to-r from-matcha-400 to-matcha-600" style="width:${pct}%"></div></div>
+            </div>
+        </div>`;
+    let body = visible.map((t, i) => taskCard(t, i)).join('');
+    if (!visible.length && !locked) body = '<div class="glass rounded-3xl p-8 text-center text-zen-500">Задания этого уровня скоро появятся.</div>';
+    if (locked > 0) body += lockedCard(activeLevel, locked);
+    if (visible.length && answered === visible.length && !open) {
+        body += `
+            <div class="rim rise"><div class="rounded-3xl bg-gradient-to-br from-zen-900 to-zen-800 dark:from-zen-950 dark:to-zen-900 p-7 text-center text-white">
+                <p class="gold-text text-3xl font-black font-jp mb-1">よくできました！</p>
+                <p class="text-zen-200 text-sm mb-5">Бесплатная часть уровня ${activeLevel} пройдена. Продолжите весь уровень в полном доступе.</p>
+                <button disabled class="px-7 h-12 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-600 text-zen-900 font-black opacity-70 cursor-not-allowed">Полный доступ — скоро</button>
+            </div></div>`;
+    }
+    content.innerHTML = head + body;
+    document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('text-zen-900', b.dataset.lvl === activeLevel) || b.classList.toggle('text-zen-500', b.dataset.lvl !== activeLevel));
+    moveGlider();
+    updateStats();
+}
+function moveGlider() {
+    const b = document.querySelector(`.lvl-btn[data-lvl="${activeLevel}"]`);
+    const g = document.getElementById('lvl-glider');
+    if (!b || !g) return;
+    g.style.left = b.offsetLeft + 'px';
+    g.style.width = b.offsetWidth + 'px';
+}
+function updateStats() {
+    const vis = tasks.filter(taskVisible);
+    const done = Object.keys(answers).length;
+    const ok = Object.values(answers).filter(a => a.ok).length;
+    document.getElementById('st-done').innerText = done;
+    document.getElementById('st-acc').innerText = done ? Math.round(ok / done * 100) + '%' : '—';
+    document.getElementById('st-levels').innerText = owned.length ? owned.length + '/5' : 'Бесплатно';
+}
+
+// ---------- Действия ----------
+function pick(id, opt) {
+    const t = tasks.find(x => String(x.id) === String(id));
+    if (!t || answers[id]) return;
+    t._sel = opt;
+    renderLevel();
+}
+function check(id) {
+    const t = tasks.find(x => String(x.id) === String(id));
+    if (!t || answers[id] || !t._sel) return;
+    const ok = t._sel === t.answer;
+    answers[id] = { chosen: t._sel, ok };
+    if (ok) celebrate(); 
+    renderLevel();
+}
+function celebrate() {
+    const glyphs = ['正', '良', '完', '花', '星', '光'];
+    const colors = ['#f59e0b', '#fbbf24', '#7a9c4a', '#fde68a'];
+    for (let i = 0; i < 14; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        p.textContent = glyphs[i % glyphs.length];
+        const ang = (Math.PI * 2 * i) / 14, dist = 70 + Math.random() * 60;
+        p.style.left = '50%'; p.style.top = '40%';
+        p.style.fontSize = (14 + Math.random() * 12) + 'px';
+        p.style.color = colors[i % colors.length];
+        p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+        p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+        p.style.setProperty('--rot', (Math.random() * 200 - 100) + 'deg');
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1600);
+    }
+}
+document.querySelectorAll('.lvl-btn').forEach(b => b.addEventListener('click', () => { activeLevel = b.dataset.lvl; renderLevel(); }));
+window.addEventListener('resize', moveGlider);
+document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    const visible = tasks.filter(t => t.level === activeLevel && taskVisible(t) && !answers[t.id]);
+    const t = visible[0];
+    if (!t) return;
+    if (['1', '2', '3', '4'].includes(e.key) && t.options && t.options[Number(e.key) - 1]) pick(t.id, t.options[Number(e.key) - 1]);
+    if (e.key === 'Enter' && t._sel) check(t.id);
+});
+
+// ---------- Загрузка ----------
+async function init() {
+    try {
+        const { data: { session } } = await sb.auth.getSession();
+        signedIn = !!session;
+        if (session) {
+            const { data: p } = await sb.from('purchases').select('level');
+            owned = (p || []).map(x => x.level);
         }
-        function plural(n, forms) {
-            const m10 = n % 10, m100 = n % 100;
-            if (m10 === 1 && m100 !== 11) return forms[0];
-            if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return forms[1];
-            return forms[2];
+        const { data: t, error } = await sb.from('tasks').select('*').order('id');
+        if (error) { content.innerHTML = `<div class="glass rounded-3xl p-6 text-sm text-amber-800">Ошибка загрузки: ${esc(error.message)}</div>`; return; }
+        tasks = t || [];
+        const { data: c } = await sb.from('level_counts').select('*');
+        counts = c || [];
+        const firstWithTasks = LEVELS.find(l => tasks.some(x => x.level === l && taskVisible(x)) || (counts.find(x => x.level === l) || {}).total);
+        activeLevel = firstWithTasks || 'N5';
+        if (!signedIn) {
+            const hint = document.createElement('div');
+            hint.className = 'glass rounded-2xl p-4 text-sm flex items-center justify-between gap-4 flex-wrap mb-6 border border-zen-200/70 dark:border-zen-700/60';
+            hint.innerHTML = '<span class="text-zen-600 dark:text-zen-300">Бесплатные задания доступны всем.</span><a href="login.html" class="font-bold text-amber-700 dark:text-amber-400 hover:underline">Войти, чтобы открыть остальные →</a>';
+            document.querySelector('main').insertBefore(hint, document.getElementById('content'));
         }
-        const tasksWord = n => `${n} ${plural(n, ['задание', 'задания', 'заданий'])}`;
-
-        // ----- Карточка задания -----
-        function renderTask(t, idx) {
-            const letters = ['A', 'B', 'C', 'D'];
-            const opts = t.options.map((o, i) => `
-                <button type="button" class="opt w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-zen-200 bg-white text-left"
-                        data-opt="${esc(o)}" onclick="pick(${t.id}, this)">
-                    <span class="w-8 h-8 shrink-0 rounded-xl bg-zen-100 text-zen-600 text-xs font-bold flex items-center justify-center">${letters[i] || i + 1}</span>
-                    <span class="font-jp text-lg">${esc(o)}</span>
-                </button>`).join('');
-            return `
-                <article class="rise bg-white rounded-3xl p-6 md:p-7 shadow-sm border border-zen-200/70" id="card${t.id}" data-id="${t.id}" data-answer="${esc(t.answer)}">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full">${esc(t.level)} · ${idx + 1}</span>
-                        ${t.is_free ? '<span class="text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">Бесплатно</span>' : ''}
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-5 font-jp">${esc(t.question)}</h3>
-                    <div class="grid gap-2.5 sm:grid-cols-2">${opts}</div>
-                    <div class="mt-5 flex items-center gap-4">
-                        <button id="check${t.id}" onclick="check(${t.id})" disabled
-                            class="px-6 py-3 bg-zen-800 hover:bg-zen-700 disabled:bg-zen-200 disabled:text-zen-400 text-white font-semibold rounded-xl transition-all">Проверить</button>
-                        <span id="res${t.id}" class="text-sm font-semibold"></span>
-                    </div>
-                </article>`;
-        }
-
-        function pick(id, btn) {
-            const card = document.getElementById('card' + id);
-            if (card.dataset.locked) return;
-            card.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('check' + id).disabled = false;
-        }
-
-        function check(id) {
-            const card = document.getElementById('card' + id);
-            if (card.dataset.locked) return;
-            const sel = card.querySelector('.opt.selected');
-            if (!sel) return;
-            const ok = sel.dataset.opt === card.dataset.answer;
-            card.dataset.locked = '1';
-            card.querySelectorAll('.opt').forEach(b => {
-                b.disabled = true;
-                if (b.dataset.opt === card.dataset.answer) b.classList.add('right');
-            });
-            if (!ok) sel.classList.add('wrong');
-            sel.classList.remove('selected');
-            document.getElementById('check' + id).classList.add('hidden');
-            const res = document.getElementById('res' + id);
-            res.className = 'text-sm font-semibold ' + (ok ? 'text-green-700' : 'text-red-600');
-            res.innerText = ok ? '✓ Верно! Отличная работа.' : '✗ Правильный ответ выделен зелёным.';
-            done[id] = ok;
-            updateHero();
-            refreshProgress();
-        }
-
-        // ----- Заблокированный уровень -----
-        function lockedCard(level, n) {
-            const bar = w => `<div class="h-3 rounded-full bg-zen-200" style="width:${w}%"></div>`;
-            return `
-                <div class="relative bg-white rounded-3xl p-6 md:p-7 border border-zen-200/70 overflow-hidden glow">
-                    <div class="blur-[3px] select-none pointer-events-none space-y-4">
-                        <div class="h-4 w-24 rounded-full bg-amber-100"></div>
-                        ${bar(90)}${bar(70)}
-                        <div class="grid grid-cols-2 gap-2.5 pt-2">
-                            <div class="h-14 rounded-2xl bg-zen-100"></div><div class="h-14 rounded-2xl bg-zen-100"></div>
-                            <div class="h-14 rounded-2xl bg-zen-100"></div><div class="h-14 rounded-2xl bg-zen-100"></div>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/85 to-white flex flex-col items-center justify-center text-center p-6">
-                        <p class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">Уровень ${level}</p>
-                        <h4 class="text-xl font-black mb-1">Ещё ${tasksWord(n)} впереди</h4>
-                        <p class="text-sm text-zen-500 mb-5 max-w-xs">Откройте полный уровень, чтобы пройти все вопросы и закрепить материал.</p>
-                        <button disabled class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold opacity-60 cursor-not-allowed">Открыть ${level} — скоро</button>
-                    </div>
-                </div>`;
-        }
-
-        // ----- Прогресс и призыв к покупке -----
-        function levelProgress(level) {
-            const free = allTasks.filter(t => t.level === level && t.is_free);
-            const answered = free.filter(t => t.id in done).length;
-            return { total: free.length, answered };
-        }
-
-        function updateHero() {
-            const all = allTasks.filter(t => t.is_free);
-            const ans = all.filter(t => t.id in done);
-            const right = ans.filter(t => done[t.id]).length;
-            document.getElementById('hero-title').innerText =
-                ans.length === all.length && all.length
-                    ? 'Бесплатная часть пройдена!'
-                    : 'Проверьте себя на реальных вопросах JLPT';
-            document.getElementById('hero-sub').innerText = all.length
-                ? (ans.length ? `Правильно: ${right} из ${ans.length}. ` : '') +
-                  `Бесплатных вопросов: ${all.length}`
-                : 'Пока нет бесплатных заданий';
-        }
-
-        function refreshProgress() {
-            LEVELS.forEach(level => {
-                const el = document.getElementById('prog-' + level);
-                if (!el) return;
-                const p = levelProgress(level);
-                const pct = p.total ? Math.round(p.answered / p.total * 100) : 0;
-                el.querySelector('.bar').style.width = pct + '%';
-                el.querySelector('.prog-text').innerText = `${p.answered} из ${p.total}`;
-            });
-            const finishEl = document.getElementById('finish');
-            if (finishEl) {
-                const all = allTasks.filter(t => t.is_free);
-                const complete = all.length && all.every(t => t.id in done);
-                finishEl.classList.toggle('hidden', !complete);
-            }
-        }
-
-        function progressHeader(level, total) {
-            return `
-                <div id="prog-${level}" class="flex items-center gap-4 mb-4">
-                    <h2 class="text-2xl font-black">Уровень ${level}</h2>
-                    <div class="flex-1 h-2 rounded-full bg-zen-200 overflow-hidden"><div class="bar h-full bg-gradient-to-r from-amber-500 to-amber-600" style="width:0%"></div></div>
-                    <span class="prog-text text-xs font-semibold text-zen-500 whitespace-nowrap">0 из ${total}</span>
-                </div>`;
-        }
-
-        // ----- Загрузка -----
-        async function init() {
-            const { data: { session } } = await sb.auth.getSession();
-            if (session) {
-                const { data: purchases } = await sb.from('purchases').select('level');
-                owned = (purchases || []).map(p => p.level);
-            }
-            const { data: tasks, error } = await sb.from('tasks').select('*').order('id');
-            if (error) { content.innerHTML = `<p class="text-red-600">Ошибка: ${esc(error.message)}</p>`; return; }
-            const { data: c } = await sb.from('level_counts').select('*');
-            counts = c || [];
-            allTasks = tasks;
-
-            const countOf = lvl => (counts.find(x => x.level === lvl) || {}).total || 0;
-
-            let html = '';
-            LEVELS.forEach(level => {
-                const lt = allTasks.filter(t => t.level === level);
-                const total = countOf(level);
-                if (!lt.length && !total) return;
-
-                const freeCount = lt.filter(t => t.is_free).length;
-                html += `<section class="space-y-4">`;
-                html += progressHeader(level, owned.includes(level) ? lt.length : freeCount);
-                if (owned.includes(level)) {
-                    html += lt.map((t, i) => renderTask(t, i)).join('');
-                } else {
-                    html += lt.filter(t => t.is_free).map((t, i) => renderTask(t, i)).join('');
-                    const locked = total - freeCount;
-                    if (locked > 0) html += lockedCard(level, locked);
-                }
-                html += `</section>`;
-            });
-
-            // Финальный призыв после бесплатной части
-            html += `
-                <div id="finish" class="hidden rise rounded-3xl p-7 md:p-9 text-white zen-gradient glow text-center">
-                    <p class="text-xs uppercase tracking-[0.2em] text-amber-200 font-semibold mb-2">Бесплатная часть пройдена</p>
-                    <h3 class="text-2xl md:text-3xl font-black mb-3">Хотите пройти весь уровень?</h3>
-                    <p class="text-amber-100/80 text-sm mb-6 max-w-md mx-auto">Полные наборы заданий для каждого уровня JLPT: от N5 до N1. Покупка открывает все вопросы уровня.</p>
-                    <button disabled class="px-7 py-3.5 rounded-2xl bg-amber-500 text-white font-bold opacity-70 cursor-not-allowed">Купить доступ — скоро</button>
-                </div>`;
-
-            content.innerHTML = html || '<p class="text-zen-500">Задания пока не добавлены.</p>';
-            updateHero();
-            refreshProgress();
-
-            if (!session) {
-                content.insertAdjacentHTML('afterbegin', `
-                    <div class="rise bg-white rounded-2xl p-4 text-sm text-zen-600 border border-zen-200/70 flex items-center justify-between gap-4 flex-wrap">
-                        <span>Бесплатные задания доступны всем.</span>
-                        <a href="login.html" class="font-semibold text-amber-700 hover:text-amber-800">Войти, чтобы открыть остальные →</a>
-                    </div>`);
-            }
-        }
-
-        init();
-    </script>
-
-    <!-- Футер: юридические страницы и контакты -->
-    <footer class="border-t border-zen-200/70 bg-white/60 mt-10">
-        <div class="max-w-3xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-zen-500">
-            <span>© KanjiZen, 2026. Самозанятый Лёвин И. И., ИНН 972100452162</span>
-            <nav class="flex flex-wrap gap-x-5 gap-y-1">
-                <a href="requisites.html" class="hover:text-amber-700">Реквизиты</a>
-                <a href="oferta.html" class="hover:text-amber-700">Оферта</a>
-                <a href="privacy.html" class="hover:text-amber-700">Конфиденциальность</a>
-                <a href="https://t.me/kristan_prepod" target="_blank" rel="noopener" class="hover:text-amber-700">Связаться</a>
-            </nav>
-        </div>
-    </footer>
+        renderLevel();
+    } catch (e) {
+        content.innerHTML = '<div class="glass rounded-3xl p-6 text-sm">Не удалось загрузить задания. Проверьте подключение.</div>';
+    }
+}
+init();
+</script>
 </body>
 </html>
