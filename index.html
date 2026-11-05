@@ -202,6 +202,66 @@
         html:not(.dark) input::placeholder { color: #b08a55; }
 
         @keyframes drawStroke { to { stroke-dashoffset: 0; } }
+        @keyframes drawStroke2 { 0% { stroke-dashoffset: var(--len); opacity: 0; } 2% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+        .wr-num { min-width: 30px; height: 30px; padding: 0 8px; border-radius: 10px; border: 1px solid rgba(180,83,9,.25); font-size: 12px; font-weight: 800; color: #7a5a2e; background: rgba(255,250,240,.7); transition: all .2s; }
+        .dark .wr-num { color: #f3e3c0; background: rgba(58,45,29,.7); border-color: rgba(251,191,36,.25); }
+        .wr-num:hover { border-color: #f59e0b; transform: translateY(-1px); }
+        .wr-num.on { background: linear-gradient(90deg,#fbbf24,#f59e0b); color: #3b2a14; border-color: #f59e0b; box-shadow: 0 6px 14px -6px rgba(245,158,11,.8); }
+        .wr-chip { cursor: pointer; }
+        .egg-pop { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; background: rgba(20,15,9,.6); backdrop-filter: blur(4px); cursor: pointer; animation: eggIn .35s ease both; border-radius: inherit; }
+        .egg-face { font-size: 6rem; line-height: 1; animation: eggShake .5s ease 3; }
+        .egg-title { margin-top: .6rem; font-size: 1.9rem; font-weight: 900; color: #fde68a; }
+        .egg-text { margin-top: .5rem; max-width: 24rem; line-height: 1.6; color: #f5ead6; }
+        .egg-hint { margin-top: 1rem; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(245,234,214,.6); }
+        @keyframes eggIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes eggShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
+        /* Кисточка: плавное «рисующее» движение при наведении и лёгкое шевеление во время рисования */
+        .brush-ico { display: inline-block; transform-origin: 25% 85%; transition: transform .4s ease; }
+        /* Кнопки звука и темы: стеклянная кнопка с мягким свечением и анимацией иконки */
+        .hdr-btn { position: relative; width: 2.75rem; height: 2.75rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 16px; overflow: hidden; transition: transform .25s ease, box-shadow .3s ease, border-color .3s ease, background .3s ease; }
+        .hdr-btn::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 115%, rgba(251,191,36,.42), transparent 62%); opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+        .hdr-btn:hover { transform: translateY(-2px); }
+        .hdr-btn:hover::before { opacity: 1; }
+        .hdr-btn i { position: relative; transition: transform .45s cubic-bezier(.2,1.4,.4,1); }
+        .hdr-sound:hover i { animation: sndPulse .7s ease; }
+        @keyframes sndPulse { 0% { transform: scale(1); } 35% { transform: scale(1.2) rotate(-7deg); } 70% { transform: scale(.96) rotate(3deg); } 100% { transform: scale(1); } }
+        .hdr-theme:hover i { transform: rotate(-28deg) scale(1.1); }
+        .hdr-dark { background: linear-gradient(160deg, rgba(255,255,255,.17), rgba(255,255,255,.04)); border: 1px solid rgba(255,235,190,.24); color: #fde68a; box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 8px 18px -10px rgba(0,0,0,.6); }
+        .hdr-dark:hover { border-color: rgba(251,191,36,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 0 22px -4px rgba(251,191,36,.5); }
+        .hdr-light { background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,247,226,.75)); border: 1px solid rgba(180,83,9,.18); color: #92400e; box-shadow: inset 0 1px 0 #fff, 0 8px 18px -12px rgba(92,62,20,.55); }
+        .hdr-light:hover { border-color: rgba(245,158,11,.6); box-shadow: inset 0 1px 0 #fff, 0 0 22px -4px rgba(245,158,11,.5); }
+        html.dark .hdr-light { background: linear-gradient(160deg, rgba(58,45,29,.9), rgba(33,26,18,.85)); border-color: rgba(251,191,36,.22); color: #fde68a; box-shadow: inset 0 1px 0 rgba(255,235,190,.08), 0 8px 18px -12px rgba(0,0,0,.7); }
+        .write-btn:hover .brush-ico { animation: brushPaint .85s cubic-bezier(.45,0,.55,1) infinite; }
+        @keyframes brushPaint { 0%,100% { transform: rotate(-10deg) translate(-2px,2px); } 35% { transform: rotate(6deg) translate(3px,-2px); } 70% { transform: rotate(-4deg) translate(-1px,1px); } }
+        .brush-writing { animation: brushWiggle 1.5s ease-in-out infinite; }
+        @keyframes brushWiggle { 0%,100% { transform: rotate(-3deg) translate(-1px,0); } 50% { transform: rotate(3deg) translate(1px,-1px); } }
+        .write-btn { position: relative; overflow: hidden; }
+        /* Поле поиска: фон фиксирован в обеих темах, без анимации фона при фокусе (не мигает) */
+        html { color-scheme: light; }
+        html.dark { color-scheme: dark; }
+        .search-field, .search-field:focus, .search-field:hover { -webkit-appearance: none; appearance: none; background-color: #fcfbfa; color: #3d3122; transition: box-shadow .2s ease; }
+        html.dark .search-field, html.dark .search-field:focus, html.dark .search-field:hover { background-color: #1f1810; color: #f5ead6; }
+        /* Гайд: книга с листанием и бликом */
+        #guide-btn { position: relative; overflow: hidden; perspective: 200px; }
+        #guide-btn:hover { transform: translateY(-1px); background: linear-gradient(135deg, rgba(251,191,36,.22), rgba(245,158,11,.06)); box-shadow: 0 0 24px rgba(245,158,11,.45); }
+        #guide-btn i { display: inline-block; transform-origin: center; }
+        #guide-btn:hover i { animation: bookFlip 1.2s ease-in-out infinite; }
+        #guide-btn::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(105deg, transparent, rgba(255,255,255,.5), transparent); transform: skewX(-20deg); pointer-events: none; }
+        #guide-btn:hover::after { animation: guideSheen .9s ease; }
+        @keyframes bookFlip { 0%,100% { transform: rotateY(0deg) scale(1); } 45% { transform: rotateY(-35deg) scale(1.15); } 70% { transform: rotateY(8deg) scale(1.05); } }
+        @keyframes guideSheen { to { left: 130%; } }
+        /* Блокнот: полоски прогресса */
+        .nb-track { height: 10px; border-radius: 9999px; background: rgba(120,80,40,.12); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,.08); }
+        .dark .nb-track { background: rgba(255,240,200,.08); }
+        .nb-fill { position: relative; height: 100%; width: 0; border-radius: 9999px; background: linear-gradient(90deg, #fde68a, #f59e0b, #d97706, #fde68a); background-size: 200% 100%; transition: width 1.2s cubic-bezier(.2,.8,.2,1); animation: nbShine 2.4s linear infinite; overflow: hidden; }
+        .nb-fill::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 45%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); transform: translateX(-120%); animation: nbSweep 2.4s ease-in-out infinite; }
+        .nb-fill.full { box-shadow: 0 0 14px rgba(245,158,11,.8); }
+        @keyframes nbShine { to { background-position: 200% 0; } }
+        @keyframes nbSweep { 0% { transform: translateX(-120%); } 60%,100% { transform: translateX(260%); } }
+        .nb-pct.full { animation: nbPop .6s ease; }
+        @keyframes nbPop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+        .nb-row { animation: nbIn .5s ease both; }
+        @keyframes nbIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
         #stroke-box svg { width: 14rem; height: 14rem; }
         #stroke-box path { stroke: #221b12; stroke-width: 3.2; stroke-linecap: round; fill: none; }
         .dark #stroke-box svg { filter: invert(1); }
@@ -290,6 +350,7 @@
 
             <!-- Действия: задания, вход, телеграм, тема -->
             <div class="flex items-center gap-2.5">
+                
                 <div id="streak-wrap" class="streak-wrap relative group">
                     <div id="streak-pill" class="streak-pill relative h-11 pl-1 pr-4 flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-white/15 to-white/5 border border-white/20 backdrop-blur-sm text-amber-100 cursor-default overflow-visible">
                         <div class="relative w-10 h-10 flex items-center justify-center">
@@ -325,12 +386,11 @@
                     <span id="auth-btn-text">Войти</span>
                 </a>
 
-                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" title="Telegram-канал" aria-label="Telegram-канал" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 text-zen-900 shadow-lg shadow-amber-500/30 hover:scale-105 hover:shadow-amber-400/50 transition-all">
-                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor"><path d="M9.04 15.6l-.4 5.6c.57 0 .82-.25 1.12-.55l2.7-2.58 5.6 4.1c1.03.57 1.76.27 2.04-.95l3.7-17.3c.33-1.52-.55-2.12-1.56-1.74L1.9 9.5c-1.48.58-1.46 1.41-.25 1.79l5.36 1.67L19.4 5.6c.6-.4 1.14-.18.7.22z"/></svg>
-                </a>
+                
 
-                <button id="sound-toggle" onclick="toggleSound()" title="Звуки" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all"><i id="sound-icon" class="fa-solid fa-volume-high text-amber-100"></i></button>
-                <button onclick="toggleDarkMode()" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all group" title="Сменить тему">
+                <span class="w-px h-7 bg-white/15 mx-1 hidden sm:block"></span>
+                <button id="sound-toggle" onclick="toggleSound()" title="Звуки" class="hdr-btn hdr-dark hdr-sound"><i id="sound-icon" class="fa-solid fa-volume-high text-amber-100"></i></button>
+                <button onclick="toggleDarkMode()" class="hdr-btn hdr-dark hdr-theme" title="Сменить тему">
                     <i class="fa-solid fa-moon dark:hidden text-amber-100 group-hover:rotate-12 transition-transform"></i>
                     <i class="fa-solid fa-sun hidden dark:block text-amber-300 group-hover:rotate-90 transition-transform"></i>
                 </button>
@@ -344,6 +404,7 @@
             
             <!-- Левая колонка (на ПК): Кандзи дня -->
             <div class="space-y-6 lg:col-span-1">
+                
                 <!-- Слово / Кандзи дня -->
                 <div class="relative overflow-hidden bg-gradient-to-br from-amber-600 to-zen-800 text-white p-6 rounded-3xl shadow-md group">
                     <!-- Фоновый иероглиф в правом нижнем углу -->
@@ -379,7 +440,11 @@
                     <div class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-black flex items-center justify-center">2</span><p class="text-sm text-zen-600 dark:text-zen-300">Мнемоника помогает запомнить кандзи по частям. Читайте её, если не можете вспомнить.</p></div>
                     <div class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-black flex items-center justify-center">3</span><p class="text-sm text-zen-600 dark:text-zen-300">Повторяйте по 10–15 кандзи в день, а не сразу сотню.</p></div>
                 </div>
-            </div>
+            <button id="guide-btn" onclick="openGuide()" class="w-full h-11 mt-2 rounded-2xl border-2 border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-book-open"></i><span>Подробный гайд</span>
+                    </button>
+                <a href="https://t.me/kristan_jp" target="_blank" rel="noopener noreferrer" class="w-full h-11 mt-2 rounded-2xl border border-zen-200 dark:border-zen-700 text-zen-600 dark:text-zen-300 hover:border-sky-400 hover:text-sky-600 dark:hover:text-sky-300 text-sm font-semibold flex items-center justify-center gap-2 transition-all"><i class="fa-brands fa-telegram text-base"></i><span>Канал в Telegram</span></a>
+                </div>
 
             <!-- Правая колонка (на ПК): Основная таблица и поиск -->
             <div class="lg:col-span-3 space-y-6">
@@ -405,21 +470,17 @@
                             <span class="flex flex-col items-start leading-tight text-left"><span class="text-sm">Карточки</span><span class="text-[10px] font-semibold tracking-[0.18em] uppercase opacity-80">уровень <span id="quiz-level-label">N5</span></span></span>
                             <span class="deck-shine"></span>
                         </button>
-                        <button id="guide-btn" onclick="openGuide()" class="flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap border-2 border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold transition-all">
-                            <i class="fa-solid fa-book-open"></i>
-                            <span>Гайд по кандзи</span>
-                        </button>
                         <button onclick="openNotebook()" class="notebook-btn flex items-center justify-center gap-2 px-4 h-11 rounded-2xl whitespace-nowrap border-2 border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 hover:border-amber-500 hover:text-amber-600 dark:hover:text-amber-400 text-sm font-bold transition-all">
                             <i class="fa-solid fa-book"></i>
                             <span>Блокнот</span>
                         </button>
-                        <button onclick="openWrite()" title="Проверка написания кандзи" class="write-btn w-11 h-11 shrink-0 flex items-center justify-center rounded-2xl border-2 border-amber-300/70 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-all"><i class="fa-solid fa-paintbrush"></i></button>
+                        <button onclick="openWrite()" title="Прописи: тренировка написания кандзи" class="write-btn h-11 px-4 shrink-0 flex items-center justify-center gap-2 rounded-2xl border-2 border-amber-300/70 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-sm font-bold transition-all"><i class="fa-solid fa-paintbrush brush-ico"></i><span>Прописи</span></button>
                         </div>
 
                         <!-- Поиск -->
                         <div class="relative flex-1 min-w-[150px] max-w-[240px] ml-auto">
                             <i class="fa-solid fa-search absolute left-4 top-3.5 text-zen-400 text-xs"></i>
-                            <input type="text" id="search-input" oninput="filterTable()" placeholder="Поиск кандзи" class="pl-9 pr-3 py-2.5 text-xs w-full bg-zen-50 dark:bg-zen-900/80 border border-zen-200 dark:border-zen-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500/40 w-full transition-all shadow-inner">
+                            <input type="text" id="search-input" oninput="filterTable()" placeholder="Поиск кандзи" class="search-field pl-9 pr-3 py-2.5 text-xs w-full border border-zen-200 dark:border-zen-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500/40 w-full shadow-inner">
                         </div>
                     </div>
 
@@ -493,7 +554,8 @@
             <div class="px-6 pt-6">
                 <div class="flex items-center justify-between mb-3">
                     <h4 class="text-xs font-semibold uppercase tracking-wider text-zen-400">Порядок черт</h4>
-                    <div class="flex items-center gap-4"><button id="nums-toggle" onclick="toggleStrokeNumbers()" class="text-[11px] font-bold text-zen-500 dark:text-zen-400 hover:underline">Скрыть номера</button><button onclick="loadStrokeAnim(currentModalKanji)" class="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline">Посмотреть ещё раз</button></div>
+                    <div class="flex items-center gap-4"><button onclick="openWriteFor()" class="text-xs font-semibold text-zen-500 dark:text-zen-300 hover:text-amber-700 dark:hover:text-amber-300 hover:underline underline-offset-4 mr-3 transition-colors"><i class="fa-solid fa-paintbrush mr-1 text-[10px]"></i>Прописать</button>
+                        <button id="nums-toggle" onclick="toggleStrokeNumbers()" class="text-[11px] font-bold text-zen-500 dark:text-zen-400 hover:underline">Скрыть номера</button><button onclick="loadStrokeAnim(currentModalKanji)" class="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline">Посмотреть ещё раз</button></div>
                 </div>
                 <div class="rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60 p-5 flex items-center justify-center min-h-[220px]">
                     <div id="stroke-box" onclick="replayStrokes()" title="Нажмите, чтобы нарисовать заново" class="w-56 h-56 flex items-center justify-center cursor-pointer"></div>
@@ -529,6 +591,7 @@
                 <span id="modal-freq" class="text-zen-500 font-medium">Сумма: —</span>
                 <div class="flex items-center gap-2">
                     <button id="modal-learn-btn" onclick="toggleCurrentLearned()" class="px-4 py-2.5 rounded-xl border-2 font-semibold transition-all"></button>
+                    
                     <button onclick="closeModal()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all shadow-sm shadow-amber-600/30">Закрыть</button>
                 </div>
             </div>
@@ -553,8 +616,8 @@
                         <span class="text-sm font-semibold text-zen-600 dark:text-zen-300">Выучено всего</span>
                         <span id="nb-count" class="font-black text-matcha-600 dark:text-matcha-400">0 из 0</span>
                     </div>
-                    <div class="h-3 rounded-full bg-zen-200 dark:bg-zen-700 overflow-hidden">
-                        <div id="nb-bar" class="h-full rounded-full bg-gradient-to-r from-matcha-400 to-matcha-600 transition-all duration-500" style="width:0%"></div>
+                    <div class="nb-track h-3">
+                        <div id="nb-bar" class="nb-fill" data-w="0" style="width:0%"></div>
                     </div>
                 </div>
                 <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-zen-50 dark:bg-zen-900/50 border border-zen-200/70 dark:border-zen-700/60 cursor-pointer">
@@ -601,9 +664,9 @@
         <div class="bg-white dark:bg-zen-800 border border-zen-200 dark:border-zen-700 w-full max-w-md rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
             <div class="p-5 px-6 border-b border-zen-100 dark:border-zen-700/60 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center shadow-lg shadow-amber-500/30"><i class="fa-solid fa-paintbrush"></i></div>
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center shadow-lg shadow-amber-500/30"><i id="wr-brush" class="fa-solid fa-paintbrush brush-ico"></i></div>
                     <div>
-                        <h3 class="font-black text-lg text-zen-900 dark:text-amber-50">Проверка написания</h3>
+                        <h3 class="font-black text-lg text-zen-900 dark:text-amber-50">Прописи</h3>
                         <p class="text-xs text-zen-400">Нарисуйте черты в правильном порядке</p>
                     </div>
                 </div>
@@ -623,6 +686,7 @@
                     <canvas id="wr-canvas" width="300" height="300" class="block w-[300px] h-[300px] rounded-[22px] bg-white dark:bg-zen-900 touch-none cursor-crosshair"></canvas>
                 </div>
 
+                <div id="wr-nums" class="flex flex-wrap justify-center gap-1.5 min-h-[32px]"></div>
                 <div class="flex items-center justify-center gap-2">
                     <button onclick="wrPlayRef()" class="h-10 px-4 rounded-xl bg-zen-100 dark:bg-zen-700 text-zen-700 dark:text-zen-100 text-xs font-bold hover:bg-zen-200 dark:hover:bg-zen-600 transition-colors"><i class="fa-solid fa-play mr-1 text-[10px]"></i>Показать порядок</button>
                     <button id="wr-guide-btn" onclick="wrToggleGuide()" class="h-10 px-4 rounded-xl border border-zen-200 dark:border-zen-600 text-zen-700 dark:text-zen-100 text-xs font-bold hover:border-amber-400 transition-colors"><i class="fa-regular fa-eye mr-1"></i>Скрыть контур</button>
@@ -1423,7 +1487,7 @@
 
         // Фон: тихо падающие кандзи (можно отключить в prefers-reduced-motion)
         (function startRain() {
-            ['kanji-modal', 'quiz-modal', 'guide-modal', 'notebook-modal'].forEach(id => {
+            ['kanji-modal', 'quiz-modal', 'guide-modal', 'notebook-modal', 'write-modal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) document.body.appendChild(el);
             });
@@ -1462,7 +1526,7 @@
             const all = Object.values(kanjiDatabase).flat();
             const got = all.filter(k => learned.has(k.kanji)).length;
             document.getElementById('nb-count').innerText = `${got} из ${all.length}`;
-            document.getElementById('nb-bar').style.width = (all.length ? got / all.length * 100 : 0) + '%';
+            document.getElementById('nb-bar').dataset.w = all.length ? Math.round(got / all.length * 100) : 0;
             document.getElementById('nb-levels').innerHTML = ['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => {
                 const list = kanjiDatabase[lvl] || [];
                 if (!list.length) return '';
@@ -1470,18 +1534,39 @@
                 const chips = done.length
                     ? done.map(k => `<span class="font-jp text-lg px-2.5 py-1 rounded-xl bg-matcha-50 dark:bg-matcha-950/40 text-matcha-800 dark:text-matcha-200 border border-matcha-200/70 dark:border-matcha-800/60">${k.kanji}</span>`).join('')
                     : '<span class="text-xs text-zen-400">пока ничего не отмечено</span>';
+                const pct = Math.round(done.length / list.length * 100);
                 const dueN = done.filter(k => isDue(k.kanji)).length;
                 const btn = `<button onclick="startReview('${lvl}')" ${done.length ? '' : 'disabled'} class="text-xs font-bold px-3 py-1.5 rounded-full border border-amber-500/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"><i class="fa-solid fa-shuffle mr-1"></i>Повторить${dueN ? ` · ${dueN}` : ''}</button>`;
-                return `<div><div class="flex items-center justify-between mb-2"><p class="text-xs font-bold uppercase tracking-wider text-zen-400">${lvl} · ${done.length} из ${list.length}</p>${btn}</div><div class="flex flex-wrap gap-2">${chips}</div></div>`;
+                return `<div class="nb-row"><div class="flex items-center justify-between mb-2"><p class="text-xs font-bold uppercase tracking-wider text-zen-400">${lvl} · ${done.length} из ${list.length}</p><div class="flex items-center gap-3"><span class="nb-pct text-sm font-black text-amber-700 dark:text-amber-400" data-count="${pct}">0%</span>${btn}</div></div><div class="nb-track"><div class="nb-fill${pct === 100 ? ' full' : ''}" data-w="${pct}" style="width:0%"></div></div><div class="flex flex-wrap gap-2 mt-3">${chips}</div></div>`;
             }).join('');
             document.getElementById('nb-notes').value = localStorage.getItem(NOTES_KEY) || '';
             document.getElementById('nb-highlight').checked = document.body.classList.contains('hl-learned');
         }
         function openNotebook() {
+            setTimeout(animateNotebook, 30);
             renderNotebook();
             const m = document.getElementById('notebook-modal');
             m.classList.remove('hidden');
             m.classList.add('flex');
+        }
+        function animateNotebook() {
+            const m = document.getElementById('notebook-modal');
+            if (!m) return;
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                m.querySelectorAll('[data-w]').forEach((el, i) => {
+                    el.style.transitionDelay = (i * 0.08) + 's';
+                    el.style.width = el.dataset.w + '%';
+                });
+            }));
+            m.querySelectorAll('[data-count]').forEach(el => {
+                const to = Number(el.dataset.count), t0 = performance.now();
+                const step = now => {
+                    const t = Math.min(1, (now - t0) / 1100);
+                    el.textContent = Math.round(to * (1 - Math.pow(1 - t, 3))) + '%';
+                    if (t < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+            });
         }
         function closeNotebook() {
             const m = document.getElementById('notebook-modal');
@@ -1610,30 +1695,30 @@
                 svg.querySelectorAll('path').forEach(p => {
                     if (!p.closest('[id*="StrokePaths"]')) p.remove();
                 });
-                let t = 0;
-                svg.querySelectorAll('[id*="StrokePaths"] path').forEach(p => {
-                    const len = p.getTotalLength();
-                    p.style.strokeDasharray = len;
-                    p.style.strokeDashoffset = len;
-                    p.style.animation = 'drawStroke .7s ease forwards';
-                    p.style.animationDelay = t + 's';
-                    t += 0.8;
-                });
+                playStrokes(svg);
             } catch (e) {
                 box.innerHTML = '<p class="text-xs text-zen-400 text-center">Схема недоступна без интернета</p>';
             }
         }
-
+        // Каждая черта скрыта до своего времени и рисуется одним плавным проходом.
+        // Кончик не виден до начала рисования, поэтому точек нет.
+        function playStrokes(svg) {
+            const paths = [...svg.querySelectorAll('[id*="StrokePaths"] path')];
+            paths.forEach(p => {
+                const len = p.getTotalLength();
+                p.style.setProperty('--len', len);
+                p.style.strokeDasharray = len;
+                p.style.animation = 'none';
+            });
+            void svg.getBoundingClientRect();
+            paths.forEach((p, i) => {
+                p.style.animation = `drawStroke2 .7s ease-in-out ${(i * 0.8).toFixed(2)}s both`;
+            });
+        }
         function replayStrokes() {
             const svg = document.querySelector('#stroke-box svg');
             if (!svg) { loadStrokeAnim(currentModalKanji); return; }
-            const paths = svg.querySelectorAll('[id*="StrokePaths"] path');
-            paths.forEach(p => { p.style.animation = 'none'; p.style.strokeDashoffset = p.style.strokeDasharray; });
-            void svg.getBoundingClientRect();
-            paths.forEach((p, i) => {
-                p.style.animation = 'drawStroke .7s ease forwards';
-                p.style.animationDelay = (i * 0.8) + 's';
-            });
+            playStrokes(svg);
         }
 
         // ===== Прогноз подготовки к JLPT (премиум) =====
@@ -1758,7 +1843,7 @@
         }
 
         // ===== Проверка написания кандзи (по эталону KanjiVG) =====
-        const WR = { kanji: '', ref: [], strokes: [], cur: null, drawing: false, guide: true, status: null, anim: false };
+        const WR = { kanji: '', ref: [], strokes: [], cur: null, drawing: false, guide: true, status: null, anim: false, focus: null, focusT: 1, raf: 0, focusTimer: 0 };
         const WR_K = 300 / 109;
         const wrCanvas = () => document.getElementById('wr-canvas');
         function wrScale(p) { return [p[0] * WR_K, p[1] * WR_K]; }
@@ -1775,13 +1860,55 @@
             x.stroke();
         }
         function wrInk() { return document.documentElement.classList.contains('dark') ? '#f5ead6' : '#3d3122'; }
+        function wrFocusDraw(x) {
+            if (WR.focus === null || !WR.ref[WR.focus]) return;
+            const ink = wrInk();
+            for (let j = 0; j < WR.focus; j++) wrStroke(x, WR.ref[j].map(wrScale), ink, 7);
+            const pts = WR.ref[WR.focus].map(wrScale);
+            wrStroke(x, pts, 'rgba(217,119,6,.22)', 11);
+            const n = Math.max(2, Math.round(pts.length * WR.focusT));
+            wrStroke(x, pts.slice(0, n), '#f59e0b', 11);
+            if (WR.focusT > 0.02) {
+                const s0 = pts[0];
+                x.beginPath(); x.fillStyle = '#d97706'; x.arc(s0[0], s0[1], 13, 0, Math.PI * 2); x.fill();
+                x.fillStyle = '#fff'; x.font = 'bold 14px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+                x.fillText(String(WR.focus + 1), s0[0], s0[1]);
+            }
+        }
+        function wrFocus(k) {
+            if (!WR.ref[k] || WR.anim) return;
+            WR.focus = k;
+            clearTimeout(WR.focusTimer);
+            cancelAnimationFrame(WR.raf);
+            const t0 = performance.now();
+            const step = now => {
+                WR.focusT = Math.min(1, (now - t0) / 650);
+                wrDraw();
+                if (WR.focusT < 1) WR.raf = requestAnimationFrame(step);
+                else WR.focusTimer = setTimeout(wrFocusEnd, 1200);
+            };
+            WR.raf = requestAnimationFrame(step);
+            wrNumsUI();
+        }
+        function wrFocusEnd() {
+            WR.focus = null;
+            WR.focusT = 1;
+            wrDraw();
+            wrNumsUI();
+        }
+        function wrNumsUI() {
+            const box = document.getElementById('wr-nums');
+            if (!box) return;
+            box.innerHTML = WR.ref.map((_, k) => `<button onclick="wrFocus(${k})" class="wr-num ${WR.focus === k ? 'on' : ''}">${k + 1}</button>`).join('');
+        }
         function wrDraw() {
             const x = wrCanvas().getContext('2d');
             x.clearRect(0, 0, 300, 300);
             wrGrid(x);
             const dark = document.documentElement.classList.contains('dark');
-            if (WR.guide) WR.ref.forEach(r => wrStroke(x, r.map(wrScale), dark ? 'rgba(245,234,214,.22)' : 'rgba(120,80,40,.16)', 12));
-            WR.strokes.forEach((s, i) => {
+            if (WR.guide && WR.focus === null) WR.ref.forEach(r => wrStroke(x, r.map(wrScale), dark ? 'rgba(245,234,214,.22)' : 'rgba(120,80,40,.16)', 12));
+            wrFocusDraw(x);
+            if (WR.focus === null) WR.strokes.forEach((s, i) => {
                 const col = WR.status && WR.status[i] ? WR.status[i].color : wrInk();
                 wrStroke(x, s, col, 7);
             });
@@ -1807,7 +1934,13 @@
         function openWrite() {
             const m = document.getElementById('write-modal');
             m.classList.remove('hidden'); m.classList.add('flex');
-            newWriteKanji();
+            newWriteKanji(); wrEnsureTrap();
+        }
+        function openWriteFor() {
+            if (!currentModalKanji) return;
+            const m = document.getElementById('write-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            newWriteKanji(currentModalKanji); wrEnsureTrap();
         }
         function closeWrite() {
             const m = document.getElementById('write-modal');
@@ -1815,9 +1948,10 @@
         }
         async function newWriteKanji(ch) {
             const pool = (kanjiDatabase[currentJlpt] || []).filter(k => k.kanji);
-            const pick = ch ? (pool.find(k => k.kanji === ch) || pool[0]) : pool[Math.floor(Math.random() * pool.length)];
+            const pick = ch ? (Object.values(kanjiDatabase).flat().find(k => k.kanji === ch) || pool[0]) : pool[Math.floor(Math.random() * pool.length)];
             WR.kanji = pick.kanji;
             WR.strokes = []; WR.status = null; WR.cur = null; WR.ref = [];
+            WR.focus = null; clearTimeout(WR.focusTimer); cancelAnimationFrame(WR.raf); wrNumsUI();
             document.getElementById('wr-next').classList.add('hidden');
             document.getElementById('wr-kanji').innerText = pick.kanji;
             document.getElementById('wr-meaning').innerText = pick.meaning || '';
@@ -1826,6 +1960,7 @@
             wrDraw();
             try {
                 WR.ref = await wrLoadRef(pick.kanji);
+                wrNumsUI();
                 wrSay('Нарисуйте черты по порядку. Когда закончите — нажмите «Проверить написание».');
             } catch (e) {
                 wrSay('Эталон недоступен без интернета. Рисовать можно, проверка не будет работать.');
@@ -1834,19 +1969,71 @@
         }
         function wrSay(html) { document.getElementById('wr-result').innerHTML = `<p>${html}</p>`; }
 
+        // ===== Пасхалка: свастика (эталон 卍 и его зеркальный вариант) =====
+        let WR_TRAP = null, WR_TRAP_TRY = false;
+        async function wrEnsureTrap() {
+            if (WR_TRAP || WR_TRAP_TRY) return;
+            WR_TRAP_TRY = true;
+            try { WR_TRAP = await wrLoadRef('卍'); } catch (e) { WR_TRAP = null; }
+        }
+        function wrIsSwastika() {
+            const strokes = WR.strokes.filter(s => s.length > 3);
+            if (strokes.length < 2) return false;
+            // резкие изломы черт (у свастики черты с крючками): поворот больше ~60° на отрезке из 3 шагов
+            let turns = 0;
+            strokes.forEach(s => {
+                const r = wrResample(s.map(p => [p[0], p[1]]), 24);
+                if (!r) return;
+                for (let i = 3; i < r.length - 3; i++) {
+                    const ax = r[i][0] - r[i - 3][0], ay = r[i][1] - r[i - 3][1];
+                    const bx = r[i + 3][0] - r[i][0], by = r[i + 3][1] - r[i][1];
+                    const la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
+                    if (la < 1e-6 || lb < 1e-6) continue;
+                    if ((ax * bx + ay * by) / (la * lb) < 0.5) turns++;
+                }
+            });
+            if (turns < 4) return false;
+            // симметрия при повороте на 90° относительно центра рисунка
+            const pts = strokes.flat();
+            const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+            const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+            const size = Math.max(maxX - minX, maxY - minY);
+            if (size < 60) return false;
+            const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+            const norm = pts.map(p => [(p[0] - cx) / size, (p[1] - cy) / size]);
+            const rot = norm.map(([x, y]) => [-y, x]);
+            return wrDirDist(norm, rot) < 0.16 && wrDirDist(rot, norm) < 0.16;
+        }
+        function wrEasterEgg() {
+            const modal = document.getElementById('write-modal');
+            if (!modal || modal.querySelector('.egg-pop')) return;
+            WR.strokes = []; WR.status = null; WR.cur = null; wrDraw();
+            const el = document.createElement('div');
+            el.className = 'egg-pop';
+            el.innerHTML = `<div class="egg-face">😠</div><p class="egg-text">Такое здесь не рисуют.</p><p class="egg-hint">нажмите, чтобы закрыть</p>`;
+            el.addEventListener('click', () => el.remove());
+            modal.appendChild(el);
+            sfxMiss();
+            setTimeout(() => el.remove(), 4200);
+        }
+        function setBrush(on) { const b = document.getElementById('wr-brush'); if (b) b.classList.toggle('brush-writing', on); }
         // рисование мышкой и пальцем
         (function wrInput() {
             const c = wrCanvas();
             const pos = e => { const r = c.getBoundingClientRect(); return [(e.clientX - r.left) * 300 / r.width, (e.clientY - r.top) * 300 / r.height]; };
             c.addEventListener('pointerdown', e => {
                 if (WR.anim) return;
-                WR.status = null; WR.drawing = true;
+                if (WR.focus !== null) { clearTimeout(WR.focusTimer); cancelAnimationFrame(WR.raf); WR.focus = null; wrNumsUI(); }
+                WR.status = null; WR.drawing = true; setBrush(true);
                 WR.cur = [pos(e)]; WR.strokes.push(WR.cur);
                 c.setPointerCapture(e.pointerId);
                 wrDraw();
             });
             c.addEventListener('pointermove', e => { if (!WR.drawing) return; WR.cur.push(pos(e)); wrDraw(); });
-            ['pointerup', 'pointercancel'].forEach(ev => c.addEventListener(ev, () => { WR.drawing = false; WR.cur = null; }));
+            ['pointerup', 'pointercancel'].forEach(ev => c.addEventListener(ev, () => {
+                WR.drawing = false; WR.cur = null; setBrush(false);
+                if (wrIsSwastika()) wrEasterEgg();
+            }));
         })();
 
         function wrResample(pts, n) {
@@ -1902,8 +2089,8 @@
             const chips = Array.from({ length: Math.max(total, user.length) }, (_, k) => {
                 if (k >= total) return `<span class="wr-chip bad" title="Лишняя черта">+</span>`;
                 const st = per[k];
-                if (!st) return `<span class="wr-chip miss" title="Не нарисована">${k + 1}</span>`;
-                return `<span class="wr-chip ${st.ok ? 'ok' : 'bad'}" title="${st.label}">${k + 1}</span>`;
+                if (!st) return `<span class="wr-chip miss" title="Не нарисована" onclick="wrFocus(${k})">${k + 1}</span>`;
+                return `<span class="wr-chip ${st.ok ? 'ok' : 'bad'}" title="${st.label}" onclick="wrFocus(${k})">${k + 1}</span>`;
             }).join('');
             let verdict;
             if (perfect) verdict = '<span class="font-black text-matcha-700 dark:text-matcha-300">Идеально!</span> Все черты верные и в правильном порядке.';
@@ -1919,7 +2106,7 @@
             document.getElementById('wr-result').innerHTML = `<div class="flex flex-wrap gap-2 mb-3">${chips}</div><p>${verdict}</p>`;
             wrDraw();
             document.getElementById('wr-next').classList.remove('hidden');
-            if (perfect) { wrBurst(); markActivity(); }
+            if (perfect) { sfxPerfect(); wrBurst(); markActivity(); } else { sfxMiss(); }
         }
         function wrClear() {
             if (WR.anim) return;
@@ -2193,6 +2380,30 @@
         function sfxRate() { tone(560, .08, 'sine', .07, 0); tone(840, .1, 'sine', .05, .05); }
         function sfxDone() { [523, 659, 784, 1046, 1318].forEach((f, i) => tone(f, .3, 'sine', .08, i * .09)); }
         function sfxOpen() { tone(720, .06, 'sine', .04, 0); }
+        // Мелодия победы: тёплые синусы с мягким фильтром, без резких верхов
+        function victoryNote(freq, when, dur, vol) {
+            if (!soundOn) return;
+            const c = audioCtxGet();
+            const t = c.currentTime + when;
+            const o = c.createOscillator(), g = c.createGain(), f = c.createBiquadFilter();
+            o.type = 'sine';
+            o.frequency.value = freq;
+            f.type = 'lowpass';
+            f.frequency.value = 2600;
+            f.Q.value = .4;
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.linearRampToValueAtTime(vol, t + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            o.connect(f).connect(g).connect(c.destination);
+            o.start(t); o.stop(t + dur + 0.05);
+        }
+        function sfxPerfect() {
+            [659.25, 783.99, 987.77].forEach((f, i) => victoryNote(f, i * .11, .35, .05));          // E5 G5 B5
+            [1318.5, 1567.98, 1975.53].forEach(f => victoryNote(f, .36, 1.4, .04));                // E6 G6 B6
+            victoryNote(2637.02, .42, .9, .012);                                                    // блеск
+        }
+        // Мягкий звук для ошибки — без резкости
+        function sfxMiss() { tone(330, .14, 'triangle', .035, 0); tone(262, .2, 'triangle', .03, .09); }
         function toggleSound() {
             soundOn = !soundOn;
             localStorage.setItem('kanjizen_sound', soundOn ? '1' : '0');
@@ -2726,6 +2937,28 @@
             document.getElementById('kanji-modal').classList.add('hidden');
             document.getElementById('kanji-modal').classList.remove('flex');
         }
+        // ===== Закрытие окон: клик по фону (вне окна) и Esc =====
+        (function initModalClose() {
+            const closers = {
+                'kanji-modal': closeModal,
+                'quiz-modal': closeQuiz,
+                'forecast-modal': closeForecast,
+                'write-modal': closeWrite,
+                'guide-modal': closeGuide,
+                'notebook-modal': closeNotebook
+            };
+            Object.keys(closers).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('click', e => { if (e.target === el) closers[id](); });
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key !== 'Escape') return;
+                Object.keys(closers).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && !el.classList.contains('hidden')) closers[id]();
+                });
+            });
+        })();
         // ===== Аккаунт: кнопка входа / профиля в шапке =====
         (function initAuthButton() {
             const sb = supabase.createClient(

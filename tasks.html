@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Задания JLPT — KanjiZen</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <title>Тесты JLPT — KanjiZen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,52 +11,219 @@
             theme: { extend: {
                 colors: {
                     matcha: { 50:'#f3f7ec',100:'#e4eed3',200:'#c9dca8',300:'#a9c77b',400:'#8fb35a',500:'#7a9c4a',600:'#5f7d35',700:'#4b6329',800:'#3b4e21',900:'#2c3b19',950:'#1d2a12' },
-                    zen: { 50:'#fcfbfa',100:'#f5f2ec',200:'#ebe5da',300:'#d9cfbe',400:'#b8a68c',500:'#947e61',600:'#7a6448',700:'#5c4b35',800:'#3d3122',900:'#221b12',950:'#140f09' },
-                    amber: { 50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f' }
+                    zen: { 50:'#f6f5f2',100:'#eeeee9',200:'#dcdcd6',300:'#bfc1c6',400:'#8b90a0',500:'#646a80',600:'#4a5170',700:'#353d5c',800:'#262e4a',900:'#1a2038',950:'#11152a' },
+                    amber: { 50:'#fdf4f0',100:'#fbe4da',200:'#f6c4b0',300:'#f0a085',400:'#e8794a',500:'#d9532b',600:'#b8421f',700:'#953519',800:'#742a14',900:'#55200f' }
                 },
                 fontFamily: { sans: ['Inter','sans-serif'], jp: ['Noto Sans JP','sans-serif'] }
             } }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         html { font-size: 17px; }
-        body { background: radial-gradient(ellipse at 30% -10%, #f3e6cc 0%, #ead8b5 45%, #dcc39b 100%); min-height: 100vh; }
-        html.dark body { background: radial-gradient(ellipse at 30% -10%, #3a2d1d 0%, #211a13 55%, #16110b 100%); }
-        .glass { background: linear-gradient(160deg, rgba(255,250,238,.82), rgba(250,240,220,.7)); backdrop-filter: blur(12px); box-shadow: 0 18px 40px -26px rgba(92,62,20,.45), inset 0 1px 0 rgba(255,255,255,.6); }
-        html.dark .glass { background: linear-gradient(160deg, rgba(58,45,29,.85), rgba(33,26,18,.85)); box-shadow: 0 18px 40px -22px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,220,150,.08); }
-        .gold-text { background: linear-gradient(90deg, #f59e0b, #fde68a, #d97706); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% auto; animation: shine 3s linear infinite; }
+        .ink-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .ink-bg span { position: absolute; width: 48vmax; height: 48vmax; filter: blur(70px); opacity: .34; animation: inkFloat 40s ease-in-out infinite alternate; border-radius: 42% 58% 61% 39% / 45% 48% 52% 55%; }
+        .ink-bg span:nth-child(1) { background: rgba(43,58,103,.55); left: -14%; top: -20%; }
+        .ink-bg span:nth-child(2) { background: rgba(217,83,43,.34); right: -16%; top: 18%; animation-duration: 48s; animation-delay: -14s; }
+        .ink-bg span:nth-child(3) { background: rgba(43,58,103,.36); left: 28%; bottom: -28%; animation-duration: 54s; animation-delay: -26s; }
+        html.dark .ink-bg span:nth-child(1) { background: rgba(92,112,190,.3); }
+        html.dark .ink-bg span:nth-child(2) { background: rgba(200,90,60,.18); }
+        html.dark .ink-bg span:nth-child(3) { background: rgba(92,112,190,.22); }
+        @keyframes inkFloat { 0% { transform: translate(0,0) rotate(0deg) scale(1); border-radius: 42% 58% 61% 39% / 45% 48% 52% 55%; } 50% { transform: translate(6vw,-4vh) rotate(120deg) scale(1.12); border-radius: 60% 40% 35% 65% / 55% 40% 60% 45%; } 100% { transform: translate(-4vw,5vh) rotate(260deg) scale(.95); border-radius: 48% 52% 40% 60% / 38% 62% 44% 56%; } }
+        body { background: #f3efe7; min-height: 100vh; }
+        html.dark body { background: #0e1019; }
+        .glass { background: linear-gradient(160deg, rgba(255,252,247,.86), rgba(248,243,233,.74)); backdrop-filter: blur(12px); box-shadow: 0 18px 40px -26px rgba(92,62,20,.45), inset 0 1px 0 rgba(255,255,255,.6); }
+        html.dark .glass { background: linear-gradient(160deg, rgba(26,30,46,.86), rgba(20,23,36,.86)); box-shadow: 0 18px 40px -22px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,220,150,.08); }
+        .gold-text { background: linear-gradient(90deg,#2b3a67,#d9532b,#1a2038,#d9532b); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
         @keyframes shine { to { background-position: 200% center; } }
-        .rise { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+        .rise { animation: rise .55s cubic-bezier(.2,.8,.2,1) both; }
         @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-        .test-card { transition: transform .3s cubic-bezier(.2,.9,.3,1.3), box-shadow .3s ease, border-color .3s ease; }
-        .test-card:hover:not(.locked) { transform: translateY(-4px); box-shadow: 0 26px 50px -24px rgba(180,83,9,.55); border-color: #f59e0b; }
-        .opt { position: relative; overflow: hidden; transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease; }
-        .opt:hover:not(:disabled) { transform: translateY(-2px); border-color: #f59e0b; }
-        .opt.sel { border-color: #f59e0b; background: linear-gradient(135deg, rgba(251,191,36,.25), rgba(245,158,11,.07)); box-shadow: 0 0 0 4px rgba(245,158,11,.14); }
-        .opt.right { border-color: #7a9c4a; background: linear-gradient(135deg, rgba(169,199,123,.4), rgba(122,156,74,.14)); box-shadow: 0 0 30px -4px rgba(122,156,74,.75); animation: pop .5s cubic-bezier(.2,.9,.3,1.4); }
-        .opt.wrong { border-color: #b45309; background: rgba(180,83,9,.12); animation: shake .45s ease; }
-        .opt:disabled { cursor: default; }
-        @keyframes pop { 0% { transform: scale(.94); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
-        @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
-        .ripple { position: absolute; border-radius: 9999px; background: rgba(217,119,6,.35); transform: scale(0); animation: ripple .6s ease-out forwards; pointer-events: none; }
-        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-        .check-draw { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawCheck .55s .1s ease forwards; }
-        @keyframes drawCheck { to { stroke-dashoffset: 0; } }
-        .dot { transition: all .4s cubic-bezier(.2,.9,.3,1.4); }
-        .verdict { animation: verdictIn .5s cubic-bezier(.2,.9,.3,1.3) both; }
-        @keyframes verdictIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-        .q-in { animation: qIn .45s cubic-bezier(.2,.8,.2,1) both; }
-        @keyframes qIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
-        .particle { position: fixed; pointer-events: none; z-index: 90; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; animation: fly 1.5s cubic-bezier(.15,.7,.3,1) forwards; }
+        @keyframes pop { 0% { transform: scale(.94); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+        @keyframes bump { 0% { transform: scale(1); } 35% { transform: scale(1.25); } 100% { transform: scale(1); } }
+        @keyframes sk { to { background-position: -200% 0; } }
+        @keyframes gradeSpin { to { transform: rotate(360deg); } }
+        @keyframes starIn { from { transform: scale(.2) rotate(-40deg); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes finishIn { from { opacity: 0; transform: translateY(30px) scale(.96); } to { opacity: 1; transform: none; } }
         @keyframes fly { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.4); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 50px)) scale(1) rotate(var(--rot)); } }
-        .ring { transition: stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1); }
-        .bar { transition: width .8s cubic-bezier(.2,.8,.2,1); }
+        @keyframes flame { 0%,100% { transform: scale(1) rotate(-4deg); } 50% { transform: scale(1.12) rotate(3deg); } }
+
+        ruby rt { font-size: .5em; font-weight: 700; color: #953519; letter-spacing: .04em; }
+        html.dark ruby rt { color: #f6b08f; }
+        .q-pre { display: block; font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #953519; margin-bottom: .6rem; }
+        html.dark .q-pre { color: #f6b08f; }
+        .jp-quote { display: block; font-family: 'Noto Sans JP', sans-serif; font-size: 1.3em; line-height: 2.5; padding: 1rem 1.25rem; border-radius: 22px; background: linear-gradient(135deg, rgba(232,121,74,.2), rgba(217,83,43,.05)); border: 1px solid rgba(184,66,31,.25); margin: .3rem 0; }
+        .q-post { display: block; margin-top: .9rem; font-size: 1.05rem; font-weight: 600; color: #5c4b35; }
+        html.dark .q-post { color: #e8dcc4; }
+        .blank { display: inline-block; min-width: 3.2em; height: 1.1em; vertical-align: -0.12em; margin: 0 .15em; border-bottom: 3px solid #d9532b; background: linear-gradient(transparent 58%, rgba(232,121,74,.28) 58%); }
+        .qtext { font-size: 1.25rem; line-height: 1.8; font-weight: 700; }
+        @media (min-width: 768px) { .qtext { font-size: 1.45rem; } }
+        .qnum { font-size: 2.4rem; line-height: 1; font-weight: 900; background: linear-gradient(180deg,#e8794a,#953519); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .qcard { transition: box-shadow .4s ease; }
+        .qcard.state-ok { box-shadow: 0 0 0 2px rgba(122,156,74,.45), 0 26px 50px -28px rgba(122,156,74,.7); }
+        .qcard.state-miss { box-shadow: 0 0 0 2px rgba(149,53,25,.4), 0 26px 50px -28px rgba(149,53,25,.6); animation: missDim .9s ease both; }
+        @keyframes missDim { 0% { filter: none; } 35% { filter: saturate(.7) brightness(.96); } 100% { filter: none; } }
+
+        .tile { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.1rem; border-radius: 18px; border: 1.5px solid rgba(120,80,40,.14); background: rgba(255,255,255,.72); text-align: left; transition: transform .2s, border-color .2s, background .2s, box-shadow .2s, opacity .35s; }
+        html.dark .tile { background: rgba(20,15,9,.5); border-color: rgba(255,240,200,.1); }
+        .tile:not(:disabled):hover { transform: translateY(-2px); border-color: #d9532b; box-shadow: 0 12px 24px -16px rgba(184,66,31,.75); }
+        .tile:disabled { cursor: default; }
+        .tile .letter { width: 2.2rem; height: 2.2rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .8rem; background: rgba(232,121,74,.2); color: #742a14; flex-shrink: 0; }
+        .tile-text { font-family: 'Noto Sans JP', sans-serif; font-size: 1.1rem; font-weight: 700; line-height: 1.65; flex: 1; }
+        .tile.right { border-color: #7a9c4a; background: linear-gradient(135deg, rgba(169,199,123,.32), rgba(122,156,74,.1)); animation: pop .5s cubic-bezier(.2,.9,.3,1.4); box-shadow: 0 0 28px -6px rgba(122,156,74,.7); }
+        .tile.wrong { border-color: #953519; background: rgba(149,53,25,.12); }
+        .tile.dim { opacity: .5; }
+        .tile-icon { font-size: 1.25rem; margin-left: auto; color: #5f7d35; }
+        .tile.wrong .tile-icon { color: #953519; }
+        .verdict-in { animation: rise .4s ease both; }
+
+        .progress-track { height: .55rem; border-radius: 9999px; background: rgba(120,80,40,.12); overflow: hidden; }
+        html.dark .progress-track { background: rgba(255,240,200,.1); }
+        .progress-fill { height: 100%; width: 0; border-radius: 9999px; background: linear-gradient(90deg,#f5c3a6,#d9532b,#b8421f); background-size: 200% 100%; transition: width .6s cubic-bezier(.2,.8,.2,1); animation: shine 2.4s linear infinite; position: relative; overflow: hidden; }
+        .progress-fill::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); transform: translateX(-120%); animation: sweep 2.4s ease-in-out infinite; }
+        @keyframes sweep { 60%,100% { transform: translateX(280%); } }
+        .combo-badge { display: inline-flex; align-items: center; gap: .35rem; font-weight: 900; font-size: .85rem; padding: .4rem .8rem; border-radius: 9999px; background: linear-gradient(90deg,#fb923c,#d9532b); color: #3b1d05; box-shadow: 0 8px 18px -8px rgba(234,88,12,.8); }
+        .combo-badge i { animation: flame 1s ease-in-out infinite; }
+        .combo-badge.bump { animation: bump .45s ease; }
+
+        .tcard { position: relative; overflow: hidden; text-align: left; border-radius: 28px; padding: 1.6rem; border: 1px solid rgba(120,80,40,.14); background: linear-gradient(160deg, rgba(255,252,247,.9), rgba(248,243,233,.78)); box-shadow: 0 18px 40px -26px rgba(92,62,20,.45); transition: transform .35s cubic-bezier(.2,.9,.3,1.3), box-shadow .35s, border-color .35s; }
+        html.dark .tcard { background: linear-gradient(160deg, rgba(26,30,46,.9), rgba(20,23,36,.9)); border-color: rgba(255,240,200,.1); }
+        .tcard:not(.locked):hover { transform: translateY(-5px); box-shadow: 0 30px 50px -28px rgba(149,53,25,.6); border-color: #d9532b; }
+        .tcard.solved { border-color: #d9532b; box-shadow: 0 0 0 2px rgba(217,83,43,.45), 0 22px 44px -22px rgba(217,83,43,.75); }
+        .tnum { font-size: 2.6rem; font-weight: 900; line-height: 1; background: linear-gradient(180deg,#f5c3a6,#b8421f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .chip-free { font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; padding: .3rem .65rem; border-radius: 9999px; background: rgba(169,199,123,.35); color: #3b4e21; }
+        .solved-badge { display: inline-flex; align-items: center; gap: .4rem; font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; padding: .35rem .7rem; border-radius: 9999px; background: linear-gradient(90deg,#f5c3a6,#d9532b); color: #3b2a14; box-shadow: 0 6px 16px -6px rgba(217,83,43,.8); }
+        .skeleton { border-radius: 10px; background: linear-gradient(90deg, rgba(120,80,40,.08), rgba(120,80,40,.2), rgba(120,80,40,.08)); background-size: 200%; animation: sk 1.6s linear infinite; }
+        .locked-overlay { background: linear-gradient(180deg, rgba(255,252,247,.15), rgba(255,252,247,.93)); }
+        html.dark .locked-overlay { background: linear-gradient(180deg, rgba(20,15,9,.15), rgba(22,17,11,.93)); }
+        .lock-orb { width: 3.25rem; height: 3.25rem; border-radius: 18px; background: linear-gradient(135deg,#f5c3a6,#b8421f); display: flex; align-items: center; justify-content: center; color: #3b2a14; box-shadow: 0 12px 28px -10px rgba(184,66,31,.8); }
+        .fa-star { color: #d6c7a6; margin-right: .25rem; }
+        .fa-star.on { color: #d9532b; filter: drop-shadow(0 2px 4px rgba(217,83,43,.5)); }
+        .star-in { animation: starIn .6s cubic-bezier(.2,1.5,.3,1) both; }
+        .benefit-ico { width: 2.6rem; height: 2.6rem; flex-shrink: 0; border-radius: 14px; background: linear-gradient(135deg,#f5c3a6,#d9532b); display: flex; align-items: center; justify-content: center; color: #3b2a14; }
+        .grade-spin { width: 72px; height: 72px; border-radius: 9999px; border: 5px solid rgba(217,83,43,.2); border-top-color: #d9532b; animation: gradeSpin .9s linear infinite; }
+        .finish-in { animation: finishIn .8s cubic-bezier(.2,.9,.3,1.2) both; }
+        .ring { transition: stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1); }
+        .particle { position: fixed; pointer-events: none; z-index: 90; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; animation: fly 1.5s cubic-bezier(.15,.7,.3,1) forwards; }
+        .lvl-btn, .cat-btn { transition: all .25s ease; }
+        /* Светлая тема: заголовок читается */
+        html:not(.dark) .gold-text { background-image: linear-gradient(90deg,#2b3a67,#c4553a,#1a2038,#c4553a); }
+        html.dark .gold-text { background-image: linear-gradient(90deg,#c9d2f4,#f2a58a,#aab8e8,#f2a58a); }
+        /* Подсветка иероглифа, который спрашивают */
+        .qword { display: block; margin: .6rem 0 .4rem; font-size: 2.1rem; line-height: 1.6; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; }
+        .blank.filled { border-bottom: none; background: none; padding: 0 .35em; border-radius: 10px; font-weight: 900; animation: fillPop .55s cubic-bezier(.2,1.4,.3,1) both; }
+        .blank.filled.ok { background: linear-gradient(135deg, rgba(169,199,123,.55), rgba(122,156,74,.2)); color: #3b4e21; box-shadow: 0 0 18px -4px rgba(122,156,74,.7); }
+        html.dark .blank.filled.ok { color: #d9ecb0; }
+        .blank.filled.miss { background: rgba(149,53,25,.14); color: #742a14; text-decoration: line-through; text-decoration-thickness: 2px; animation: fillPop .55s ease both; }
+        .fill-arrow { color: #953519; font-weight: 900; margin: 0 .2rem; }
+        @keyframes fillPop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .expl { display: flex; gap: .9rem; align-items: flex-start; margin-top: 1.1rem; padding: 1rem 1.15rem; border-radius: 20px; background: linear-gradient(135deg, rgba(232,121,74,.18), rgba(255,255,255,.45)); border: 1px solid rgba(184,66,31,.22); }
+        html.dark .expl { background: linear-gradient(135deg, rgba(232,121,74,.12), rgba(20,23,36,.4)); border-color: rgba(232,121,74,.2); }
+        .expl-ico { width: 2.4rem; height: 2.4rem; flex-shrink: 0; border-radius: 13px; background: linear-gradient(135deg,#f5c3a6,#d9532b); display: flex; align-items: center; justify-content: center; color: #3b2a14; }
+        .expl-title { font-size: .72rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: #953519; }
+        html.dark .expl-title { color: #f6b08f; }
+        .expl-text { font-size: 1rem; line-height: 1.65; font-weight: 500; margin-top: .25rem; }
+        .feat-chip { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem .9rem; border-radius: 9999px; font-size: .85rem; font-weight: 700; background: rgba(255,255,255,.7); border: 1px solid rgba(149,53,25,.16); box-shadow: 0 6px 16px -10px rgba(92,62,20,.5); }
+        html.dark .feat-chip { background: rgba(20,23,36,.7); border-color: rgba(232,121,74,.18); }
+        .feat-chip i { color: #b8421f; }
+        .trans-box { position: relative; display: flex; gap: .85rem; align-items: center; margin-top: 1rem; padding: .85rem 1.1rem; border-radius: 18px; background: rgba(122,156,74,.10); border: 1px solid rgba(122,156,74,.28); animation: transIn .7s cubic-bezier(.2,.8,.2,1) both; overflow: hidden; }
+        .trans-box::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.5) 50%, transparent 70%); transform: translateX(-120%); animation: transSweep 1.2s ease .15s forwards; pointer-events: none; }
+        html.dark .trans-box { background: rgba(122,156,74,.14); border-color: rgba(169,199,123,.3); }
+        .trans-ico { width: 2.2rem; height: 2.2rem; flex-shrink: 0; border-radius: 12px; background: rgba(122,156,74,.25); display: flex; align-items: center; justify-content: center; color: #4b6329; }
+        html.dark .trans-ico { color: #d9ecb0; }
+        .trans-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; color: #3b4e21; animation: transText .9s ease .2s both; }
+        html.dark .trans-text { color: #e4eed3; }
+        @keyframes transIn { from { opacity: 0; transform: translateY(10px) scale(.98); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+        @keyframes transSweep { to { transform: translateX(120%); } }
+        @keyframes transText { from { opacity: 0; letter-spacing: .12em; } to { opacity: 1; letter-spacing: normal; } }
+        /* Кнопки звука и темы: стеклянная кнопка с мягким свечением и анимацией иконки */
+        .hdr-btn { position: relative; width: 2.75rem; height: 2.75rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 16px; overflow: hidden; transition: transform .25s ease, box-shadow .3s ease, border-color .3s ease, background .3s ease; }
+        .hdr-btn::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 115%, rgba(232,121,74,.42), transparent 62%); opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+        .hdr-btn:hover { transform: translateY(-2px); }
+        .hdr-btn:hover::before { opacity: 1; }
+        .hdr-btn i { position: relative; transition: transform .45s cubic-bezier(.2,1.4,.4,1); }
+        .hdr-sound:hover i { animation: sndPulse .7s ease; }
+        @keyframes sndPulse { 0% { transform: scale(1); } 35% { transform: scale(1.2) rotate(-7deg); } 70% { transform: scale(.96) rotate(3deg); } 100% { transform: scale(1); } }
+        .hdr-theme:hover i { transform: rotate(-28deg) scale(1.1); }
+        .hdr-dark { background: linear-gradient(160deg, rgba(255,255,255,.17), rgba(255,255,255,.04)); border: 1px solid rgba(255,235,190,.24); color: #f5c3a6; box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 8px 18px -10px rgba(0,0,0,.6); }
+        .hdr-dark:hover { border-color: rgba(232,121,74,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 0 22px -4px rgba(232,121,74,.5); }
+        .hdr-light { background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,247,226,.75)); border: 1px solid rgba(149,53,25,.18); color: #742a14; box-shadow: inset 0 1px 0 #fff, 0 8px 18px -12px rgba(92,62,20,.55); }
+        .hdr-light:hover { border-color: rgba(217,83,43,.6); box-shadow: inset 0 1px 0 #fff, 0 0 22px -4px rgba(217,83,43,.5); }
+        html.dark .hdr-light { background: linear-gradient(160deg, rgba(26,30,46,.9), rgba(20,23,36,.85)); border-color: rgba(43,58,103,.16); color: #f5c3a6; box-shadow: inset 0 1px 0 rgba(255,235,190,.08), 0 8px 18px -12px rgba(0,0,0,.7); }
+        .kanji-tile { position: relative; justify-content: center; padding: 1.1rem 1rem; min-height: 6.2rem; }
+        .kanji-tile .tile-text { font-size: 2.8rem; font-weight: 900; text-align: center; line-height: 1.1; flex: none; }
+        .kanji-tile .letter { position: absolute; left: .8rem; top: .8rem; width: 1.8rem; height: 1.8rem; font-size: .7rem; }
+        .kanji-tile .tile-icon { position: absolute; right: .8rem; top: .8rem; font-size: 1rem; margin: 0; }
+        .qcard { position: relative; }
+        .qcard.state-ok::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%); transform: translateX(-120%); animation: cardSheen 1.1s ease .05s forwards; pointer-events: none; }
+        @keyframes cardSheen { to { transform: translateX(120%); } }
+        .crystal { position: relative; display: inline-flex; align-items: center; justify-content: center; margin: .5rem auto .25rem; min-width: 14rem; min-height: 10rem; padding: 1.2rem 2.6rem; border-radius: 32px; isolation: isolate; overflow: hidden; background: #fffaf0; box-shadow: 0 26px 44px -26px rgba(120,53,15,.55); }
+        .crystal::before { content: ""; position: absolute; left: 50%; top: 50%; width: 230%; aspect-ratio: 1; transform: translate(-50%,-50%); background: conic-gradient(#f5c3a6, #d9532b, #fff1e8, #b8421f, #f5c3a6); animation: spinRing 5s linear infinite; z-index: -2; }
+        .crystal::after { content: ""; position: absolute; inset: 2.5px; border-radius: 30px; background: linear-gradient(160deg, #fffdf6, #fbeccb); z-index: -1; }
+        .crystal.ok::before { background: conic-gradient(#d9ecb0, #7a9c4a, #f1f8e2, #5f7d35, #d9ecb0); animation-duration: 2.4s; }
+        .crystal.miss::before { background: conic-gradient(#f6a27a, #953519, #fde9df, #7a2a12, #f6a27a); animation-duration: 2.4s; }
+        html.dark .crystal { background: #2a200f; box-shadow: 0 26px 44px -22px rgba(0,0,0,.85); }
+        html.dark .crystal::after { background: linear-gradient(160deg, #3a2c16, #241b0c); }
+        @keyframes spinRing { to { transform: translate(-50%,-50%) rotate(360deg); } }
+        .target { position: relative; z-index: 2; font-family: 'Noto Sans JP', sans-serif; font-size: 3.8rem; font-weight: 900; line-height: 1.25; color: #3d2a12; text-shadow: 0 2px 0 rgba(255,255,255,.6); }
+        html.dark .target { color: #fbe7b5; text-shadow: none; }
+        .target rt { font-size: .32em; font-weight: 800; color: #953519; letter-spacing: .08em; }
+        html.dark .target rt { color: #f6b08f; }
+        .target:not(.revealed) rt { animation: qPulse 1.6s ease-in-out infinite; }
+        .target.revealed rt { animation: flipIn .8s cubic-bezier(.2,1.2,.3,1) both; }
+        @keyframes qPulse { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+        @keyframes flipIn { 0% { transform: rotateX(90deg); opacity: 0; } 100% { transform: rotateX(0); opacity: 1; } }
+        .wave { position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; border: 3px solid #d9532b; z-index: 0; pointer-events: none; animation: waveOut 1s ease-out forwards; }
+        @keyframes waveOut { to { transform: scale(12); opacity: 0; } }
+        #combo-banner { position: fixed; left: 50%; top: 38%; transform: translate(-50%,-50%); pointer-events: none; z-index: 120; text-align: center; animation: comboIn 1.5s cubic-bezier(.2,.9,.3,1) forwards; }
+        .combo-kanji { font-family: 'Noto Sans JP', sans-serif; font-size: 4.6rem; font-weight: 900; line-height: 1.1; background: linear-gradient(90deg,#f5c3a6,#d9532b,#fff1e8,#b8421f); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 6px 18px rgba(217,83,43,.6)); }
+        .combo-label { font-size: .9rem; font-weight: 900; letter-spacing: .3em; text-transform: uppercase; color: #953519; }
+        html.dark .combo-label { color: #f6b08f; }
+        @keyframes comboIn { 0% { opacity: 0; transform: translate(-50%,-30%) scale(.6); } 18% { opacity: 1; transform: translate(-50%,-50%) scale(1.08); } 30% { transform: translate(-50%,-50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%,-70%) scale(.96); } }
+        .kwrap { text-align: center; padding: .5rem 0 .25rem; }
+        .kwrap .q-pre { text-align: center; }
+        .kwrap .q-post { text-align: center; font-size: 1.1rem; }
+        .kwrap .qword { font-size: 3.4rem; margin: .5rem 0 .6rem; }
+        .kwrap .target { padding: .02em .3em .06em; }
+        /* Пропуск в грамматике: ответ стоит на одной строке с текстом, без смещения вверх */
+        .blank.filled { display: inline-block; height: auto; min-width: 0; vertical-align: baseline; line-height: 1.5; padding: .05em .5em; margin: 0 .2em; border-bottom: none; border-radius: 10px; }
+        /* Кандзи-задания: «печать» с иероглифом и круглые варианты */
+        .kstage { display: flex; flex-direction: column; align-items: center; gap: .85rem; padding: 1rem 0 .5rem; }
+        .kpre { font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 900; color: #953519; }
+        html.dark .kpre { color: #f6b08f; }
+        .hanko { position: relative; width: 10rem; height: 10rem; border-radius: 28px; display: flex; align-items: center; justify-content: center; transform: rotate(-2deg); background: radial-gradient(circle at 30% 20%, #fff7e0, #f6e3b8 60%, #e9cf96); border: 3px solid #a16207; box-shadow: inset 0 2px 0 rgba(255,255,255,.7), inset 0 -8px 16px rgba(120,53,15,.18), 0 20px 36px -18px rgba(120,53,15,.65); transition: background .5s, border-color .5s, box-shadow .5s; }
+        .hanko::before { content: ""; position: absolute; inset: 10px; border: 1.5px solid rgba(161,98,7,.4); border-radius: 19px; pointer-events: none; }
+        html.dark .hanko { background: radial-gradient(circle at 30% 20%, #4a3819, #33270f 65%, #241b0b); border-color: #d6a23a; box-shadow: inset 0 2px 0 rgba(255,235,180,.12), 0 20px 36px -18px rgba(0,0,0,.8); }
+        .hanko-char { font-family: 'Noto Sans JP', sans-serif; font-size: 5rem; font-weight: 900; line-height: 1; color: #3d2a12; }
+        html.dark .hanko-char { color: #fbe7b5; }
+        .hanko.stamped { animation: stampIn .6s cubic-bezier(.2,1.6,.4,1) both; }
+        @keyframes stampIn { 0% { transform: scale(1.4) rotate(-8deg); opacity: 0; } 60% { transform: scale(.94) rotate(-1deg); opacity: 1; } 100% { transform: scale(1) rotate(-2deg); } }
+        .hanko.ok { background: radial-gradient(circle at 30% 20%, #f1f8e2, #c9dca8 65%, #a9c77b); border-color: #5f7d35; box-shadow: 0 0 46px -6px rgba(122,156,74,.8), 0 20px 36px -18px rgba(95,125,53,.7); }
+        html.dark .hanko.ok { background: radial-gradient(circle at 30% 20%, #3b4e21, #2c3b19 65%, #1d2a12); }
+        .hanko.ok .hanko-char { color: #2c3b19; }
+        html.dark .hanko.ok .hanko-char { color: #e4eed3; }
+        .hanko.miss { background: radial-gradient(circle at 30% 20%, #fbe5d3, #f0b996 65%, #dd8f63); border-color: #7a2a12; animation: stampIn .6s cubic-bezier(.2,1.6,.4,1) both, shake .45s ease .5s; }
+        .kreading { font-family: 'Noto Sans JP', sans-serif; font-size: 1.5rem; font-weight: 800; color: #953519; min-height: 2rem; animation: rise .5s ease both; }
+        html.dark .kreading { color: #f6b08f; }
+        .kpost { font-size: 1.05rem; font-weight: 600; color: #5c4b35; text-align: center; max-width: 34rem; line-height: 1.6; }
+        html.dark .kpost { color: #e8dcc4; }
+        .kopts { display: grid; grid-template-columns: 1fr; gap: .75rem; margin-top: 1.5rem; }
+        @media (min-width: 640px) { .kopts { grid-template-columns: 1fr 1fr; } }
+        .pill { display: flex; align-items: center; gap: .85rem; padding: .9rem 1.15rem; border-radius: 9999px; border: 2px solid rgba(120,80,40,.16); background: rgba(255,255,255,.72); font-family: 'Noto Sans JP', sans-serif; font-size: 1.1rem; font-weight: 700; transition: transform .2s, border-color .2s, background .25s, box-shadow .25s, opacity .3s; text-align: left; }
+        html.dark .pill { background: rgba(20,15,9,.55); border-color: rgba(255,240,200,.12); }
+        .pill:not(:disabled):hover { transform: translateY(-2px); border-color: #d9532b; box-shadow: 0 12px 24px -14px rgba(184,66,31,.8); }
+        .pill:disabled { cursor: default; }
+        .pill-key { width: 1.9rem; height: 1.9rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 900; background: rgba(232,121,74,.2); color: #742a14; flex-shrink: 0; font-family: Inter, sans-serif; }
+        .pill.right { border-color: #7a9c4a; background: linear-gradient(135deg, rgba(169,199,123,.5), rgba(122,156,74,.15)); box-shadow: 0 0 28px -6px rgba(122,156,74,.75); animation: pop .5s cubic-bezier(.2,.9,.3,1.4); }
+        .pill.wrong { border-color: #953519; background: rgba(149,53,25,.12); }
+        .pill.dim { opacity: .42; }
+        .kcard .verdict-in { text-align: center; }
     </style>
 </head>
 <body class="text-zen-800 dark:text-zen-100 font-sans antialiased">
+<div class="ink-bg" aria-hidden="true"><span></span><span></span><span></span></div>
 
 <header class="sticky top-0 z-40 glass border-b border-amber-900/10 dark:border-zen-700/60">
     <div class="max-w-4xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
@@ -70,306 +235,706 @@
             </div>
         </a>
         <div class="flex items-center gap-2">
-            <a href="index.html" class="h-11 px-4 inline-flex items-center gap-2 rounded-2xl border border-amber-900/15 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-arrow-left text-xs"></i>Справочник</a>
-            <button onclick="toggleTheme()" class="w-11 h-11 rounded-2xl border border-amber-900/15 dark:border-zen-700 flex items-center justify-center hover:border-amber-400 transition-colors" title="Тема"><i class="fa-solid fa-moon dark:hidden"></i><i class="fa-solid fa-sun hidden dark:inline text-amber-300"></i></button>
+            <a href="index.html" class="h-11 px-4 inline-flex items-center gap-2 rounded-2xl border border-amber-900/15 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-arrow-left text-xs"></i><span class="hidden sm:inline">Справочник</span></a>
+            <button onclick="toggleSound()" class="hdr-btn hdr-light hdr-sound" title="Звук"><i id="sound-icon" class="fa-solid fa-volume-high"></i></button>
+            <button onclick="toggleTheme()" class="hdr-btn hdr-light hdr-theme" title="Тема"><i class="fa-solid fa-moon dark:hidden"></i><i class="fa-solid fa-sun hidden dark:inline"></i></button>
         </div>
     </div>
 </header>
 
 <main class="max-w-4xl mx-auto px-5 pb-24">
-    <section class="pt-10 pb-6 text-center">
-        <p class="text-[11px] uppercase tracking-[0.3em] font-bold text-amber-700 dark:text-amber-400">Тренировка</p>
+    <section id="hero" class="pt-10 pb-6 text-center">
+        <p class="text-[11px] uppercase tracking-[0.3em] font-black text-amber-700 dark:text-amber-400">Тренировка</p>
         <h1 class="text-4xl md:text-5xl font-black mt-2 leading-tight"><span class="gold-text">Тесты JLPT</span></h1>
-        <p class="text-zen-500 dark:text-zen-300 mt-3 max-w-xl mx-auto">Каждый тест — 10 вопросов. Первые тесты открыты всем, остальные — в полном доступе.</p>
+        <p class="text-zen-500 dark:text-zen-300 mt-3 max-w-xl mx-auto">Короткие тесты по 10 вопросов. Ответ сразу видно: звук, цвет и серия верных ответов.</p>
+        <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs font-bold text-zen-600 dark:text-zen-300">
+            <span class="feat-chip"><i class="fa-solid fa-clock"></i>около 5 минут</span>
+            <span class="feat-chip"><i class="fa-solid fa-bolt"></i>мгновенная проверка</span>
+            <span class="feat-chip"><i class="fa-solid fa-language"></i>фуригана у каждого слова</span>
+        </div>
     </section>
 
-    <!-- Уровень и раздел -->
-    <div class="sticky top-20 z-30 flex flex-col items-center gap-3 mb-8">
+    <div id="controls" class="sticky top-20 z-30 flex flex-col items-center gap-3 mb-8">
         <div id="lvl-switch" class="relative flex items-center gap-1 p-1 rounded-full glass border border-amber-900/10 dark:border-zen-700/60">
-            <div id="lvl-glider" class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 shadow-[0_0_18px_rgba(251,191,36,.55)] transition-all duration-500" style="left:4px;width:0"></div>
-            <button data-lvl="N5" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N5</button>
-            <button data-lvl="N4" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N4</button>
-            <button data-lvl="N3" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N3</button>
-            <button data-lvl="N2" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N2</button>
-            <button data-lvl="N1" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold transition-colors">N1</button>
+            <div id="lvl-glider" class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 shadow-[0_0_18px_rgba(232,121,74,.55)] transition-all duration-500" style="left:4px;width:0"></div>
+            <button data-lvl="N5" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold">N5</button>
+            <button data-lvl="N4" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold">N4</button>
+            <button data-lvl="N3" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold">N3</button>
+            <button data-lvl="N2" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold">N2</button>
+            <button data-lvl="N1" class="lvl-btn relative z-10 h-10 px-5 rounded-full text-sm font-bold">N1</button>
         </div>
         <div class="flex gap-2 flex-wrap justify-center">
-            <button data-cat="kanji" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-pen-nib text-xs"></i>Кандзи</button>
-            <button data-cat="grammar" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-book-open text-xs"></i>Грамматика</button>
-            <button data-cat="reading" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all"><i class="fa-solid fa-scroll text-xs"></i>Чтение</button>
+            <button data-cat="kanji" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-pen-nib text-xs"></i>Кандзи</button>
+            <button data-cat="grammar" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-book-open text-xs"></i>Грамматика</button>
+            <button data-cat="reading" class="cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-scroll text-xs"></i>Чтение</button>
         </div>
     </div>
 
     <div id="view"></div>
+
+    <section id="upsell" class="mt-14 relative overflow-hidden rounded-[32px] p-8 md:p-10 border border-amber-900/10 dark:border-zen-700/60 glass">
+        <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-amber-400/25 blur-3xl pointer-events-none"></div>
+        <p class="text-[11px] uppercase tracking-[0.3em] font-black text-amber-700 dark:text-amber-400">Полный доступ</p>
+        <h2 class="text-3xl md:text-4xl font-black mt-2 leading-tight">Все тесты целиком<br><span class="gold-text">и без ограничений</span></h2>
+        <p id="upsell-owned" class="text-sm text-zen-500 dark:text-zen-300 mt-3"></p>
+        <ul class="grid sm:grid-cols-2 gap-4 mt-7">
+            <li class="flex gap-3 items-start"><span class="benefit-ico"><i class="fa-solid fa-layer-group"></i></span><div><p class="font-bold">Три раздела на каждом уровне</p><p class="text-sm text-zen-500 dark:text-zen-300">Кандзи, грамматика и чтение в одном месте.</p></div></li>
+            <li class="flex gap-3 items-start"><span class="benefit-ico"><i class="fa-solid fa-language"></i></span><div><p class="font-bold">Фуригана у каждого слова</p><p class="text-sm text-zen-500 dark:text-zen-300">Читаете текст и сразу видите чтение.</p></div></li>
+            <li class="flex gap-3 items-start"><span class="benefit-ico"><i class="fa-solid fa-trophy"></i></span><div><p class="font-bold">Звёзды, серии и итоги</p><p class="text-sm text-zen-500 dark:text-zen-300">Видно, где вы сильны, а где нужно повторить.</p></div></li>
+            <li class="flex gap-3 items-start"><span class="benefit-ico"><i class="fa-solid fa-circle-check"></i></span><div><p class="font-bold">Прогресс сохраняется</p><p class="text-sm text-zen-500 dark:text-zen-300">Решённые тесты и лучший результат остаются с вами.</p></div></li>
+        </ul>
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+            <button disabled class="px-8 h-14 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-700 text-white font-black opacity-70 cursor-not-allowed">Оформить доступ — скоро</button>
+            <p class="text-sm text-zen-500 dark:text-zen-300">Первые два теста в каждом разделе открыты бесплатно.</p>
+        </div>
+    </section>
 </main>
 
 <script>
 const sb = supabase.createClient('https://stnxwbuozduhphftfqri.supabase.co', 'sb_publishable_sev2FLO_oLbIoLIWEwyXzw_l_N52RzS');
+const CAT = { kanji: { name: 'Кандзи', icon: 'fa-pen-nib' }, grammar: { name: 'Грамматика', icon: 'fa-book-open' }, reading: { name: 'Чтение', icon: 'fa-scroll' } };
 const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
-const CAT_NAME = { kanji: 'Кандзи', grammar: 'Грамматика', reading: 'Чтение' };
 const view = document.getElementById('view');
+const controls = document.getElementById('controls');
+const upsell = document.getElementById('upsell');
 let activeLevel = 'N5', activeCat = 'kanji', owned = [], run = null;
 
 // ----- Банк тестов (бесплатные). Каждый тест — 10 вопросов. -----
 const Q = (q, o, a) => ({ q, o, a });
 const BANK = {
     'N5|kanji': [[
-        Q('Как читается 山?', ['やま', 'さん', 'かわ', 'たけ'], 'やま'),
-        Q('Какое значение у 水?', ['огонь', 'вода', 'дерево', 'земля'], 'вода'),
-        Q('Какое значение у 木?', ['дерево', 'вода', 'огонь', 'солнце'], 'дерево'),
-        Q('Какое значение у 人?', ['человек', 'гора', 'рука', 'дождь'], 'человек'),
-        Q('Как читается 月 (луна)?', ['つき', 'ひ', 'き', 'くち'], 'つき'),
-        Q('Какое значение у 口?', ['рот', 'рука', 'нога', 'глаз'], 'рот'),
-        Q('Какое значение у 目?', ['глаз', 'ухо', 'рот', 'нос'], 'глаз'),
-        Q('Как читается 大 (большой)?', ['おお', 'ちい', 'なか', 'した'], 'おお'),
-        Q('Какое значение у 小?', ['маленький', 'большой', 'длинный', 'новый'], 'маленький'),
-        Q('Какое значение у 上?', ['верх', 'низ', 'середина', 'перед'], 'верх')
+        Q('Как читается 学校 (школа)?', ['がっこう', 'がくこう', 'がっこ', 'がくせい'], 'がっこう'),
+        Q('Как читается 図書館 (библиотека)?', ['としょかん', 'ずしょかん', 'としょうかん', 'ずしょうかん'], 'としょかん'),
+        Q('Как читается 病院 (больница)?', ['びょういん', 'びょうえん', 'へいいん', 'びょういに'], 'びょういん'),
+        Q('Что означает слово 天気?', ['погода', 'небо', 'время', 'климат'], 'погода'),
+        Q('Как читается 毎朝 (каждое утро)?', ['まいあさ', 'まいちょう', 'まいつき', 'まいばん'], 'まいあさ'),
+        Q('Что означает 三月?', ['март', 'третий день', 'три часа', 'апрель'], 'март'),
+        Q('Как читается 広い (просторный)?', ['ひろい', 'おおい', 'せまい', 'ながい'], 'ひろい'),
+        Q('Как читается 会社 (компания, работа)?', ['かいしゃ', 'かいや', 'あいしゃ', 'かいじゃ'], 'かいしゃ'),
+        Q('Как читается 外国 (заграница)?', ['がいこく', 'そとくに', 'がいこう', 'げこく'], 'がいこく'),
+        Q('Что означает 名前?', ['имя', 'номер', 'адрес', 'фамилия'], 'имя')
+    ], [
+        Q('Выберите иероглиф: 「あしたは___が降るでしょう。」', ['雨', '山', '木', '犬'], '雨'),
+        Q('Выберите иероглиф: 「わたしは___が好きです。」', ['犬', '山', '川', '日'], '犬'),
+        Q('Выберите иероглиф: 「毎朝___を飲みます。」', ['水', '火', '木', '山'], '水'),
+        Q('Выберите иероглиф: 「あの___は高いです。」', ['山', '日', '目', '口'], '山'),
+        Q('Выберите иероглиф: 「庭に大きい___があります。」', ['木', '火', '水', '犬'], '木'),
+        Q('Выберите иероглиф: 「___が燃えています。」', ['火', '山', '木', '水'], '火'),
+        Q('Выберите иероглиф: 「わたしは___で見ます。」', ['目', '口', '耳', '手'], '目'),
+        Q('Выберите иероглиф: 「毎朝、___を洗います。」', ['手', '足', '口', '目'], '手'),
+        Q('Выберите иероглиф: 「きょうは___がきれいです。」', ['空', '雨', '山', '雲'], '空'),
+        Q('Выберите иероглиф: 「あそこに___があります。」', ['川', '山', '三', '木'], '川')
     ]],
     'N5|grammar': [[
-        Q('わたしは学生___。', ['です', 'ます', 'ました', 'でした'], 'です'),
-        Q('これは本___。', ['です', 'ます', 'ました', 'でした'], 'です'),
-        Q('毎日学校___。', ['に行きます', 'を行きます', 'で行きます', 'は行きます'], 'に行きます'),
-        Q('昨日、映画___。', ['を見ました', 'を見ます', 'を見て', 'を見る'], 'を見ました'),
-        Q('日本語___話します。', ['を', 'は', 'が', 'で'], 'を'),
-        Q('友だち___行きました。', ['と', 'を', 'が', 'は'], 'と'),
-        Q('ここ___学校です。', ['は', 'を', 'が', 'に'], 'は'),
-        Q('毎朝パン___食べます。', ['を', 'は', 'が', 'に'], 'を'),
-        Q('名前は田中___。', ['です', 'ます', 'ました', 'でした'], 'です'),
-        Q('水___飲みます。', ['を', 'は', 'が', 'で'], 'を')
+        Q('Выберите частицу: 「図書館___本を借りました。」', ['で', 'に', 'を', 'へ'], 'で'),
+        Q('Выберите частицу: 「友達___一緒に映画を見ました。」', ['と', 'に', 'で', 'へ'], 'と'),
+        Q('Выберите частицу: 「わたしは日本語___少し話せます。」', ['が', 'を', 'に', 'で'], 'が'),
+        Q('Выберите частицу: 「このかばんは私___です。」', ['の', 'を', 'が', 'と'], 'の'),
+        Q('Выберите слово: 「明日は雨___しれません。」', ['かも', 'だから', 'でも', 'ですか'], 'かも'),
+        Q('Выберите форму: 「一緒に行き___？」', ['ませんか', 'ましょう', 'たいです', 'ました'], 'ませんか'),
+        Q('Выберите форму: 「ペンで名前を書いて___。」', ['ください', 'ます', 'ました', 'ましょう'], 'ください'),
+        Q('Выберите форму: 「今、テレビを見___。」', ['ています', 'ました', 'ます', 'たいです'], 'ています'),
+        Q('Выберите частицу: 「私は東京___住んでいます。」', ['に', 'で', 'を', 'へ'], 'に'),
+        Q('Выберите форму: 「ここで写真を撮って___。」', ['もいいです', 'はいけません', 'ください', 'ませんか'], 'もいいです')
+    ], [
+        Q('Выберите слово: 「この店は、あの店___安いです。」', ['より', 'から', 'まで', 'ので'], 'より'),
+        Q('Выберите форму: 「日本へ行き___です。」', ['たい', 'ます', 'ませんか', 'ました'], 'たい'),
+        Q('Выберите форму: 「ドアを___ください。」', ['開けて', '開ける', '開け', '開けた'], '開けて'),
+        Q('Выберите форму: 「昨日、映画を___。」', ['見ました', '見ます', '見て', '見たい'], '見ました'),
+        Q('Выберите частицу: 「日曜日は何___しますか。」', ['を', 'が', 'に', 'で'], 'を'),
+        Q('Выберите форму: 「さっき、駅で先生に___。」', ['会いました', '会います', '会って', '会いたい'], '会いました'),
+        Q('Выберите форму: 「ここでたばこを吸っては___。」', ['いけません', 'ください', 'ましょう', 'ました'], 'いけません'),
+        Q('Выберите форму: 「写真を撮っても___か。」', ['いいですか', 'いいです', 'ですか', 'ください'], 'いいですか'),
+        Q('Выберите форму: 「来週、友達と映画を___と思います。」', ['見よう', '見る', '見て', '見た'], '見よう'),
+        Q('Выберите слово: 「パーティーに行けなくて、とても___。」', ['残念です', '残念でした', '残念な', '残念に'], '残念です')
     ]],
     'N5|reading': [[
-        Q('「わたしは毎朝、七時に起きます。」Когда встаёт этот человек?', ['в семь часов', 'в шесть часов', 'в восемь часов', 'в девять часов'], 'в семь часов'),
-        Q('「きのう、ともだちとえいがを見ました。」Что сделал человек вчера?', ['посмотрел фильм', 'купил книгу', 'поел', 'гулял'], 'посмотрел фильм'),
-        Q('「このみせはやすいです。」Какой это магазин?', ['дешёвый', 'дорогой', 'большой', 'далеко'], 'дешёвый'),
-        Q('「わたしは毎日、学校に行きます。」Куда ходит этот человек каждый день?', ['в школу', 'в магазин', 'в больницу', 'домой'], 'в школу'),
-        Q('「田中さんは先生です。」Кто такой Танака?', ['учитель', 'студент', 'врач', 'повар'], 'учитель'),
-        Q('「今日は天気がいいです。」Какая сегодня погода?', ['хорошая', 'плохая', 'холодная', 'дождливая'], 'хорошая'),
-        Q('「わたしはねこが好きです。」Что любит этот человек?', ['кошек', 'собак', 'рыбу', 'птиц'], 'кошек'),
-        Q('「あしたは日曜日です。」Какой завтра день?', ['воскресенье', 'понедельник', 'среда', 'суббота'], 'воскресенье'),
-        Q('「ちちは会社に行きます。」Куда ходит отец?', ['на работу', 'в школу', 'в парк', 'домой'], 'на работу'),
-        Q('「わたしのへやは広いです。」Какая комната?', ['просторная', 'тёмная', 'маленькая', 'грязная'], 'просторная')
+        Q('「きのう、友達と駅前のレストランへ行きました。ラーメンを食べました。とてもおいしかったです。」Что ел человек вчера?', ['рамен', 'суши', 'тэмпура', 'удон'], 'рамен'),
+        Q('「わたしのいもうとは十五さいです。まいにち、ピアノを練習します。ピアノが大好きです。」Сколько лет младшей сестре?', ['15 лет', '5 лет', '50 лет', '12 лет'], '15 лет'),
+        Q('「すみません。この近くに銀行はありますか。——はい、あの角を右に曲がると、コンビニの隣にあります。」Где банк?', ['за углом направо, рядом с конбини', 'рядом с парком', 'напротив станции', 'слева от школы'], 'за углом направо, рядом с конбини'),
+        Q('「今日は休みなので、家で映画を見ました。午後は母と買い物に行きました。」Чем занимался человек после обеда?', ['ходил по магазинам с мамой', 'смотрел фильм', 'гулял в парке', 'работал'], 'ходил по магазинам с мамой'),
+        Q('「田中さんは会社員です。毎日、電車で会社へ行きます。土曜日と日曜日は会社に行きません。」Когда Танака не ходит на работу?', ['по субботам и воскресеньям', 'по понедельникам', 'каждый день', 'по средам'], 'по субботам и воскресеньям'),
+        Q('「このレストランは、いつもお客さんが多いです。料理が安くて、おいしいからです。」Почему в ресторане всегда много людей?', ['еда вкусная и недорогая', 'там красивый вид', 'там работает знаменитый повар', 'он открыт круглосуточно'], 'еда вкусная и недорогая'),
+        Q('「あしたは、十時に駅で会いましょう。おくれないでください。」Когда и где встреча?', ['в 10 часов на станции', 'в 9 часов дома', 'в 12 часов в кафе', 'в 10 часов в школе'], 'в 10 часов на станции'),
+        Q('「わたしは犬が好きです。でも、猫は好きではありません。」Какое животное нравится человеку?', ['собака', 'кошка', 'птица', 'рыба'], 'собака'),
+        Q('「ゆうべは、とても暑かったです。エアコンをつけて寝ました。」Почему человек включил кондиционер?', ['было очень жарко', 'было очень холодно', 'шёл дождь', 'он заболел'], 'было очень жарко'),
+        Q('「わたしの家族は四人です。父と母と、兄がいます。」Сколько человек в семье?', ['четыре', 'три', 'пять', 'два'], 'четыре')
+    ], [
+        Q('「わたしは毎週日曜日に、ゴルフの練習に行きます。ゴルフは難しいですが、とても楽しいです。」Как человек относится к гольфу?', ['нравится, хотя и сложно', 'скучно и легко', 'не любит', 'никогда не играл'], 'нравится, хотя и сложно'),
+        Q('「スーパーは、駅の前にあります。毎日、朝九時から夜十時まで開いています。」Когда открыт супермаркет?', ['с 9 утра до 10 вечера', 'с 10 утра до 9 вечера', 'круглосуточно', 'с 9 до 12'], 'с 9 утра до 10 вечера'),
+        Q('「来週、友達が日本から来ます。空港へ迎えに行くつもりです。」Что собирается делать человек?', ['встретить друга в аэропорту', 'поехать в Японию', 'отменить встречу', 'купить билет'], 'встретить друга в аэропорту'),
+        Q('「昨日は雨でした。でも、今日は晴れて、とても気持ちがいいです。」Какая погода сегодня?', ['солнечно и приятно', 'дождливо', 'холодно', 'ветрено'], 'солнечно и приятно'),
+        Q('「この図書館は、月曜日が休みです。ほかの日は、朝九時から夕方五時まで開いています。」Когда библиотека закрыта?', ['по понедельникам', 'по воскресеньям', 'по субботам', 'по средам'], 'по понедельникам'),
+        Q('「佐藤さんは先週、京都へ旅行に行きました。お寺をたくさん見て、写真をたくさん撮りました。」Что делал Сато в Киото?', ['фотографировал храмы', 'работал в офисе', 'учился в университете', 'ел суши'], 'фотографировал храмы'),
+        Q('「明日の会議は、十時からではなく、十一時から始まります。」Во сколько начнётся совещание?', ['в 11', 'в 10', 'в 12', 'в 9'], 'в 11'),
+        Q('「わたしの兄は医者です。病院で働いています。毎日とても忙しいです。」Кем работает брат?', ['врач', 'учитель', 'водитель', 'повар'], 'врач'),
+        Q('「この道をまっすぐ行って、二つ目の信号を左に曲がってください。郵便局は右にあります。」Как найти почту?', ['прямо, на втором светофоре налево, почта справа', 'прямо, на первом светофоре направо', 'налево от станции', 'через мост'], 'прямо, на втором светофоре налево, почта справа'),
+        Q('「ワンさんは中国から来た留学生です。日本の大学で経済を勉強しています。日本語はまだ少し難しいと言っています。」Что говорит Ван о японском языке?', ['ещё немного трудно', 'очень легко', 'он его не учит', 'уже свободно говорит'], 'ещё немного трудно')
     ]]
 };
 
-const BANK2 = {
-    'N5|kanji': [
-        Q('Как читается 川 (река)?', ['かわ', 'やま', 'もり', 'ひ'], 'かわ'),
-        Q('Какое значение у 火?', ['огонь', 'вода', 'дерево', 'земля'], 'огонь'),
-        Q('Какое значение у 土?', ['земля', 'камень', 'рис', 'небо'], 'земля'),
-        Q('Какое значение у 金?', ['золото, деньги', 'серебро', 'железо', 'медь'], 'золото, деньги'),
-        Q('Как читается 手 (рука)?', ['て', 'あし', 'め', 'くち'], 'て'),
-        Q('Как читается 足 (нога)?', ['あし', 'て', 'くち', 'みみ'], 'あし'),
-        Q('Какое значение у 耳?', ['ухо', 'глаз', 'рот', 'нос'], 'ухо'),
-        Q('Какое значение у 中?', ['середина, внутри', 'верх', 'низ', 'край'], 'середина, внутри'),
-        Q('Как читается 年 (год)?', ['とし', 'ひ', 'つき', 'かね'], 'とし'),
-        Q('Какое значение у 男?', ['мужчина', 'женщина', 'ребёнок', 'старик'], 'мужчина')
-    ],
-    'N5|grammar': [
-        Q('これは私の傘___。', ['です', 'ます', 'でした', 'ました'], 'です'),
-        Q('わたしは犬が好き___。', ['です', 'ます', 'ました', 'でしょう'], 'です'),
-        Q('毎日、朝ご飯を___。', ['食べます', '食べ', '食べて', '食べた'], '食べます'),
-        Q('毎朝、学校へ___。', ['行きます', '行き', '行って', '行った'], '行きます'),
-        Q('先生は教室___います。', ['に', 'を', 'が', 'で'], 'に'),
-        Q('本___読みます。', ['を', 'は', 'に', 'で'], 'を'),
-        Q('きのう、雨___降りました。', ['が', 'を', 'に', 'で'], 'が'),
-        Q('東京___住んでいます。', ['に', 'を', 'が', 'へ'], 'に'),
-        Q('わたし___学生です。', ['は', 'を', 'が', 'に'], 'は'),
-        Q('歩いて学校___行きます。', ['に', 'を', 'が', 'と'], 'に')
-    ],
-    'N5|reading': [
-        Q('「わたしは毎晩、十時に寝ます。」Когда ложится спать этот человек?', ['в десять часов', 'в одиннадцать', 'в девять', 'в восемь'], 'в десять часов'),
-        Q('「このかばんは赤いです。」Какого цвета сумка?', ['красная', 'синяя', 'белая', 'чёрная'], 'красная'),
-        Q('「きょうは暑いです。」Какая сегодня погода?', ['жаркая', 'холодная', 'дождливая', 'ветреная'], 'жаркая'),
-        Q('「わたしは寿司が好きです。」Что любит этот человек?', ['суши', 'пиццу', 'рамен', 'хлеб'], 'суши'),
-        Q('「あには大学生です。」Кто такой старший брат?', ['студент университета', 'учитель', 'врач', 'водитель'], 'студент университета'),
-        Q('「まいあさ、コーヒーを飲みます。」Что пьёт человек каждое утро?', ['кофе', 'чай', 'воду', 'сок'], 'кофе'),
-        Q('「この本はおもしろいです。」Какая книга?', ['интересная', 'скучная', 'старая', 'дорогая'], 'интересная'),
-        Q('「ははは料理を作ります。」Что делает мама?', ['готовит еду', 'моет машину', 'читает книгу', 'спит'], 'готовит еду'),
-        Q('「駅はどこですか。」Что спрашивает человек?', ['Где станция?', 'Сколько стоит?', 'Который час?', 'Как пройти?'], 'Где станция?'),
-        Q('「わたしのいぬは小さいです。」Какая собака?', ['маленькая', 'большая', 'старая', 'быстрая'], 'маленькая')
-    ]
-};
-for (const k in BANK2) { if (BANK[k]) BANK[k].push(BANK2[k]); }
 
-const FREE_TESTS = 2;      // сколько тестов открыто всем в каждом разделе
-const TESTS_PER_SECTION = 5; // всего тестов в разделе (остальные — в полном доступе)
+const FREE_TESTS = 2;        // сколько тестов открыто всем в каждом разделе
+const TESTS_PER_SECTION = 5; // всего тестов в разделе
+
+const EXPL = {
+ 'N5|kanji': [
+  [
+   "学校 читается がっこう — так произносится слово «школа».",
+   "図書館 читается としょかん: 図書 — としょ, 館 — かん. Это «библиотека».",
+   "病院 читается びょういん: 病 — びょう, 院 — いん. Это «больница».",
+   "天 — «небо», 気 — «состояние». Вместе 天気 — «погода», состояние неба.",
+   "毎 — «каждый», 朝 — «утро». Вместе 毎朝 — «каждое утро», まいあさ.",
+   "三 — «три», 月 — «месяц». 三月 — третий месяц года, март.",
+   "広 — «широкий». 広い — «просторный», читается ひろい.",
+   "会 — «встреча», 社 — «компания». Вместе 会社 — «компания, работа», かいしゃ.",
+   "外 — «внешний», 国 — «страна». 外国 — «заграница», がいこく.",
+   "名 — «имя», 前 — «перед». 名前 — «имя», なまえ."
+  ],
+  [
+   "あめ — «дождь». Иероглиф 雨 — дождь.",
+   "いぬ — «собака». Иероглиф 犬 — собака.",
+   "みず — «вода». Иероглиф 水 — вода.",
+   "やま — «гора». Иероглиф 山 — гора.",
+   "き — «дерево». Иероглиф 木 — дерево.",
+   "ひ — «огонь». Иероглиф 火 — огонь.",
+   "め — «глаз». Иероглиф 目 — глаз.",
+   "て — «рука». Иероглиф 手 — рука.",
+   "そら — «небо». Иероглиф 空 — небо.",
+   "かわ — «река». Иероглиф 川 — река."
+  ]
+ ],
+ 'N5|grammar': [
+  [
+   "で — частица места, где происходит действие: 図書館で借りました — взял в библиотеке.",
+   "と — с кем: 友達と — с другом, совместное действие.",
+   "話せる — «умеет говорить». Этот глагол требует частицу が: 日本語が話せます.",
+   "の показывает принадлежность: 私のです — это мой.",
+   "かもしれません — «может быть»: 雨かもしれません — возможно, пойдёт дождь.",
+   "ませんか — мягкое предложение: 行きませんか — не хотите пойти?",
+   "Форма て + ください — просьба: 書いてください — напишите, пожалуйста.",
+   "ています — действие в процессе: 今、テレビを見ています — смотрю телевизор прямо сейчас.",
+   "住む — «жить», требует частицу に: 東京に住んでいます — живёт в Токио.",
+   "てもいいです — «можно»: 撮ってもいいです — фотографировать можно."
+  ],
+  [
+   "より — сравнение «чем»: あの店より安い — дешевле, чем тот магазин.",
+   "たい — желание: 行きたい — хочу пойти.",
+   "て + ください — просьба: ドアを開けてください — откройте, пожалуйста, дверь.",
+   "昨日 — «вчера». Для прошедшего времени нужна форма ました: 映画を見ました.",
+   "何 — «что». Вопрос о действии с частицей を: 何をしますか — что вы делаете?",
+   "さっき — «только что», значит прошедшее время: 先生に会いました — встретил учителя.",
+   "てはいけません — «нельзя»: ここでたばこを吸ってはいけません — здесь курить нельзя.",
+   "てもいいですか — «можно ли?» — вежливый вопрос о разрешении.",
+   "見よう + と思います — «думаю посмотреть». Форма 見よう — «давай посмотрим».",
+   "残念です — «жаль». 行けなくて — потому что не смог пойти, жаль."
+  ]
+ ],
+ 'N5|reading': [
+  [
+   "В тексте прямо сказано: ラーメンを食べました — ел рамен.",
+   "十五さい — 15 лет: 十 — десять, 五 — пять.",
+   "Сказано: за углом направо, и банк рядом с конбини (コンビニの隣).",
+   "午後は母と買い物に行きました — после обеда ходил по магазинам с мамой.",
+   "土曜日と日曜日は会社に行きません — по субботам и воскресеньям на работу не ходит.",
+   "料理が安くて、おいしいからです — причина: еда дешёвая и вкусная.",
+   "十時に駅で会いましょう — встреча в 10 часов на станции.",
+   "犬が好きです — нравятся собаки.",
+   "ゆうべは、とても暑かった — вечер был очень жарким, поэтому включил кондиционер (エアコンをつけて).",
+   "父と母と、兄がいます — с родителями и братом, всего четыре человека вместе с говорящим."
+  ],
+  [
+   "ゴルフは難しいですが、とても楽しいです — сложно, но очень весело: нравится.",
+   "朝九時から夜十時まで — с 9 утра до 10 вечера.",
+   "空港へ迎えに行くつもりです — собирается встретить друга в аэропорту.",
+   "今日は晴れて、とても気持ちがいいです — сегодня солнечно и приятно.",
+   "月曜日が休みです — по понедельникам библиотека закрыта.",
+   "お寺をたくさん見て、写真をたくさん撮りました — осматривал храмы и много фотографировал.",
+   "十一時から始まります — совещание начнётся в 11 часов.",
+   "病院で働いています — работает врачом в больнице.",
+   "まっすぐ行って、二つ目の信号を左に曲がってください — прямо, на втором светофоре налево; почта справа.",
+   "日本語はまだ少し難しいと言っています — говорит, что японский ещё немного трудный."
+  ]
+ ]
+};
+
+const TRANS = {
+ 'N5|kanji': [
+  [],
+  [
+   "Завтра, наверное, пойдёт дождь.",
+   "Мне нравятся собаки.",
+   "Каждое утро я пью воду.",
+   "Та гора высокая.",
+   "Во дворе есть большое дерево.",
+   "Горит огонь.",
+   "Я смотрю глазами.",
+   "Каждое утро я мою руки.",
+   "Сегодня небо красивое.",
+   "Там есть река."
+  ]
+ ],
+ 'N5|grammar': [
+  [
+   "Я взял книгу в библиотеке.",
+   "Я посмотрел фильм вместе с другом.",
+   "Я немного умею говорить по-японски.",
+   "Эта сумка моя.",
+   "Завтра, возможно, пойдёт дождь.",
+   "Не хотите пойти вместе?",
+   "Напишите, пожалуйста, имя ручкой.",
+   "Я сейчас смотрю телевизор.",
+   "Я живу в Токио.",
+   "Здесь можно фотографировать."
+  ],
+  [
+   "Этот магазин дешевле, чем тот.",
+   "Я хочу поехать в Японию.",
+   "Откройте, пожалуйста, дверь.",
+   "Вчера я посмотрел фильм.",
+   "Что вы делаете в воскресенье?",
+   "Только что я встретил учителя.",
+   "Здесь нельзя курить.",
+   "Можно сфотографировать?",
+   "На следующей неделе я думаю посмотреть фильм.",
+   "Жаль, что не смог пойти на вечеринку."
+  ]
+ ]
+};
+
+// ----- Фуригана: чтения слов, которые встречаются в заданиях -----
+const FURI = {
+    '一緒':'いっしょ','三月':'さんがつ','中国':'ちゅうごく','二':'に','京都':'きょうと','今':'いま',
+    '今日':'きょう','休':'やす','会':'あ','会社':'かいしゃ','会社員':'かいしゃいん','会議':'かいぎ',
+    '住':'す','佐藤':'さとう','何':'なに','何時':'なんじ','信号':'しんごう','借':'か',
+    '働':'はたら','兄':'あに','先生':'せんせい','先週':'せんしゅう','公園':'こうえん','写真':'しゃしん',
+    '前':'まえ','勉強':'べんきょう','医者':'いしゃ','十一時':'じゅういちじ','十五':'じゅうご','十時':'じゅうじ',
+    '午後':'ごご','友達':'ともだち','台所':'だいどころ','右':'みぎ','名前':'なまえ','吸':'す',
+    '四人':'よにん','図書館':'としょかん','土曜日':'どようび','夕方五時':'ゆうがたごじ','外国':'がいこく','多':'おお',
+    '夜十時':'よるじゅうじ','大':'おお','大好':'だいす','大学':'だいがく','天気':'てんき','好':'す',
+    '始':'はじ','学校':'がっこう','安':'やす','客':'きゃく','家':'いえ','家族':'かぞく',
+    '寝':'ね','寺':'てら','少':'すこ','左':'ひだり','広':'ひろ','店':'みせ',
+    '忙':'いそが','撮':'と','料理':'りょうり','旅行':'りょこう','日':'ひ','日曜日':'にちようび',
+    '日本':'にほん','日本語':'にほんご','明日':'あした','映画':'えいが','昨日':'きのう','晴':'は',
+    '暑':'あつ','曲':'ま','書':'か','月曜日':'げつようび','朝':'あさ','朝九時':'あさくじ',
+    '本':'ほん','来':'く','来年':'らいねん','来週':'らいしゅう','東京':'とうきょう','楽':'たの',
+    '残念':'ざんねん','母':'はは','毎日':'まいにち','毎朝':'まいあさ','毎週土曜日':'まいしゅうどようび','毎週日曜日':'まいしゅうにちようび',
+    '気持':'きも','父':'ちち','牛乳':'ぎゅうにゅう','物':'もの','犬':'いぬ','猫':'ねこ',
+    '田中':'たなか','留学生':'りゅうがくせい','病院':'びょういん','目':'め','私':'わたし','空港':'くうこう',
+    '経済':'けいざい','練習':'れんしゅう','行':'い','見':'み','角':'かど','言':'い',
+    '話':'はな','読':'よ','買':'か','迎':'むか','近':'ちか','道':'みち',
+    '郵便局':'ゆうびんきょく','銀行':'ぎんこう','開':'あ','降':'ふ','隣':'となり','難':'むずか',
+    '雨':'あめ','電車':'でんしゃ','食':'た','飯':'はん','駅':'えき','駅前':'えきまえ','思':'おも','水':'みず','火':'ひ','木':'き','山':'やま','人':'ひと','空':'そら','歩':'あるく','飲':'の','燃':'も','庭':'にわ','高':'たか','口':'くち','手':'て','足':'あし','耳':'みみ','雲':'くも','川':'かわ','三':'さん','洗':'あら','雪':'ゆき','霜':'しも'
+};
 
 const esc = x => String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const plural = (n, f) => { const a = n % 10, b = n % 100; return (a === 1 && b !== 11) ? f[0] : (a >= 2 && a <= 4 && (b < 12 || b > 14)) ? f[1] : f[2]; };
 const sectionKey = (lvl, cat) => `${lvl}|${cat}`;
 const isFreeTest = (lvl, cat, n) => n <= FREE_TESTS && !!BANK[sectionKey(lvl, cat)];
 const isOpenTest = (lvl, cat, n) => isFreeTest(lvl, cat, n) || owned.includes(lvl);
 
-function theme() { return localStorage.getItem('kanjizen_theme') === 'dark'; }
-function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.setItem('kanjizen_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); }
-if (theme()) document.documentElement.classList.add('dark');
-
-// ----- Список тестов раздела -----
-function renderList() {
-    const key = sectionKey(activeLevel, activeCat);
-    const bank = BANK[key] || [];
-    const cards = [];
-    for (let n = 1; n <= TESTS_PER_SECTION; n++) {
-        const free = isFreeTest(activeLevel, activeCat, n);
-        const open = isOpenTest(activeLevel, activeCat, n);
-        const hasQ = !!bank[n - 1];
-        const stat = (() => {
-            const done = localStorage.getItem(`kz_test_${key}_${n}`);
-            return done ? JSON.parse(done) : null;
-        })();
-        if (open && hasQ) {
-            cards.push(`
-                <button onclick="startTest(${n})" class="test-card group rise text-left glass rounded-3xl p-6 border border-amber-900/10 dark:border-zen-700/60" style="animation-delay:${n * 60}ms">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-200/70 dark:bg-amber-400/15 text-amber-900 dark:text-amber-200">Тест ${n}</span>
-                        ${free ? '<span class="text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-matcha-200/80 dark:bg-matcha-300/15 text-matcha-800 dark:text-matcha-200">Бесплатно</span>' : ''}
-                    </div>
-                    <p class="font-black text-xl mb-1">${CAT_NAME[activeCat]} · ${activeLevel}</p>
-                    <p class="text-sm text-zen-500 dark:text-zen-300 mb-5">10 вопросов${stat ? ` · лучший результат ${stat.best}/10` : ''}</p>
-                    <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-sm group-hover:gap-3 transition-all">Начать <i class="fa-solid fa-arrow-right text-xs"></i></div>
-                </button>`);
-        } else {
-            cards.push(`
-                <div class="test-card locked relative rounded-3xl overflow-hidden glass border border-amber-900/10 dark:border-zen-700/60 rise" style="animation-delay:${n * 60}ms">
-                    <div class="p-6 blur-[3px] select-none pointer-events-none">
-                        <p class="text-[10px] font-black px-2.5 py-1 rounded-full bg-zen-200/70 dark:bg-zen-800 w-fit mb-4">Тест ${n}</p>
-                        <p class="font-black text-xl mb-1">${CAT_NAME[activeCat]} · ${activeLevel}</p>
-                        <p class="text-sm mb-5">10 вопросов</p>
-                    </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-5" style="background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.9))">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-600 text-zen-900 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-3"><i class="fa-solid fa-lock"></i></div>
-                        <p class="font-black">Тест ${n} · полный доступ</p>
-                        <p class="text-xs text-zen-500 dark:text-zen-300 mt-1">Откроется после оформления подписки</p>
-                    </div>
-                </div>`);
-        }
-    }
-    view.innerHTML = `<div class="grid sm:grid-cols-2 gap-5">${cards.join('')}</div>`;
-    syncChrome();
+// ----- Фуригана и вопросы -----
+function ruby(text) {
+    const parts = String(text).split(/([\u4e00-\u9faf々]+)/);
+    return parts.map((part, i) => {
+        if (i % 2 === 0) return esc(part);
+        let r = FURI[part];
+        if (part === '母' && parts[i - 1] && parts[i - 1].endsWith('お')) r = 'かあ';
+        return r ? `<ruby>${esc(part)}<rt>${r}</rt></ruby>` : esc(part);
+    }).join('');
+}
+// Вопросы «как читается» и «что означает» не показывают чтение: иначе ответ был бы подсказан
+const isReadingQuiz = q => /^(Как читается|Что означает)/.test(q);
+function qHtml(text, withRuby, fillHtml) {
+    const fmt = t => withRuby ? ruby(t) : esc(t);
+    let used = false;
+    const blank = seg => seg.split('___').map(fmt).reduce((acc, part, i) => {
+        if (i === 0) return part;
+        const slot = (fillHtml && !used) ? fillHtml : '<span class="blank"></span>';
+        used = true;
+        return acc + slot + part;
+    }, '');
+    const m = String(text).match(/「([\s\S]*?)」/);
+    if (!m) return blank(text);
+    const pre = text.slice(0, m.index).trim();
+    const post = text.slice(m.index + m[0].length).trim();
+    return `${pre ? `<span class="q-pre">${fmt(pre)}</span>` : ''}<span class="jp-quote">${blank(m[1])}</span>${post ? `<span class="q-post">${fmt(post)}</span>` : ''}`;
 }
 
+function targetHtml(q, answered, ok, k) {
+    const m = q.q.match(/^(Как читается|Что означает(?: слово)?) ([^\s(?]+)(.*)$/);
+    if (!m) return null;
+    const word = m[2];
+    const rest = m[3].replace(/\?$/, '').trim();
+    const reading = m[1].startsWith('Как читается');
+    const cls = !answered ? '' : (ok ? 'ok' : 'miss');
+    const tgt = reading
+        ? `<ruby class="target ${answered ? 'revealed' : ''}">${esc(word)}<rt>${answered ? esc(q.a) : '？'}</rt></ruby>`
+        : `<span class="target ${answered ? 'revealed' : ''}">${esc(word)}</span>`;
+    return `<div class="kwrap"><span class="q-pre">${esc(m[1])}</span><span id="crystal-${k}" class="crystal ${cls}">${tgt}</span>${rest ? `<span class="q-post">${esc(rest)}</span>` : ''}</div>`;
+}
+
+// ----- Звук (тот же переключатель, что на справочнике) -----
+let audioCtx = null;
+let soundOn = localStorage.getItem('kanjizen_sound') !== '0';
+function audioCtxGet() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function tone(freq, dur, type, vol, when) {
+    if (!soundOn) return;
+    const c = audioCtxGet();
+    const t = c.currentTime + (when || 0);
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol || 0.08, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(c.destination);
+    o.start(t); o.stop(t + dur + 0.03);
+}
+function sfxRight() { tone(1046, .12, 'sine', .08, 0); tone(1568, .2, 'sine', .07, .06); }
+function sfxWrong() { tone(330, .14, 'triangle', .035, 0); tone(262, .2, 'triangle', .03, .09); }
+function sfxStar(i) { tone(880 + i * 220, .16, 'sine', .07, 0); }
+function victoryNote(freq, when, dur, vol) {
+    if (!soundOn) return;
+    const c = audioCtxGet();
+    const t = c.currentTime + when;
+    const o = c.createOscillator(), g = c.createGain(), f = c.createBiquadFilter();
+    o.type = 'sine'; o.frequency.value = freq;
+    f.type = 'lowpass'; f.frequency.value = 2600; f.Q.value = .4;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(f).connect(g).connect(c.destination);
+    o.start(t); o.stop(t + dur + 0.05);
+}
+function sfxFinish() {
+    [659.25, 783.99, 987.77].forEach((f, i) => victoryNote(f, i * .11, .35, .05));
+    [1318.5, 1567.98, 1975.53].forEach(f => victoryNote(f, .36, 1.4, .04));
+}
+function showCombo(n) {
+    document.getElementById('combo-banner')?.remove();
+    const el = document.createElement('div');
+    el.id = 'combo-banner';
+    el.innerHTML = `<div class="combo-kanji">連続</div><div class="combo-label">Серия ×${n}</div>`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+    tone(1318.5, .12, 'sine', .05, 0);
+    tone(1975.53, .22, 'sine', .045, .08);
+}
+function renderSoundIcon() { document.getElementById('sound-icon').className = 'fa-solid ' + (soundOn ? 'fa-volume-high' : 'fa-volume-xmark'); }
+function toggleSound() { soundOn = !soundOn; localStorage.setItem('kanjizen_sound', soundOn ? '1' : '0'); renderSoundIcon(); if (soundOn) sfxRight(); }
+
+// ----- Тема -----
+function toggleTheme() {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('kanjizen_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+}
+if (localStorage.getItem('kanjizen_theme') === 'dark') document.documentElement.classList.add('dark');
+
+// ----- Выбор уровня и раздела -----
 function syncChrome() {
-    document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('text-zen-900', b.dataset.lvl === activeLevel));
+    document.querySelectorAll('.lvl-btn').forEach(b => {
+        const on = b.dataset.lvl === activeLevel;
+        b.classList.toggle('text-zen-900', on);
+        b.classList.toggle('text-zen-600', !on);
+        b.classList.toggle('dark:text-zen-300', !on);
+    });
     document.querySelectorAll('.cat-btn').forEach(b => {
         const on = b.dataset.cat === activeCat;
-        b.className = 'cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2 transition-all ' + (on
+        b.className = 'cat-btn h-10 px-4 rounded-2xl border text-sm font-bold flex items-center gap-2 ' + (on
             ? 'border-amber-400 bg-gradient-to-r from-amber-300 to-amber-500 text-zen-900 shadow-lg shadow-amber-500/30'
             : 'border-amber-900/15 dark:border-zen-700 bg-white/50 dark:bg-zen-900/50 text-zen-600 dark:text-zen-300 hover:border-amber-400');
     });
     const b = document.querySelector(`.lvl-btn[data-lvl="${activeLevel}"]`), g = document.getElementById('lvl-glider');
     if (b && g) { g.style.left = b.offsetLeft + 'px'; g.style.width = b.offsetWidth + 'px'; }
+    document.getElementById('upsell-owned').innerText = owned.length
+        ? 'У вас открыт доступ: ' + LEVELS.filter(l => owned.includes(l)).join(', ')
+        : 'Оплата пока не подключена: это витрина того, что будет в полном доступе.';
 }
 
-// ----- Прохождение теста -----
-function startTest(n) {
-    const qs = BANK[sectionKey(activeLevel, activeCat)][n - 1];
-    run = { n, qs, i: 0, score: 0, sel: null, checked: false, answers: [] };
-    renderRun(true);
-}
-function renderRun(enter) {
-    const q = run.qs[run.i];
-    const dots = run.qs.map((_, k) => {
-        const st = run.answers[k];
-        const c = st === undefined ? (k === run.i ? 'bg-amber-400 scale-125' : 'bg-amber-900/15 dark:bg-zen-700') : (st ? 'bg-matcha-500' : 'bg-amber-700');
-        return `<span class="dot w-2.5 h-2.5 rounded-full ${c}"></span>`;
-    }).join('');
-    const opts = q.o.map((o, k) => {
-        let cls = 'opt flex items-center gap-3 p-4 rounded-2xl border border-amber-900/10 dark:border-zen-700 bg-white/70 dark:bg-zen-900/60 text-left';
-        if (run.checked) { if (o === q.a) cls += ' right'; else if (o === run.sel) cls += ' wrong'; }
-        else if (run.sel === o) cls += ' sel';
-        return `<button ${run.checked ? 'disabled' : ''} onclick="pickOpt(event, '${esc(o).replace(/'/g, '&#39;')}')" class="${cls}">
-            <span class="w-9 h-9 shrink-0 rounded-xl bg-amber-100/80 dark:bg-zen-800 text-amber-800 dark:text-amber-300 text-xs font-black flex items-center justify-center">${'АБВГ'[k]}</span>
-            <span class="font-jp text-lg font-semibold">${esc(o)}</span>
-            ${run.checked && o === q.a ? '<svg class="ml-auto w-5 h-5" viewBox="0 0 24 24"><path class="check-draw" d="M4 12.5l5 5L20 6.5" fill="none" stroke="#5f7d35" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
-        </button>`;
-    }).join('');
-    const foot = run.checked
-        ? `<div class="verdict flex-1 text-sm font-bold ${run.sel === q.a ? 'text-matcha-700 dark:text-matcha-300' : 'text-amber-800 dark:text-amber-300'}">${run.sel === q.a ? 'Верно!' : 'Правильно: ' + esc(q.a)}</div>
-           <button onclick="nextQ()" class="px-6 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold shadow-lg shadow-amber-600/30 hover:scale-[1.02] transition-transform">${run.i === run.qs.length - 1 ? 'Итог' : 'Далее'} <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></button>`
-        : `<button onclick="checkQ()" class="px-6 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold shadow-lg shadow-amber-600/30 transition-all ${run.sel ? '' : 'opacity-50 pointer-events-none'}">Проверить</button><span class="text-xs text-zen-400">Клавиши 1–4 и Enter</span>`;
-    view.innerHTML = `
-        <div class="${enter ? 'rise' : ''}">
-            <div class="flex items-center justify-between mb-5">
-                <button onclick="exitRun()" class="h-10 px-4 rounded-xl border border-amber-900/15 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-xmark mr-1 text-xs"></i>Выйти</button>
-                <p class="text-sm font-bold text-zen-500 dark:text-zen-300">Тест ${run.n} · ${CAT_NAME[activeCat]} · ${activeLevel}</p>
-            </div>
-            <div class="flex items-center justify-center gap-2 mb-6">${dots}</div>
-            <div class="q-in glass rounded-3xl p-6 md:p-8 border border-amber-900/10 dark:border-zen-700/60">
-                <p class="text-xs font-black uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400 mb-3">Вопрос ${run.i + 1} из ${run.qs.length}</p>
-                <h2 class="text-xl md:text-2xl font-bold leading-relaxed mb-7">${qHtml(q.q)}</h2>
-                <div class="grid sm:grid-cols-2 gap-3">${opts}</div>
-                <div class="mt-6 flex items-center gap-4 min-h-[44px]">${foot}</div>
-            </div>
-        </div>`;
-}
-function qHtml(text) {
-    const m = String(text).match(/「([\s\S]*?)」/);
-    if (m) return `<span class="block font-jp text-lg md:text-xl leading-loose text-zen-900 dark:text-amber-50 mb-3 p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-400/10 border border-amber-200/70 dark:border-amber-500/20">${esc(m[1])}</span>${esc(text.replace(m[0], '').trim())}`;
-    return text.includes('___') ? esc(text).replace('___', '<span class="inline-block mx-1 px-3 border-b-4 border-amber-400 text-amber-600 dark:text-amber-300">&nbsp;&nbsp;&nbsp;&nbsp;</span>') : esc(text);
-}
-function pickOpt(ev, o) {
-    if (run.checked) return;
-    run.sel = o;
-    const btn = ev.currentTarget, r = btn.getBoundingClientRect(), size = Math.max(r.width, r.height);
-    const d = document.createElement('span'); d.className = 'ripple';
-    d.style.width = d.style.height = size + 'px';
-    d.style.left = (ev.clientX - r.left - size / 2) + 'px'; d.style.top = (ev.clientY - r.top - size / 2) + 'px';
-    btn.appendChild(d); setTimeout(() => d.remove(), 650);
-    renderRun(false);
-}
-function checkQ() {
-    if (!run.sel || run.checked) return;
-    run.checked = true;
-    const ok = run.sel === run.qs[run.i].a;
-    run.answers[run.i] = ok;
-    if (ok) { run.score++; burst(); }
-    renderRun(false);
-}
-function nextQ() {
-    if (run.i < run.qs.length - 1) { run.i++; run.sel = null; run.checked = false; renderRun(true); }
-    else finishRun();
-}
-function finishRun() {
+// ----- Список тестов -----
+function starsFor(stat) { return stat && stat.stars ? stat.stars : 0; }
+function testCard(n) {
     const key = sectionKey(activeLevel, activeCat);
-    const prev = JSON.parse(localStorage.getItem(`kz_test_${key}_${run.n}`) || 'null');
-    const best = Math.max(run.score, prev ? prev.best : 0);
-    localStorage.setItem(`kz_test_${key}_${run.n}`, JSON.stringify({ best }));
-    const pct = Math.round(run.score / run.qs.length * 100);
-    const great = run.score >= 8;
-    view.innerHTML = `
-        <div class="rise glass rounded-3xl p-8 md:p-10 border border-amber-900/10 dark:border-zen-700/60 text-center">
-            <div class="relative w-40 h-40 mx-auto mb-6">
-                <svg viewBox="0 0 36 36" class="w-40 h-40 -rotate-90"><circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" class="text-amber-900/10 dark:text-zen-700" stroke-width="2.4"/><circle class="ring" cx="18" cy="18" r="15.5" fill="none" stroke="${great ? '#7a9c4a' : '#f59e0b'}" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <p class="text-4xl font-black">${run.score}<span class="text-lg text-zen-400">/10</span></p>
-                    <p class="text-xs uppercase tracking-widest text-zen-400">${pct}%</p>
+    const bank = BANK[key] || [];
+    const hasQ = !!bank[n - 1];
+    const open = hasQ && isOpenTest(activeLevel, activeCat, n);
+    const free = isFreeTest(activeLevel, activeCat, n);
+    const stat = JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null');
+    const delay = `animation-delay:${n * 70}ms`;
+    if (open) {
+        return `<button onclick="startTest(${n})" class="tcard rise ${stat && stat.solved ? 'solved' : ''}" style="${delay}">
+            <div class="flex items-start justify-between gap-2">
+                <span class="tnum">${String(n).padStart(2, '0')}</span>
+                <div class="flex flex-col items-end gap-2">
+                    ${free ? '<span class="chip-free">Бесплатно</span>' : ''}
+                    ${stat && stat.solved ? '<span class="solved-badge"><i class="fa-solid fa-check"></i>Решён</span>' : ''}
                 </div>
             </div>
-            <p class="gold-text text-3xl font-black font-jp mb-2">${great ? 'すごい！' : 'がんばって！'}</p>
-            <p class="text-zen-500 dark:text-zen-300 mb-7">${great ? 'Отличный результат. Вы хорошо знаете материал.' : 'Повторите вопросы с ошибками и попробуйте ещё раз.'}</p>
-            <div class="flex items-center justify-center gap-3 flex-wrap">
-                <button onclick="startTest(${run.n})" class="px-6 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold shadow-lg shadow-amber-600/30 hover:scale-[1.02] transition-transform">Пройти ещё раз</button>
+            <p class="text-2xl font-black mt-6">${CAT[activeCat].name}</p>
+            <p class="text-sm text-zen-500 dark:text-zen-300">Уровень ${activeLevel} · 10 вопросов</p>
+            <div class="flex items-center justify-between mt-6">
+                <div>${[1, 2, 3].map(i => `<i class="fa-solid fa-star ${starsFor(stat) >= i ? 'on' : ''}"></i>`).join('')}</div>
+                <span class="text-amber-700 dark:text-amber-400 font-bold text-sm flex items-center gap-2">${stat ? 'Ещё раз' : 'Начать'} <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </button>`;
+    }
+    return `<div class="tcard locked rise" style="${delay}">
+        <div class="select-none pointer-events-none blur-[3px]" aria-hidden="true">
+            <span class="tnum">${String(n).padStart(2, '0')}</span>
+            <p class="text-2xl font-black mt-6">${CAT[activeCat].name}</p>
+            <div class="skeleton h-4 w-11/12 mt-5"></div>
+            <div class="skeleton h-4 w-8/12 mt-2"></div>
+            <div class="skeleton h-12 w-full mt-6"></div>
+        </div>
+        <div class="locked-overlay absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+            <div class="lock-orb"><i class="fa-solid fa-lock"></i></div>
+            <p class="font-black mt-3">Тест ${n} · полный доступ</p>
+            <p class="text-xs text-zen-500 dark:text-zen-300 mt-1">${hasQ ? 'Откроется в полном доступе' : 'Скоро'}</p>
+        </div>
+    </div>`;
+}
+function renderList() {
+    run = null;
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    syncChrome();
+    const key = sectionKey(activeLevel, activeCat);
+    const hasFree = !!BANK[key];
+    const banner = hasFree
+        ? `<div class="glass rounded-2xl px-5 py-4 mb-6 flex items-center gap-4 rise">
+               <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-600 flex items-center justify-center text-zen-900 shrink-0"><i class="fa-solid fa-gift"></i></div>
+               <p class="text-sm"><b>Попробуйте бесплатно:</b> тесты 1–2 открыты всем. Остальные тесты раздела — в полном доступе.</p>
+           </div>`
+        : '';
+    const cards = [1, 2, 3, 4, 5].map(n => testCard(n)).join('');
+    view.innerHTML = `${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
+}
+
+// ----- Прохождение теста: все вопросы сразу, ответ сразу проверяется -----
+function startTest(n) {
+    const qs = BANK[sectionKey(activeLevel, activeCat)][n - 1];
+    run = { n, qs, expl: (EXPL[sectionKey(activeLevel, activeCat)] || [])[n - 1] || [], trans: (TRANS[sectionKey(activeLevel, activeCat)] || [])[n - 1] || [], sel: new Array(qs.length).fill(undefined), ok: [], comboAt: [], combo: 0, maxCombo: 0, score: 0, finished: false };
+    controls.classList.add('hidden');
+    upsell.classList.add('hidden');
+    view.innerHTML = `
+        <div class="rise">
+            <div class="sticky top-16 z-30 pt-2 pb-3">
+                <div class="glass rounded-2xl px-4 py-3 border border-amber-900/10 dark:border-zen-700/60 flex items-center gap-4">
+                    <button onclick="exitRun()" class="h-10 w-10 shrink-0 rounded-xl border border-amber-900/15 dark:border-zen-700 flex items-center justify-center hover:border-amber-400 transition-colors" title="Выйти"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-[11px] uppercase tracking-[0.2em] font-black text-amber-700 dark:text-amber-400 truncate">Тест ${n} · ${CAT[activeCat].name} · ${activeLevel}</p>
+                        <div class="progress-track mt-2"><div id="run-bar" class="progress-fill"></div></div>
+                    </div>
+                    <div id="run-combo" class="hidden"></div>
+                    <div class="text-right shrink-0 pl-2">
+                        <p class="text-[10px] text-zen-400 uppercase tracking-widest">Верно</p>
+                        <p id="run-score" class="font-black text-xl tabular-nums">0</p>
+                    </div>
+                </div>
+            </div>
+            <div id="run-stream" class="space-y-6 mt-4"></div>
+            <div id="run-end"></div>
+        </div>`;
+    document.getElementById('run-stream').innerHTML = qs.map((_, k) => blockHtml(k)).join('');
+    updateProgress();
+    renderEnd();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function blockHtml(k) {
+    const q = run.qs[k];
+    const sel = run.sel[k];
+    const answered = sel !== undefined;
+    const isRead = /^(Как читается|Что означает)/.test(q.q);
+    const withRuby = !isRead;
+    const isGrammar = q.q.includes('___');
+    const kt = q.o.every(o => /^[\u4e00-\u9faf]$/.test(o)) ? ' kanji-tile' : '';
+    const tiles = q.o.map((o, j) => {
+        let cls = 'tile';
+        if (answered) {
+            if (o === q.a) cls += ' right';
+            else if (o === sel) cls += ' wrong';
+            else cls += ' dim';
+        }
+        const icon = answered && o === q.a ? '<i class="fa-solid fa-circle-check tile-icon"></i>'
+            : (answered && o === sel && o !== q.a ? '<i class="fa-solid fa-circle-xmark tile-icon"></i>' : '');
+        return `<button class="${cls}${kt}" ${answered ? 'disabled' : ''} onclick="pickOpt(${k}, ${j})">
+            <span class="letter">${'АБВГ'[j]}</span>
+            <span class="tile-text">${withRuby ? ruby(o) : esc(o)}</span>
+            ${icon}
+        </button>`;
+    }).join('');
+    let verdict = '';
+    if (answered) {
+        verdict = run.ok[k]
+            ? `<p class="verdict-in text-sm font-bold text-matcha-700 dark:text-matcha-300"><i class="fa-solid fa-sparkles mr-1"></i>Верно!${run.comboAt[k] >= 2 ? ` Серия ${run.comboAt[k]}` : ''}</p>`
+            : `<p class="verdict-in text-sm font-bold text-amber-800 dark:text-amber-300">Правильный ответ: ${withRuby ? ruby(q.a) : esc(q.a)}</p>`;
+    }
+    let fillHtml = null;
+    if (isGrammar && answered) {
+        const chip = (t, c) => `<span class="blank filled ${c}">${withRuby ? ruby(t) : esc(t)}</span>`;
+        fillHtml = run.ok[k] ? chip(q.a, 'ok') : chip(sel, 'miss') + '<span class="fill-arrow">→</span>' + chip(q.a, 'ok');
+    }
+    const trans = answered && run.ok[k] && run.trans[k]
+        ? `<div class="trans-box"><span class="trans-ico"><i class="fa-solid fa-language"></i></span><p class="trans-text">${esc(run.trans[k])}</p></div>`
+        : '';
+    const expl = answered && run.expl[k]
+        ? `<div class="expl verdict-in"><span class="expl-ico"><i class="fa-solid fa-lightbulb"></i></span><div><p class="expl-title">Почему так</p><p class="expl-text">${ruby(run.expl[k])}</p></div></div>`
+        : '';
+    const state = !answered ? '' : (run.ok[k] ? 'state-ok' : 'state-miss');
+    const qh = isRead ? targetHtml(q, answered, run.ok[k], k) : qHtml(q.q, withRuby, fillHtml);
+    return `<article id="qb-${k}" class="qcard ${state} glass rounded-[28px] p-6 md:p-9 border border-amber-900/10 dark:border-zen-700/60">
+        <div class="flex items-end gap-4 mb-5">
+            <span class="qnum">${String(k + 1).padStart(2, '0')}</span>
+            <span class="text-[11px] font-black uppercase tracking-[0.2em] text-zen-400 pb-1">из ${run.qs.length}</span>
+        </div>
+        <h2 class="qtext">${qh}</h2>
+        <div class="grid sm:grid-cols-2 gap-3 mt-7">${tiles}</div>
+        <div class="mt-5 min-h-[24px]">${verdict}</div>
+        ${trans}
+        ${expl}
+    </article>`;
+}
+function rerenderQ(k) { const el = document.getElementById(`qb-${k}`); if (el) el.outerHTML = blockHtml(k); }
+function updateProgress() {
+    const total = run.qs.length;
+    const done = run.sel.filter(v => v !== undefined).length;
+    document.getElementById('run-bar').style.width = (done / total * 100) + '%';
+    document.getElementById('run-score').textContent = run.score + '/' + total;
+    const cb = document.getElementById('run-combo');
+    if (run.combo >= 2) {
+        cb.className = 'combo-badge bump';
+        cb.innerHTML = `<i class="fa-solid fa-fire"></i>×${run.combo}`;
+        void cb.offsetWidth;
+    } else {
+        cb.className = 'hidden';
+        cb.innerHTML = '';
+    }
+}
+function renderEnd() {
+    const end = document.getElementById('run-end');
+    if (!end || !run || run.finished) return;
+    const done = run.sel.filter(v => v !== undefined).length;
+    const total = run.qs.length;
+    end.innerHTML = `
+        <div class="mt-10 flex flex-col items-center gap-3">
+            <button onclick="finishRun()" ${done === total ? '' : 'disabled'} class="px-9 h-14 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-black text-lg shadow-lg shadow-amber-600/30 transition-all hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100">Смотреть результат</button>
+            <p class="text-xs text-zen-400">Отвечено ${done} из ${total}</p>
+        </div>`;
+}
+function pickOpt(k, j) {
+    if (!run || run.finished || run.sel[k] !== undefined) return;
+    const q = run.qs[k];
+    const val = q.o[j];
+    const ok = val === q.a;
+    run.sel[k] = val;
+    run.ok[k] = ok;
+    if (ok) {
+        run.score++;
+        run.combo++;
+        run.maxCombo = Math.max(run.maxCombo, run.combo);
+        run.comboAt[k] = run.combo;
+        sfxRight();
+        burst(k);
+    } else {
+        run.combo = 0;
+        sfxWrong();
+    }
+    rerenderQ(k);
+    const crystal = document.getElementById(`crystal-${k}`);
+    if (crystal) {
+        const w = document.createElement('span');
+        w.className = 'wave';
+        w.style.borderColor = ok ? '#7a9c4a' : '#953519';
+        crystal.appendChild(w);
+        setTimeout(() => w.remove(), 1100);
+    }
+    if (ok && [3, 5, 8, 10].includes(run.combo)) showCombo(run.combo);
+    updateProgress();
+    renderEnd();
+}
+function finishRun() {
+    if (!run || run.finished || run.sel.filter(v => v !== undefined).length < run.qs.length) return;
+    const r = run;
+    r.finished = true;
+    const total = r.qs.length;
+    const pct = Math.round(r.score / total * 100);
+    const stars = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 40 ? 1 : 0;
+    const key = `kz_test_${sectionKey(activeLevel, activeCat)}_${r.n}`;
+    const prev = JSON.parse(localStorage.getItem(key) || 'null') || {};
+    localStorage.setItem(key, JSON.stringify({
+        best: Math.max(r.score, prev.best || 0),
+        stars: Math.max(stars, prev.stars || 0),
+        solved: true
+    }));
+    const end = document.getElementById('run-end');
+    end.innerHTML = `<div class="flex flex-col items-center py-14"><div class="grade-spin"></div><p class="mt-5 text-xs font-black uppercase tracking-[0.3em] text-amber-700 dark:text-amber-400">Считаем результат</p></div>`;
+    setTimeout(() => {
+        const titles = [
+            ['がんばって！', 'Посмотрите ошибки выше и попробуйте ещё раз: со второго раза идёт быстрее.'],
+            ['いいね！', 'Хороший старт. Повторите то, что не вышло, и результат вырастет.'],
+            ['すごい！', 'Отличный результат. Материал уже хорошо закреплён.'],
+            ['完璧！', 'Идеально! Все ответы верные.']
+        ];
+        const idx = stars === 0 ? 0 : stars === 1 ? 1 : stars === 2 ? 2 : 3;
+        const [title, msg] = titles[idx];
+        const hasNext = r.n < TESTS_PER_SECTION && !!BANK[sectionKey(activeLevel, activeCat)][r.n] && isOpenTest(activeLevel, activeCat, r.n + 1);
+        end.innerHTML = `
+        <div class="finish-in glass rounded-[32px] p-8 md:p-12 border border-amber-900/10 dark:border-zen-700/60 text-center mt-8">
+            <div class="flex justify-center gap-3 mb-6">
+                ${[1, 2, 3].map(i => `<i class="fa-solid fa-star text-4xl ${stars >= i ? 'on star-in' : ''}" style="${stars >= i ? `animation-delay:${0.25 + i * 0.22}s` : ''}"></i>`).join('')}
+            </div>
+            <div class="relative w-44 h-44 mx-auto mb-6">
+                <svg viewBox="0 0 36 36" class="w-44 h-44 -rotate-90"><circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" class="text-amber-900/10 dark:text-zen-700" stroke-width="2.4"/><circle id="res-ring" class="ring" cx="18" cy="18" r="15.5" fill="none" stroke="#d9532b" stroke-width="2.4" stroke-linecap="round" style="stroke-dasharray:97.4;stroke-dashoffset:97.4"/></svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <p class="text-4xl font-black"><span id="res-count">0</span><span class="text-lg text-zen-400">%</span></p>
+                    <p class="text-xs uppercase tracking-widest text-zen-400 mt-1">${r.score} из ${total}</p>
+                </div>
+            </div>
+            <p class="gold-text text-4xl font-black font-jp mb-2">${title}</p>
+            <p class="text-zen-500 dark:text-zen-300 max-w-md mx-auto">${msg}</p>
+            <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mt-8">
+                <div class="rounded-2xl bg-white/60 dark:bg-zen-900/50 p-4 border border-amber-900/10 dark:border-zen-700/60"><p class="text-2xl font-black">${r.score}</p><p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">Верно</p></div>
+                <div class="rounded-2xl bg-white/60 dark:bg-zen-900/50 p-4 border border-amber-900/10 dark:border-zen-700/60"><p class="text-2xl font-black">${r.maxCombo}</p><p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">Лучшая серия</p></div>
+                <div class="rounded-2xl bg-white/60 dark:bg-zen-900/50 p-4 border border-amber-900/10 dark:border-zen-700/60"><p class="text-2xl font-black">${stars}/3</p><p class="text-[11px] uppercase tracking-wider text-zen-400 mt-1">Звёзды</p></div>
+            </div>
+            <div class="flex items-center justify-center gap-3 flex-wrap mt-9">
+                ${hasNext ? `<button onclick="startTest(${r.n + 1})" class="px-7 h-13 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-black shadow-lg shadow-amber-600/30 hover:scale-[1.02] transition-transform">Следующий тест <i class="fa-solid fa-arrow-right ml-1"></i></button>` : ''}
+                <button onclick="startTest(${r.n})" class="px-6 h-12 rounded-2xl border border-amber-900/15 dark:border-zen-700 font-bold hover:border-amber-400 transition-colors">Пройти ещё раз</button>
                 <button onclick="exitRun()" class="px-6 h-12 rounded-2xl border border-amber-900/15 dark:border-zen-700 font-bold hover:border-amber-400 transition-colors">К тестам</button>
             </div>
         </div>`;
-    setTimeout(() => {
-        const c = document.querySelector('circle.ring');
-        if (c) c.style.strokeDashoffset = String(97.4 * (1 - run.score / run.qs.length));
-    }, 60);
-    if (great) for (let i = 0; i < 2; i++) setTimeout(burst, 200 + i * 250);
-    run = null;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            const c = document.getElementById('res-ring');
+            if (c) c.style.strokeDashoffset = String(97.4 * (1 - pct / 100));
+        }));
+        const numEl = document.getElementById('res-count');
+        const t0 = performance.now();
+        const step = now => {
+            const t = Math.min(1, (now - t0) / 1100);
+            if (numEl) numEl.textContent = Math.round(pct * (1 - Math.pow(1 - t, 3)));
+            if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        sfxFinish();
+        for (let i = 0; i < stars; i++) setTimeout(() => sfxStar(i), 300 + i * 220);
+        if (stars >= 2) for (let i = 0; i < 2; i++) setTimeout(() => burst(), 500 + i * 300);
+        end.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 900);
 }
 function exitRun() { run = null; renderList(); }
 
-function burst() {
+function burst(k) {
     const glyphs = ['正', '良', '完', '花', '光', '星'];
-    const colors = ['#f59e0b', '#fbbf24', '#7a9c4a', '#fde68a'];
+    const colors = ['#d9532b', '#e8794a', '#7a9c4a', '#f5c3a6'];
+    const el = k !== undefined ? document.getElementById(`qb-${k}`) : null;
+    const r = el ? el.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight * .4, width: 0, height: 0 };
+    const cx = r.left + r.width / 2, cy = r.top + Math.min(r.height / 2, 120);
     for (let i = 0; i < 12; i++) {
         const p = document.createElement('span');
         p.className = 'particle';
         p.textContent = glyphs[i % glyphs.length];
         const ang = (Math.PI * 2 * i) / 12, dist = 60 + Math.random() * 60;
-        p.style.left = '50%'; p.style.top = '45%';
+        p.style.left = cx + 'px'; p.style.top = cy + 'px';
         p.style.fontSize = (14 + Math.random() * 12) + 'px';
         p.style.color = colors[i % colors.length];
         p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
@@ -381,13 +946,15 @@ function burst() {
 }
 
 // ----- Управление -----
-document.querySelectorAll('.lvl-btn').forEach(b => b.addEventListener('click', () => { activeLevel = b.dataset.lvl; run = null; renderList(); }));
-document.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => { activeCat = b.dataset.cat; run = null; renderList(); }));
+document.querySelectorAll('.lvl-btn').forEach(b => b.addEventListener('click', () => { activeLevel = b.dataset.lvl; renderList(); }));
+document.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => { activeCat = b.dataset.cat; renderList(); }));
 window.addEventListener('resize', syncChrome);
 document.addEventListener('keydown', e => {
-    if (!run || e.target.tagName === 'INPUT') return;
-    if (['1', '2', '3', '4'].includes(e.key) && !run.checked) pickOpt({ currentTarget: document.querySelectorAll('#view .opt')[Number(e.key) - 1] || { getBoundingClientRect: () => ({ left: 0, top: 0, width: 0, height: 0 }) }, clientX: 0, clientY: 0 }, run.qs[run.i].o[Number(e.key) - 1]);
-    if (e.key === 'Enter') { if (!run.checked) checkQ(); else nextQ(); }
+    if (!run || run.finished || e.target.tagName === 'INPUT') return;
+    const k = run.sel.findIndex(v => v === undefined);
+    const idx = Number(e.key) - 1;
+    if (['1', '2', '3', '4'].includes(e.key) && k >= 0 && run.qs[k].o[idx] !== undefined) pickOpt(k, idx);
+    if (e.key === 'Enter') finishRun();
 });
 
 (async function init() {
@@ -398,6 +965,7 @@ document.addEventListener('keydown', e => {
             owned = (data || []).map(x => x.level);
         }
     } catch (e) { owned = []; }
+    renderSoundIcon();
     renderList();
 })();
 </script>
