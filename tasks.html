@@ -25,7 +25,7 @@
 :root, html[data-pal="classic"] { --zen-50: 246 245 251; --zen-100: 236 235 245; --zen-200: 217 215 234; --zen-300: 184 181 211; --zen-400: 142 138 176; --zen-500: 103 99 138; --zen-600: 79 75 114; --zen-700: 58 54 90; --zen-800: 42 39 72; --zen-900: 27 25 52; --zen-950: 14 13 31; --amber-50: 255 240 248; --amber-100: 255 214 238; --amber-200: 255 173 217; --amber-300: 255 122 196; --amber-400: 255 79 176; --amber-500: 255 42 156; --amber-600: 212 26 125; --amber-700: 168 20 95; --amber-800: 125 15 70; --amber-900: 86 10 48; --amber-950: 51 5 28; --matcha-50: 244 255 233; --matcha-100: 228 255 199; --matcha-200: 201 255 147; --matcha-300: 173 255 94; --matcha-400: 144 242 58; --matcha-500: 111 216 22; --matcha-600: 79 168 12; --matcha-700: 59 125 10; --matcha-800: 45 94 9; --matcha-900: 31 66 6; --matcha-950: 19 42 3; }
 html.dark, html[data-pal="classic"].dark { --zen-50: 246 245 251; --zen-100: 236 235 245; --zen-200: 217 215 234; --zen-300: 184 181 211; --zen-400: 142 138 176; --zen-500: 103 99 138; --zen-600: 79 75 114; --zen-700: 58 54 90; --zen-800: 42 39 72; --zen-900: 27 25 52; --zen-950: 14 13 31; --amber-50: 255 240 248; --amber-100: 255 214 238; --amber-200: 255 173 217; --amber-300: 255 122 196; --amber-400: 255 79 176; --amber-500: 255 42 156; --amber-600: 212 26 125; --amber-700: 168 20 95; --amber-800: 125 15 70; --amber-900: 86 10 48; --amber-950: 51 5 28; --matcha-50: 244 255 233; --matcha-100: 228 255 199; --matcha-200: 201 255 147; --matcha-300: 173 255 94; --matcha-400: 144 242 58; --matcha-500: 111 216 22; --matcha-600: 79 168 12; --matcha-700: 59 125 10; --matcha-800: 45 94 9; --matcha-900: 31 66 6; --matcha-950: 19 42 3; }
         html[data-pal="gold"] { --zen-50: 246 245 251; --zen-100: 236 235 245; --zen-200: 217 215 234; --zen-300: 184 181 211; --zen-400: 142 138 176; --zen-500: 103 99 138; --zen-600: 79 75 114; --zen-700: 58 54 90; --zen-800: 42 39 72; --zen-900: 27 25 52; --zen-950: 14 13 31; --amber-50: 255 251 235; --amber-100: 253 243 201; --amber-200: 250 227 138; --amber-300: 246 207 79; --amber-400: 242 185 46; --amber-500: 224 159 18; --amber-600: 187 125 10; --amber-700: 149 96 10; --amber-800: 116 73 14; --amber-900: 84 52 12; --amber-950: 51 32 10; --matcha-50: 244 255 233; --matcha-100: 228 255 199; --matcha-200: 201 255 147; --matcha-300: 173 255 94; --matcha-400: 144 242 58; --matcha-500: 111 216 22; --matcha-600: 79 168 12; --matcha-700: 59 125 10; --matcha-800: 45 94 9; --matcha-900: 31 66 6; --matcha-950: 19 42 3; }
-        html.dark[data-pal="gold"] { --zen-50: 246 245 251; --zen-100: 236 235 245; --zen-200: 217 215 234; --zen-300: 184 181 211; --zen-400: 142 138 176; --zen-500: 103 99 138; --zen-600: 79 75 114; --zen-700: 58 54 90; --zen-800: 42 39 72; --zen-900: 27 25 52; --zen-950: 14 13 31; --amber-50: 255 251 235; --amber-100: 253 243 201; --amber-200: 250 227 138; --amber-300: 246 207 79; --amber-400: 242 185 46; --amber-500: 224 159 18; --amber-600: 187 125 10; --amber-700: 149 96 10; --amber-800: 116 73 14; --amber-900: 84 52 12; --amber-950: 51 32 10; --matcha-50: 244 255 233; --matcha-100: 228 255 199; --matcha-200: 201 255 147; --matcha-300: 173 255 94; --matcha-400: 144 242 58; --matcha-500: 111 216 22; --matcha-600: 79 168 12; --matcha-700: 59 125 10; --matcha-800: 45 94 9; --matcha-900: 31 66 6; --matcha-950: 19 42 3; }
+        html.dark[data-pal="gold"] { --cp-bg: #0a0908; --cp-bg2: #14110b; --cp-surface: rgba(24,19,12,.84); --cp-surface2: rgba(36,28,16,.94); --cp-line: rgba(245,192,74,.42); --cp-text: #fbf5e6; --cp-muted: #c2b184; --cp-primary: #f5c04a; --cp-accent: #4fd8ff; --cp-success: #b6f542; --cp-danger: #ff4d6d; --cp-highlight: #a78bfa; --cp-warn: #ff8a3d; }
 
         html { font-size: 17px; }
         .ink-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -455,7 +455,26 @@ html.dark, html[data-pal="classic"].dark { --zen-50: 246 245 251; --zen-100: 236
         html:not(.dark) .locked-overlay { background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(250,246,252,.92)) !important; }
         .passage { background: linear-gradient(160deg, var(--cp-surface), var(--cp-surface2)) !important; border: 1px solid var(--cp-line) !important; box-shadow: 0 0 28px -14px var(--cp-primary); }
         .passage .q-pre { color: var(--cp-accent); }
+
+        /* ---- неон золотой тёмной темы (как на скриншотах): свечение рамок и заголовков ---- */
+        html.dark[data-pal="gold"] .glass, html.dark[data-pal="gold"] .tcard {
+            box-shadow: 0 0 0 1px rgba(245,192,74,.22), 0 0 28px -10px rgba(245,192,74,.45) !important;
+        }
+        html.dark[data-pal="gold"] .tcard:not(.locked):hover {
+            box-shadow: 0 0 0 1px rgba(79,216,255,.5), 0 0 30px -6px rgba(79,216,255,.55) !important;
+        }
+        html.dark[data-pal="gold"] .gold-text { filter: drop-shadow(0 0 12px rgba(245,192,74,.55)); }
     </style>
+<script>
+(function () {
+    // Тема: если пользователь уже выбирал — берём его выбор, иначе — настройку браузера
+    var saved = localStorage.getItem('kanjizen_theme');
+    var dark = saved ? saved === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) document.documentElement.classList.add('dark');
+    var pal = localStorage.getItem('kanjizen_pal');
+    document.documentElement.dataset.pal = (pal === 'classic' || pal === 'gold') ? pal : 'gold';
+})();
+</script>
 </head>
 <body class="text-zen-800 dark:text-zen-100 font-sans antialiased">
 <div class="ink-bg" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -527,10 +546,10 @@ html.dark, html[data-pal="classic"].dark { --zen-50: 246 245 251; --zen-100: 236
 </main>
 
 <script>
-document.documentElement.dataset.pal = ['classic','gold'].includes(localStorage.getItem('kanjizen_pal')) ? localStorage.getItem('kanjizen_pal') : 'classic';
-const PALS = ['classic', 'gold'];
+// палитра и тема уже выставлены в <head>
+const PALS = ['gold', 'classic'];
 function cyclePal() {
-    const cur = document.documentElement.dataset.pal || 'classic';
+    const cur = document.documentElement.dataset.pal || 'gold';
     const next = PALS[(PALS.indexOf(cur) + 1) % PALS.length];
     document.documentElement.dataset.pal = next;
     localStorage.setItem('kanjizen_pal', next);
@@ -944,7 +963,7 @@ function toggleTheme() {
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('kanjizen_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 }
-if (localStorage.getItem('kanjizen_theme') === 'dark') document.documentElement.classList.add('dark');
+// тема уже выставлена в <head>
 
 // ----- Выбор уровня и раздела -----
 function syncChrome() {

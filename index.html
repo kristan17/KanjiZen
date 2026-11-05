@@ -307,6 +307,14 @@
     else { sessionStorage.setItem('kz_intro', '1'); window.addEventListener('load', () => setTimeout(() => document.getElementById('splash').classList.add('out'), 2100)); }
     document.addEventListener('DOMContentLoaded', () => { if (document.documentElement.classList.contains('no-splash')) document.getElementById('splash').remove(); });
 </script>
+<script>
+(function () {
+    // Тема: если пользователь уже выбирал — берём его выбор, иначе — настройку браузера
+    var saved = localStorage.getItem('kanjizen_theme');
+    var dark = saved ? saved === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) document.documentElement.classList.add('dark');
+})();
+</script>
 </head>
 <body class="bg-zen-100/70 text-zen-800 dark:bg-zen-900 dark:text-zen-100 min-h-screen flex flex-col transition-colors duration-300">
 <div id="splash" aria-hidden="true">
@@ -2596,6 +2604,7 @@
 
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
+            localStorage.setItem('kanjizen_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         }
 
         function setMainCategory(cat) {
