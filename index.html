@@ -209,9 +209,9 @@
         .wr-num.on { background: linear-gradient(90deg,#fbbf24,#f59e0b); color: #3b2a14; border-color: #f59e0b; box-shadow: 0 6px 14px -6px rgba(245,158,11,.8); }
         .wr-chip { cursor: pointer; }
         .egg-pop { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; background: rgba(20,15,9,.6); backdrop-filter: blur(4px); cursor: pointer; animation: eggIn .35s ease both; border-radius: inherit; }
-        .egg-face { font-size: 6rem; line-height: 1; animation: eggShake .5s ease 3; }
+        .egg-face { font-size: 9rem; line-height: 1; margin-bottom: 2.5rem; animation: eggShake .5s ease 3; }
         .egg-title { margin-top: .6rem; font-size: 1.9rem; font-weight: 900; color: #fde68a; }
-        .egg-text { margin-top: .5rem; max-width: 24rem; line-height: 1.6; color: #f5ead6; }
+        .egg-text { margin-top: 0; max-width: 24rem; line-height: 1.6; color: #f5ead6; }
         .egg-hint { margin-top: 1rem; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(245,234,214,.6); }
         @keyframes eggIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes eggShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
@@ -1976,33 +1976,34 @@
             WR_TRAP_TRY = true;
             try { WR_TRAP = await wrLoadRef('卍'); } catch (e) { WR_TRAP = null; }
         }
-        function wrIsSwastika() {
-            const strokes = WR.strokes.filter(s => s.length > 3);
-            if (strokes.length < 2) return false;
-            // резкие изломы черт (у свастики черты с крючками): поворот больше ~60° на отрезке из 3 шагов
-            let turns = 0;
-            strokes.forEach(s => {
-                const r = wrResample(s.map(p => [p[0], p[1]]), 24);
-                if (!r) return;
-                for (let i = 3; i < r.length - 3; i++) {
-                    const ax = r[i][0] - r[i - 3][0], ay = r[i][1] - r[i - 3][1];
-                    const bx = r[i + 3][0] - r[i][0], by = r[i + 3][1] - r[i][1];
-                    const la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
-                    if (la < 1e-6 || lb < 1e-6) continue;
-                    if ((ax * bx + ay * by) / (la * lb) < 0.5) turns++;
-                }
-            });
-            if (turns < 4) return false;
-            // симметрия при повороте на 90° относительно центра рисунка
+        function wrNormFlat(strokes) {
             const pts = strokes.flat();
             const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
             const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
-            const size = Math.max(maxX - minX, maxY - minY);
-            if (size < 60) return false;
+            const w = maxX - minX, h = maxY - minY, size = Math.max(w, h) || 1;
             const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-            const norm = pts.map(p => [(p[0] - cx) / size, (p[1] - cy) / size]);
-            const rot = norm.map(([x, y]) => [-y, x]);
-            return wrDirDist(norm, rot) < 0.16 && wrDirDist(rot, norm) < 0.16;
+            return { pts: pts.map(p => [(p[0] - cx) / size, (p[1] - cy) / size]), aspect: w / (h || 1), size };
+        }
+        function wrRot90(pts) { return pts.map(([x, y]) => [-y, x]); }
+        // Сходство рисунка с эталоном 卍: учитываются повороты на 90° и зеркальный вариант (卐), порядок черт не важен
+        function wrSwastikaScore(userPts, refStrokes) {
+            let r = wrNormFlat(refStrokes).pts, best = Infinity;
+            for (let k = 0; k < 4; k++) {
+                for (const v of [r, r.map(([x, y]) => [-x, y])]) {
+                    best = Math.min(best, Math.max(wrDirDist(userPts, v), wrDirDist(v, userPts)));
+                }
+                r = wrRot90(r);
+            }
+            return best;
+        }
+        const WR_SWA_T = 0.041; // порог по эталонам: 水 (≈0.10) и 田 (≈0.044) не срабатывают, свастика с умеренным шумом — да
+        function wrIsSwastika() {
+            if (!WR_TRAP) return false;
+            const strokes = WR.strokes.filter(s => s.length > 3);
+            if (strokes.length < 3) return false;
+            const n = wrNormFlat(strokes);
+            if (n.aspect < 0.75 || n.aspect > 1.33 || n.size < 70) return false;
+            return wrSwastikaScore(n.pts, WR_TRAP) < WR_SWA_T;
         }
         function wrEasterEgg() {
             const modal = document.getElementById('write-modal');
