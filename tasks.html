@@ -691,12 +691,122 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         .mcard-front.mr { font-size: 1.3rem !important; }
 
         /* ---- текст: крупнее, предложения разделены; ★ — слот для слова ---- */
-        .passage-text { font-size: 1.32rem !important; line-height: 2.2 !important; }
+        .passage-text { font-size: 1.7rem !important; line-height: 2.15 !important; font-weight: 500 !important; }
+        @media (max-width: 640px) { .passage-text { font-size: 1.4rem !important; } }
         .passage-text .sent { display: block; margin: .55rem 0; }
         .passage-text .sent.lead { color: var(--cp-primary) !important; font-weight: 700 !important; }
         .passage-text .sent:nth-child(even) { padding-left: .9rem; border-left: 3px solid var(--cp-line); }
         .blank.star { display: inline-block; min-width: 2.6em; height: 1.3em; vertical-align: -.2em; border: 2px dashed var(--cp-primary); border-radius: 12px; margin: 0 .2em; position: relative; }
         .blank.star::before { content: '★'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--cp-primary); font-size: .8em; }
+
+        /* ---- сборка по ★: заголовок и слова, встающие на места ---- */
+        .jlpt-head { text-align: center; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .95rem; letter-spacing: .12em; text-transform: uppercase; color: var(--cp-accent); padding: .9rem 1rem; border-radius: 18px; border: 1px dashed var(--cp-line); margin: 1rem 0 1.2rem; background: var(--cp-surface); }
+        .slot-word { display: inline-block; font-family: 'Noto Sans JP', sans-serif; font-weight: 800; padding: 0 .2em; border-bottom: 3px solid var(--cp-accent); animation: slotDrop .55s cubic-bezier(.2,1.3,.3,1) both; }
+        .slot-word.ok { color: var(--cp-success); border-color: var(--cp-success); }
+        .slot-word.miss { color: var(--cp-danger); border-color: var(--cp-danger); }
+        @keyframes slotDrop { from { opacity: 0; transform: translateY(-16px) scale(.8); } to { opacity: 1; transform: none; } }
+
+        /* ---- фуригана выключена ---- */
+        html.no-furi rt { display: none; }
+        /* ---- заголовок сборки: заметнее ---- */
+        .jlpt-head { font-family: 'Noto Sans JP', sans-serif !important; font-size: 1.2rem !important; font-weight: 800 !important; letter-spacing: .04em !important; text-transform: none !important; color: var(--cp-text) !important; padding: 1.1rem 1.3rem !important; border: 2px solid var(--cp-primary) !important; background: linear-gradient(90deg, color-mix(in srgb, var(--cp-primary) 22%, var(--cp-surface)), var(--cp-surface)) !important; box-shadow: 0 0 22px -6px color-mix(in srgb, var(--cp-primary) 60%, transparent) !important; animation: headPulse 2.6s ease-in-out infinite; }
+        .jlpt-head::before { content: '★ '; color: var(--cp-primary); }
+        @keyframes headPulse { 0%,100% { box-shadow: 0 0 14px -6px color-mix(in srgb, var(--cp-primary) 50%, transparent); } 50% { box-shadow: 0 0 28px -4px color-mix(in srgb, var(--cp-primary) 80%, transparent); } }
+        /* ---- разные входы вопросов ---- */
+        .ent-0 { animation: entLeft .7s cubic-bezier(.2,.9,.3,1) both; }
+        .ent-1 { animation: entRight .7s cubic-bezier(.2,.9,.3,1) both; }
+        .ent-2 { animation: entPop .6s cubic-bezier(.2,1.4,.3,1) both; }
+        .ent-3 { animation: entFlip .8s ease both; transform-origin: top center; }
+        .ent-4 { animation: entBlur .9s ease both; }
+        @keyframes entLeft { from { opacity: 0; transform: translateX(-70px); } to { opacity: 1; transform: none; } }
+        @keyframes entRight { from { opacity: 0; transform: translateX(70px); } to { opacity: 1; transform: none; } }
+        @keyframes entPop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+        @keyframes entFlip { from { opacity: 0; transform: perspective(900px) rotateX(-45deg); } to { opacity: 1; transform: none; } }
+        @keyframes entBlur { from { opacity: 0; filter: blur(10px); transform: translateY(24px); } to { opacity: 1; filter: none; transform: none; } }
+        /* ---- текст: номер, название, озвучка ---- */
+        .passage-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .4rem; }
+        .passage-head .q-pre { font-size: 1rem !important; color: var(--cp-accent) !important; }
+        .speak-btn { display: inline-flex; align-items: center; gap: .5rem; height: 2.4rem; padding: 0 1rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); font-weight: 700; font-size: .95rem; transition: transform .2s, box-shadow .2s; }
+        .speak-btn:hover { transform: translateY(-2px); box-shadow: 0 0 16px -4px var(--cp-primary); }
+        .speak-btn i { color: var(--cp-primary); }
+
+        /* ---- таблица условий в заданиях на чтение ---- */
+        .ctab-wrap { overflow-x: auto; margin: 1.2rem 0 .4rem; }
+        .ctab { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--cp-line); font-size: 1.2rem; }
+        .ctab th { background: color-mix(in srgb, var(--cp-primary) 22%, var(--cp-surface)); color: var(--cp-text); font-weight: 800; padding: .7rem 1rem; text-align: left; }
+        .ctab td { padding: .65rem 1rem; border-top: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); }
+        .ctab tr:nth-child(even) td { background: var(--cp-surface); }
+
+        /* ---- таблицы условий: три разных вида ---- */
+        .rcp { display: grid; gap: .7rem; margin: 1.2rem 0 .4rem; }
+        .rcp-step { display: grid; grid-template-columns: 2.6rem 2.8rem 1fr auto; align-items: center; gap: .8rem; padding: .8rem 1rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: slotDrop .5s cubic-bezier(.2,1.2,.3,1) both; }
+        .rcp-n { width: 2.6rem; height: 2.6rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: var(--cp-primary); color: #140c02; font-weight: 900; }
+        .rcp-ico { font-size: 1.8rem; line-height: 1; }
+        .rcp-txt { font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--cp-text); }
+        .rcp-time { font-weight: 900; font-size: 1.2rem; color: var(--cp-accent); border: 2px solid var(--cp-accent); border-radius: 12px; padding: .15rem .7rem; }
+        .trn { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .9rem; margin: 1.2rem 0 .4rem; }
+        .trn-card { position: relative; padding: 1rem 1.1rem; border-radius: 22px; background: var(--cp-surface2); border: 2px dashed var(--cp-line); animation: entPop .5s cubic-bezier(.2,1.3,.3,1) both; }
+        .trn-card::before, .trn-card::after { content: ''; position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 9999px; background: var(--cp-bg); transform: translateY(-50%); }
+        .trn-card::before { left: -9px; } .trn-card::after { right: -9px; }
+        .trn-head { display: flex; align-items: center; gap: .6rem; }
+        .trn-ico { font-size: 1.7rem; }
+        .trn-name { font-size: 1.3rem; color: var(--cp-text); font-family: 'Noto Sans JP', sans-serif; }
+        .trn-times { margin: .6rem 0; font-size: 1.25rem; font-weight: 800; color: var(--cp-text); }
+        .trn-arrow { color: var(--cp-accent); }
+        .trn-meta { display: flex; justify-content: space-between; gap: .5rem; font-size: 1rem; font-weight: 700; color: var(--cp-muted); font-family: 'Noto Sans JP', sans-serif; }
+        .ntc { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .8rem; margin: 1.2rem 0 .4rem; }
+        .ntc-box { display: flex; flex-direction: column; gap: .35rem; padding: 1rem; border-radius: 16px; background: repeating-linear-gradient(-45deg, var(--cp-surface2) 0 14px, var(--cp-surface) 14px 28px); border: 1px solid var(--cp-line); animation: entBlur .6s ease both; }
+        .ntc-ico { font-size: 1.9rem; }
+        .ntc-k { font-family: 'Noto Sans JP', sans-serif; font-size: 1rem; font-weight: 700; color: var(--cp-accent); }
+        .ntc-v { font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--cp-text); }
+
+        /* ---- маршрут автобусов: линия, по которой едет автобус ---- */
+        .rt { display: grid; gap: 1rem; margin: 1.4rem 0 .4rem; }
+        .rt-row { display: grid; grid-template-columns: 1fr; gap: .7rem; padding: 1.1rem 1.3rem; border-radius: 24px; background: linear-gradient(135deg, var(--cp-surface2), var(--cp-surface)); border: 1px solid var(--cp-line); animation: slideIn .6s ease both; }
+        @media (min-width: 640px) { .rt-row { grid-template-columns: 8rem 1fr 11rem; align-items: center; } }
+        .rt-badge { display: inline-block; padding: .5rem 1rem; border-radius: 14px; background: var(--cp-primary); color: #140c02; font-weight: 900; font-size: 1.2rem; font-family: 'Noto Sans JP', sans-serif; }
+        .rt-track { position: relative; display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .6rem 0; }
+        .rt-line { position: absolute; left: 4.4rem; right: 4.4rem; top: 50%; height: 0; border-top: 3px dotted var(--cp-accent); transform: translateY(-50%); }
+        .rt-st { position: relative; z-index: 1; font-weight: 900; font-size: 1.35rem; color: var(--cp-text); background: var(--cp-surface); padding: .25rem .75rem; border-radius: 12px; border: 1px solid var(--cp-line); font-variant-numeric: tabular-nums; }
+        .rt-bus { position: absolute; top: -1.1rem; left: 0; font-style: normal; font-size: 1.9rem; line-height: 1; animation: busRun 9s ease-in-out infinite alternate; }
+        @keyframes busRun { from { left: 0; } to { left: calc(100% - 2rem); } }
+        .rt-meta { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: flex-end; font-family: 'Noto Sans JP', sans-serif; }
+        .rt-price { font-weight: 900; font-size: 1.15rem; color: var(--cp-accent); }
+        .rt-note { font-size: 1rem; color: var(--cp-muted); }
+        /* ---- афиши сеансов: плёнка, блик, вход с поворотом ---- */
+        .cn { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.1rem; margin: 1.4rem 0 .4rem; }
+        .cn-card { position: relative; overflow: hidden; border-radius: 18px; background: linear-gradient(170deg, var(--cp-surface2), var(--cp-bg2)); border: 1px solid var(--cp-line); box-shadow: 0 22px 40px -24px var(--cp-primary); animation: entFlip .8s cubic-bezier(.2,.9,.3,1) both; transition: transform .3s ease; }
+        .cn-card:hover { transform: translateY(-4px) rotate(-.4deg); }
+        .cn-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.14) 50%, transparent 60%); transform: translateX(-120%); animation: cnSpot 4.5s ease-in-out infinite; pointer-events: none; }
+        @keyframes cnSpot { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+        .cn-strip { height: 16px; background: repeating-linear-gradient(90deg, var(--cp-bg) 0 9px, transparent 9px 20px), var(--cp-primary); }
+        .cn-body { padding: 1.1rem 1.2rem 1.25rem; }
+        .cn-top { display: flex; align-items: center; gap: .6rem; }
+        .cn-ico { font-size: 1.6rem; }
+        .cn-title { font-size: 1.4rem; color: var(--cp-text); font-family: 'Noto Sans JP', sans-serif; }
+        .cn-show { margin: .9rem 0 .8rem; font-size: 1.55rem; font-weight: 900; letter-spacing: .05em; color: var(--cp-accent); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+        .cn-dash { color: var(--cp-muted); }
+        .cn-foot { display: flex; gap: .5rem; flex-wrap: wrap; }
+        .cn-price { padding: .3rem .8rem; border-radius: 9999px; background: var(--cp-primary); color: #140c02; font-weight: 900; font-family: 'Noto Sans JP', sans-serif; }
+        .cn-tag { padding: .3rem .8rem; border-radius: 9999px; border: 1px solid var(--cp-line); color: var(--cp-muted); font-family: 'Noto Sans JP', sans-serif; }
+
+        /* ---- билеты поездов: живые анимации ---- */
+        .trn-ico { display: inline-block; animation: trainBob 2.4s ease-in-out infinite; }
+        @keyframes trainBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        .trn-card:hover { transform: translateY(-4px) rotate(-.5deg); box-shadow: 0 18px 34px -18px var(--cp-accent); transition: transform .3s ease, box-shadow .3s ease; }
+        .trn-times { position: relative; padding-bottom: .9rem; }
+        .trn-times::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: repeating-linear-gradient(90deg, var(--cp-accent) 0 10px, transparent 10px 18px); background-size: 36px 3px; animation: trackFlow 1.4s linear infinite; }
+        @keyframes trackFlow { to { background-position: 36px 0; } }
+        .trn-arrow { display: inline-block; animation: arrowNudge 1.6s ease-in-out infinite; }
+        @keyframes arrowNudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+        .trn-meta span:first-child { animation: pricePulse 2.6s ease-in-out infinite; }
+        @keyframes pricePulse { 0%, 100% { text-shadow: 0 0 0 transparent; } 50% { text-shadow: 0 0 10px var(--cp-accent); } }
+        .trn-card::before, .trn-card::after { animation: punchGlow 2.8s ease-in-out infinite; }
+        @keyframes punchGlow { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 10px 2px var(--cp-accent); } }
+
+        /* ---- подчёркнутое слово и маркеры пропусков ---- */
+        .kul { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: .28em; text-decoration-color: var(--cp-accent); font-weight: 900; }
+        .mk { display: inline-flex; align-items: center; justify-content: center; min-width: 1.9em; height: 1.6em; padding: 0 .35em; margin: 0 .15em; border-radius: 9999px; border: 2px solid var(--cp-primary); color: var(--cp-primary); font-weight: 900; font-size: .85em; vertical-align: middle; }
     </style>
 <script>
 (function () {
@@ -704,6 +814,7 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
     var saved = localStorage.getItem('kanjizen_theme');
     var dark = saved ? saved === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (dark) document.documentElement.classList.add('dark');
+    if (localStorage.getItem('kanjizen_furi') === 'off') document.documentElement.classList.add('no-furi');
     var pal = localStorage.getItem('kanjizen_pal');
     document.documentElement.dataset.pal = (pal === 'cyber' || pal === 'gold') ? pal : 'gold';
 })();
@@ -724,6 +835,7 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         <div class="flex items-center gap-2">
             <a href="index.html" class="h-11 px-4 inline-flex items-center gap-2 rounded-2xl border border-amber-900/15 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-arrow-left text-xs"></i><span class="hidden sm:inline">Справочник</span></a>
             <button onclick="toggleSound()" class="hdr-btn hdr-light hdr-sound" title="Звук"><i id="sound-icon" class="fa-solid fa-volume-high"></i></button>
+            <button onclick="toggleFuri()" class="hdr-btn hdr-light hdr-furi" title="Фуригана: вкл / выкл"><span class="font-jp font-black">あ</span></button>
             <button onclick="cyclePal()" class="hdr-btn hdr-light hdr-pal" title="Палитра: обычная / киберпанк"><i class="fa-solid fa-palette"></i></button>
             <button onclick="toggleTheme()" class="hdr-btn hdr-light hdr-theme" title="Тема"><i class="fa-solid fa-moon dark:hidden"></i><i class="fa-solid fa-sun hidden dark:inline"></i></button>
         </div>
@@ -791,6 +903,8 @@ let activeLevel = 'N5', activeCat = 'kanji', owned = [], run = null;
 // ----- Банк тестов (бесплатные). Каждый тест — 10 вопросов. -----
 const Q = (q, o, a) => ({ q, o, a });
 const Qp = (p, q, o, a) => ({ p, q, o, a });
+const QJ = (q, o, a, slots, star) => ({ q, o, a, slots, star });
+const Qt = (p, tbl, q, o, a) => ({ p, tbl, q, o, a });
 const BANK = {
     'N5|kanji': [[
         Q('Как читается 学校 (школа)?', ['がっこう', 'がくこう', 'がっこ', 'がくせい'], 'がっこう'),
@@ -814,6 +928,17 @@ const BANK = {
         Q('Выберите иероглиф: 「毎朝、___を洗います。」', ['手', '足', '口', '目'], '手'),
         Q('Выберите иероглиф: 「きょうは___がきれいです。」', ['空', '雨', '山', '雲'], '空'),
         Q('Выберите иероглиф: 「あそこに___があります。」', ['川', '山', '三', '木'], '川')
+    ], undefined, undefined, undefined, undefined, [
+        Q('Прочитайте подчёркнутое слово: ここに [[山]]が あります。', ['かわ', 'やま', 'はし', 'みち'], 'やま'),
+        Q('Прочитайте подчёркнутое слово: 毎朝、[[水]]を のみます。', ['みず', 'ひ', 'き', 'いぬ'], 'みず'),
+        Q('Прочитайте подчёркнутое слово: [[火]]を つけます。', ['ひ', 'みず', 'き', 'つき'], 'ひ'),
+        Q('Прочитайте подчёркнутое слово: わたしは [[犬]]が すきです。', ['いぬ', 'ねこ', 'とり', 'うま'], 'いぬ'),
+        Q('Прочитайте подчёркнутое слово: あした [[雨]]が ふるでしょう。', ['あめ', 'ゆき', 'くも', 'そら'], 'あめ'),
+        Q('Выберите подходящее слово: [[はし]]を わたりました。', ['橋', '箸', '端', '走'], '橋'),
+        Q('Выберите подходящее слово: [[かいしゃ]]で はたらきます。', ['会社', '回社', '海社', '解社'], '会社'),
+        Q('Выберите подходящее слово: [[でんしゃ]]に のります。', ['電車', '雷車', '電話', '電気'], '電車'),
+        Q('Выберите подходящее слово: あした、[[てんき]]が いいです。', ['天気', '天汽', '天記', '点気'], '天気'),
+        Q('Выберите подходящее слово: [[がっこう]]で べんきょうします。', ['学校', '学交', '学高', '字校'], '学校')
     ]],
     'N5|grammar': [[
         Q('Выберите частицу: 「図書館___本を借りました。」', ['で', 'に', 'を', 'へ'], 'で'),
@@ -839,16 +964,16 @@ const BANK = {
         Q('Выберите слово: 「パーティーに行けなくて、とても___。」', ['残念です', '残念でした', '残念な', '残念に'], '残念です')
 
     ], [
-        Q('Поставьте слово на место ★: わたし ___ ___ ★ ___ です。', ['すき', 'りょうり', 'は', 'が'], 'が'),
-        Q('Поставьте слово на место ★: ぎんこうは ★ ___ ___ ___ あります。', ['に', 'となり', 'の', 'スーパー'], 'スーパー'),
-        Q('Поставьте слово на место ★: この道を ★ ___ ___ ___ ありますよ。', ['行って', '左がわ', 'まっすぐ', 'に'], 'まっすぐ'),
-        Q('Поставьте слово на место ★: わたしは ___ ★ ___ ___ 。', ['起きます', 'に', '毎朝', '七時'], '七時'),
-        Q('Поставьте слово на место ★: わたしは ___ ___ ★ ___ 。', ['を', 'します', '勉強', '日本語'], '勉強'),
-        Q('Поставьте слово на место ★: 友達と ★ ___ ___ ___ 。', ['見', 'ました', 'を', '映画'], '映画'),
-        Q('Поставьте слово на место ★: わたしは ___ ★ ___ ___ 。', ['へ', '行きました', '京都', '先週'], '京都'),
-        Q('Поставьте слово на место ★: 明日は ___ ___ ★ ___ 。', ['が', 'でしょう', '天気', 'いい'], 'いい'),
-        Q('Поставьте слово на место ★: この ___ ___ ★ ___ 。', ['です', '部屋', '広い', 'は'], '広い'),
-        Q('Поставьте слово на место ★: 先生は ___ ★ ___ ___ 。', ['います', '今', 'に', '教室'], '教室')
+        QJ('わたし ___ ___ ★ ___ です。', ['すき', 'りょうり', 'は', 'が'], 'が', ['は', 'りょうり', 'が', 'すき'], 2),
+        QJ('ぎんこうは ★ ___ ___ ___ あります。', ['に', 'となり', 'の', 'スーパー'], 'スーパー', ['スーパー', 'の', 'となり', 'に'], 0),
+        QJ('この道を ★ ___ ___ ___ ありますよ。', ['行って', '左がわ', 'まっすぐ', 'に'], 'まっすぐ', ['まっすぐ', '行って', '左がわ', 'に'], 0),
+        QJ('わたしは ___ ★ ___ ___ 。', ['起きます', 'に', '毎朝', '七時'], '七時', ['毎朝', '七時', 'に', '起きます'], 1),
+        QJ('わたしは ___ ___ ★ ___ 。', ['を', 'します', '勉強', '日本語'], '勉強', ['日本語', 'を', '勉強', 'します'], 2),
+        QJ('友達と ★ ___ ___ ___ 。', ['見', 'ました', 'を', '映画'], '映画', ['映画', 'を', '見', 'ました'], 0),
+        QJ('わたしは ___ ★ ___ ___ 。', ['へ', '行きました', '京都', '先週'], '京都', ['先週', '京都', 'へ', '行きました'], 1),
+        QJ('明日は ___ ___ ★ ___ 。', ['が', 'でしょう', '天気', 'いい'], 'いい', ['天気', 'が', 'いい', 'でしょう'], 2),
+        QJ('この ___ ___ ★ ___ 。', ['です', '部屋', '広い', 'は'], '広い', ['部屋', 'は', '広い', 'です'], 2),
+        QJ('先生は ___ ★ ___ ___ 。', ['います', '今', 'に', '教室'], '教室', ['今', '教室', 'に', 'います'], 1)
     ], [
         Q('「ここで写真を撮っては___。」', ['いけません', 'いいです', 'ください', 'ましょう'], 'いけません'),
         Q('「あの人は田中さん___。」', ['です', 'だ', 'ます', 'でした'], 'です'),
@@ -862,25 +987,25 @@ const BANK = {
         Q('「雨が降っていた___、学校に遅れました。」', ['ので', 'のに', 'けど', 'から'], 'ので')
     ]],
     'N5|reading': [[
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で働いています。母は毎朝、早く起きて、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Сколько человек в семье?', ['четыре', 'три', 'пять', 'два'], 'четыре'),
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で働いています。母は毎朝、早く起きて、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Кто встаёт рано и готовит завтрак?', ['мама', 'папа', 'брат', 'сам говорящий'], 'мама'),
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で働いています。母は毎朝、早く起きて、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Что вся семья делает вместе по выходным?', ['ест вместе', 'ходит в школу', 'работает', 'спит'], 'ест вместе'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を勉強します。昼ご飯は友達と食堂で食べます。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Во сколько человек выходит из дома?', ['в 7:30', 'в 7:00', 'в 5:00', 'в 8:00'], 'в 7:30'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を勉強します。昼ご飯は友達と食堂で食べます。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'На чём человек едет в школу?', ['на электричке', 'на машине', 'пешком', 'на автобусе'], 'на электричке'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を勉強します。昼ご飯は友達と食堂で食べます。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Где человек обедает?', ['в столовой с друзьями', 'дома', 'в библиотеке', 'в парке'], 'в столовой с друзьями'),
-        Qp('今日は朝から雨です。とても寒いです。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろにやみました。午後は少し暖かくなりました。', 'Какая погода сегодня утром?', ['дождь и холодно', 'солнечно и жарко', 'ветер', 'снег'], 'дождь и холодно'),
-        Qp('今日は朝から雨です。とても寒いです。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろにやみました。午後は少し暖かくなりました。', 'Как человек шёл до станции?', ['пешком с зонтом', 'на велосипеде', 'на машине', 'на автобусе'], 'пешком с зонтом'),
-        Qp('今日は朝から雨です。とても寒いです。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろにやみました。午後は少し暖かくなりました。', 'Что случилось с электричкой?', ['немного опоздала', 'её отменили', 'она была переполнена', 'она сломалась'], 'немного опоздала')
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Какое слово вставить на место ［1］?', ['起きて', '寝て', '行って', '食べて'], '起きて'),
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Какое слово вставить на место ［2］?', ['働いて', '寝て', '食べて', '遊んで'], '働いて'),
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Сколько человек в семье?', ['четыре', 'три', 'пять', 'два'], 'четыре'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Какое слово вставить на место ［3］?', ['勉強します', '食べます', '寝ます', '買います'], '勉強します'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Какое слово вставить на место ［4］?', ['食べます', '読みます', '寝ます', '見ます'], '食べます'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Во сколько человек выходит из дома?', ['в 7:30', 'в 7:00', 'в 5:00', 'в 8:00'], 'в 7:30'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Какое слово вставить на место ［5］?', ['寒い', 'にぎやか', '静か', 'きれい'], '寒い'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Какое слово вставить на место ［6］?', ['やみました', '食べました', '読みました', '寝ました'], 'やみました'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Как человек шёл до станции?', ['пешком с зонтом', 'на велосипеде', 'на машине', 'на автобусе'], 'пешком с зонтом')
     ], [
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Что купили в магазине?', ['овощи, рыбу и мясо', 'только фрукты', 'молоко и хлеб', 'игрушки'], 'овощи, рыбу и мясо'),
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Сколько яблок купили?', ['три', 'два', 'пять', 'одно'], 'три'),
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Почему пришлось ждать?', ['было много людей', 'магазин был закрыт', 'не хватило денег', 'потерялся ключ'], 'было много людей'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Кто готовит обед?', ['мама', 'сам человек', 'друг', 'папа'], 'мама'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Какая еда нравится человеку?', ['рыба', 'мясо', 'пицца', 'сладости'], 'рыба'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Что обычно ест друг?', ['хлеб', 'рис', 'суп', 'лапшу'], 'хлеб'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Как семья добиралась до моря?', ['на машине', 'на поезде', 'пешком', 'на автобусе'], 'на машине'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Что делал младший брат?', ['собирал ракушки', 'плавал', 'спал', 'ел мороженое'], 'собирал ракушки'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Где семья провела ночь?', ['в гостинице', 'в палатке', 'у бабушки', 'в машине'], 'в гостинице')
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус самый дешёвый?', ['3ごう', '1ごう', '2ごう', 'все одинаково'], '3ごう'),
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус едет дольше всех?', ['2ごう', '1ごう', '3ごう', 'все одинаково'], '2ごう'),
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус идёт без пересадок и остановок?', ['1ごう', '2ごう', '3ごう', 'никакой'], '1ごう'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд самый быстрый?', ['はやて', 'さくら', 'ふつう', 'все одинаково'], 'はやて'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд самый дешёвый?', ['ふつう', 'さくら', 'はやて', 'все одинаково'], 'ふつう'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд без пересадок и стоит меньше 5000 иен?', ['さくら', 'はやて', 'ふつう', 'никакой'], 'さくら'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм самый дешёвый?', ['さくら映画', 'はな映画', 'そら映画', 'все одинаково'], 'さくら映画'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм идёт дольше всех?', ['そら映画', 'はな映画', 'さくら映画', 'все одинаково'], 'そら映画'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм начинается после 12 часов и стоит меньше 1100 иен?', ['そら映画', 'はな映画', 'さくら映画', 'никакой'], 'そら映画')
     ], [
         Qp('わたしの町には大きい図書館があります。図書館は駅から近くて、とても便利です。毎週土曜日、わたしは図書館で本を借ります。子どもの本もあるので、弟も一緒に行きます。図書館の中は静かです。みんなが本を読んでいます。', 'Где находится библиотека?', ['рядом со станцией', 'далеко от города', 'в парке', 'у школы'], 'рядом со станцией'),
         Qp('わたしの町には大きい図書館があります。図書館は駅から近くて、とても便利です。毎週土曜日、わたしは図書館で本を借ります。子どもの本もあるので、弟も一緒に行きます。図書館の中は静かです。みんなが本を読んでいます。', 'Когда человек ходит в библиотеку?', ['по субботам', 'по воскресеньям', 'каждый день', 'по понедельникам'], 'по субботам'),
@@ -911,12 +1036,22 @@ const BANK = {
         Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Какая погода будет завтра?', ['возможно, дождь', 'ясно и жарко', 'снег', 'сильный ветер'], 'возможно, дождь'),
         Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Что советуют взять?', ['зонт', 'купальник', 'коньки', 'фотоаппарат'], 'зонт'),
         Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Какая погода ожидается на выходных?', ['солнечно', 'сильный дождь', 'снег', 'туман'], 'солнечно')
+
+    ], [
+        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Что купили в магазине?', ['овощи, рыбу и мясо', 'только фрукты', 'молоко и хлеб', 'игрушки'], 'овощи, рыбу и мясо'),
+        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Сколько яблок купили?', ['три', 'два', 'пять', 'одно'], 'три'),
+        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Почему пришлось ждать?', ['было много людей', 'магазин был закрыт', 'не хватило денег', 'потерялся ключ'], 'было много людей'),
+        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Кто готовит обед?', ['мама', 'сам человек', 'друг', 'папа'], 'мама'),
+        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Какая еда нравится человеку?', ['рыба', 'мясо', 'пицца', 'сладости'], 'рыба'),
+        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Что обычно ест друг?', ['хлеб', 'рис', 'суп', 'лапшу'], 'хлеб'),
+        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Как семья добиралась до моря?', ['на машине', 'на поезде', 'пешком', 'на автобусе'], 'на машине'),
+        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Что делал младший брат?', ['собирал ракушки', 'плавал', 'спал', 'ел мороженое'], 'собирал ракушки'),
+        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Где семья провела ночь?', ['в гостинице', 'в палатке', 'у бабушки', 'в машине'], 'в гостинице')
     ]]
 };
 
-
-const FREE_TESTS = 6;        // сколько тестов открыто всем в каждом разделе
-const TESTS_PER_SECTION = 6; // всего тестов в разделе
+const FREE_TESTS = 7;        // сколько тестов открыто всем в каждом разделе
+const TESTS_PER_SECTION = 7; // всего тестов в разделе
 
 const EXPL = {
  'N5|kanji': [
@@ -943,6 +1078,22 @@ const EXPL = {
    "て — «рука». Иероглиф 手 — рука.",
    "そら — «небо». Иероглиф 空 — небо.",
    "かわ — «река». Иероглиф 川 — река."
+  ],
+  [],
+  [],
+  [],
+  [],
+  [
+   "山 читается やま — «гора».",
+   "水 читается みず — «вода».",
+   "火 читается ひ — «огонь».",
+   "犬 читается いぬ — «собака».",
+   "雨 читается あめ — «дождь».",
+   "はし здесь «мост»: по мосту переходят реку — 橋を渡る.",
+   "かいしゃ — «компания, работа»: 会社で働く.",
+   "でんしゃ — «поезд»: 電車に乗る.",
+   "てんき — «погода».",
+   "がっこう — «школа»."
   ]
  ],
  'N5|grammar': [
@@ -971,16 +1122,16 @@ const EXPL = {
    "残念です — «жаль». 行けなくて — потому что не смог пойти, жаль."
   ],
   [
-   "Правильно: わたしはりょうりがすきです。 На месте ★ стоит «が».",
-   "Правильно: ぎんこうはスーパーのとなりにあります。 На месте ★ стоит «スーパー».",
-   "Правильно: この道をまっすぐ行って左がわにありますよ。 На месте ★ стоит «まっすぐ».",
-   "Правильно: わたしは毎朝七時に起きます。 На месте ★ стоит «七時».",
-   "Правильно: わたしは日本語を勉強します。 На месте ★ стоит «勉強».",
-   "Правильно: 友達と映画を見ました。 На месте ★ стоит «映画».",
-   "Правильно: わたしは先週京都へ行きました。 На месте ★ стоит «京都».",
-   "Правильно: 明日は天気がいいでしょう。 На месте ★ стоит «いい».",
-   "Правильно: この部屋は広いです。 На месте ★ стоит «広い».",
-   "Правильно: 先生は今教室にいます。 На месте ★ стоит «教室»."
+   "Правильно: わたしは料理がすきです. Здесь の-конструкция не нужна: 〜が好きです — «нравится» (предмет симпатии с частицей が). は ставим в начале как тему.",
+   "Правильно: ぎんこうはスーパーのとなりにあります. 〜の隣 — «рядом с чем-то»: сначала название ориентира с の, затем となりに, и только потом あります.",
+   "Правильно: この道をまっすぐ行って左がわにあります. まっすぐ — наречие «прямо» стоит перед глаголом движения 行って; место, где что-то находится, отмечается に.",
+   "Правильно: わたしは毎朝七時に起きます. 毎朝 — «каждое утро» — стоит в начале, а точное время с частицей に ставится прямо перед глаголом 起きます.",
+   "Правильно: わたしは日本語を勉強します. 勉強します — глагол действия; то, что изучают, отмечается частицей を, а не が.",
+   "Правильно: 友達と映画を見ました. 映画を見る — «смотреть фильм»: объект действия отмечается を, а 友達と (с другом) стоит в начале.",
+   "Правильно: わたしは先週京都へ行きました. 先週 — время в начале, 京都 — место назначения, а направление при движении отмечается частицей へ.",
+   "Правильно: 明日は天気がいいでしょう. 天気がいい — «погода хорошая»: предмет описания стоит с が, а でしょう — предположение «наверное».",
+   "Правильно: この部屋は広いです. Здесь は делает тему «эта комната» главным словом, а 広い — прилагательное, описывающее её.",
+   "Правильно: 先生は今教室にいます. いる используется для людей; место, где находится человек, отмечается частицей に, а 今 (сейчас) — в начале."
   ],
   [
    "〜ては いけません — «нельзя»: здесь фотографировать нельзя.",
@@ -997,26 +1148,26 @@ const EXPL = {
  ],
  'N5|reading': [
   [
+   "Мама встаёт рано: 早く起きて — «рано встав», потом готовит завтрак.",
+   "父は会社で働いています — папа работает в компании.",
    "わたしの家族は四人です — в семье четыре человека.",
-   "母は毎朝、早く起きて、朝ご飯を作ります — мама встаёт рано и готовит завтрак.",
-   "週末に一緒に料理を食べます — по выходным вся семья ест вместе.",
+   "学校では日本語と数学を勉強します — в школе учат японский и математику.",
+   "昼ご飯は友達と食堂で食べます — обед едят с друзьями в столовой.",
    "七時半に家を出て — выходит из дома в половине восьмого.",
-   "電車で学校へ行きます — едет в школу на электричке.",
-   "昼ご飯は友達と食堂で食べます — обедает с друзьями в столовой.",
    "今日は朝から雨です。とても寒いです — с утра дождь и холодно.",
-   "傘を持って、駅まで歩きました — шёл до станции пешком с зонтом.",
-   "電車は少し遅かったです — электричка немного опоздала."
+   "雨は昼ごろにやみました — дождь прекратился в обед.",
+   "傘を持って、駅まで歩きました — шёл до станции пешком с зонтом."
   ],
   [
-   "野菜と魚と肉を買いました — купили овощи, рыбу и мясо.",
-   "りんごも三つ買いました — купили три яблока.",
-   "店はとても混んでいました — в магазине было много людей, поэтому ждали.",
-   "お弁当は母が作ります — обед готовит мама.",
-   "魚が好きなので — человеку нравится рыба.",
-   "友達はいつもパンを食べています — друг обычно ест хлеб.",
-   "車で二時間かかりました — ехали на машине два часа.",
-   "弟は貝を集めました — младший брат собирал ракушки.",
-   "夜はホテルに泊まりました — ночевали в гостинице."
+   "3ごう стоит 150円 — это меньше, чем 200円 у 1ごう и 2ごう.",
+   "2ごう идёт с 7:10 до 7:35 — 25 минут. У 1ごう 20 минут, у 3ごう 10 минут.",
+   "1ごう — 直通, то есть едет без остановок по пути.",
+   "はやて: 9:30 → 11:00, это 1 час 30 минут. У さくら 2 часа 30 минут, у ふつう почти 4 часа.",
+   "ふつう стоит 2500円, это меньше, чем 4000円 у さくら и 5200円 у はやて.",
+   "さくら — 直通 (без пересадок) и стоит 4000円, а はやて дороже 5000円, у ふつう есть пересадка.",
+   "さくら映画 стоит 900円 — это самый дешёвый сеанс.",
+   "そら映画 идёт с 16:00 до 17:50 — 1 час 50 минут, дольше, чем у さくら (1 час 40 минут) и はな (1 час 30 минут).",
+   "そら映画 начинается в 16:00 и стоит 1000円. はな映画 стоит 1200円, это дороже 1100 иен."
   ],
   [
    "図書館は駅から近くて — библиотека находится близко от станции.",
@@ -1050,6 +1201,17 @@ const EXPL = {
    "明日は雨が降るかもしれません — завтра, возможно, пойдёт дождь.",
    "傘を持って行ってください — советуют взять зонт.",
    "週末の天気は晴れるそうです — на выходных ожидается солнечная погода."
+  ],
+  [
+   "野菜と魚と肉を買いました — купили овощи, рыбу и мясо.",
+   "りんごも三つ買いました — купили три яблока.",
+   "店はとても混んでいました — в магазине было много людей, поэтому ждали.",
+   "お弁当は母が作ります — обед готовит мама.",
+   "魚が好きなので — человеку нравится рыба.",
+   "友達はいつもパンを食べています — друг обычно ест хлеб.",
+   "車で二時間かかりました — ехали на машине два часа.",
+   "弟は貝を集めました — младший брат собирал ракушки.",
+   "夜はホテルに泊まりました — ночевали в гостинице."
   ]
  ]
 };
@@ -1120,7 +1282,7 @@ const FURI = {
     '経済':'けいざい','練習':'れんしゅう','行':'い','見':'み','角':'かど','言':'い',
     '話':'はな','読':'よ','買':'か','迎':'むか','近':'ちか','道':'みち',
     '郵便局':'ゆうびんきょく','銀行':'ぎんこう','開':'あ','降':'ふ','隣':'となり','難':'むずか',
-    '雨':'あめ','電車':'でんしゃ','食':'た','飯':'はん','駅':'えき','駅前':'えきまえ','思':'おも','乗':'の','毎日六時':'まいにちろくじ','教室':'きょうしつ','大阪':'おおさか','新幹線':'しんかんせん','一度':'いちど','方':'かた','教':'おし','上手':'じょうず','増':'ふ','一日':'いちにち','一番好':'いちばんす','七時十分':'しちじじゅっぷん','五分':'ごふん','五時':'ごじ','使':'つか','便利':'べんり','停':'てい','傘':'かさ','入':'はい','助':'たす','十個覚':'じゅうこおぼ','卵焼':'たまごや','古':'ふる','同':'おな','夏休':'なつやす','寄':'よ','寒':'さむ','寿司':'すし','屋':'や','座':'すわ','待':'ま','持':'も','数学':'すうがく','新':'あたら','星':'ほし','時間':'じかん','暖':'あたた','服':'ふく','本屋':'ほんや','次':'つぎ','毎週':'まいしゅう','泊':'と','泳':'およ','混':'こ','満足':'まんぞく','漢字':'かんじ','特':'とく','疲':'つか','直':'なお','着':'つ','絵':'え','緑':'みどり','肉':'にく','自転車':'じてんしゃ','色':'いろ','花':'はな','貝':'かい','走':'はし','趣味':'しゅみ','辞書':'じしょ','速':'はや','週末':'しゅうまつ','遅':'おそ','部屋':'へや','野菜':'やさい','門':'もん','集':'あつ','元気':'げんき','電気':'でんき','七時半':'しちじはん','中':'なか','二時間':'にじかん','仕事':'しごと','作':'つく','出':'で','夕方':'ゆうがた','子':'こ','席':'せき','帰':'かえ','弁当':'べんとう','弟':'おとうと','早':'はや','晩':'ばん','朝早':'あさはや','毎朝七時':'まいあさしちじ','町':'まち','砂':'すな','窓':'まど','終':'お','起':'お','金曜日':'きんようび','静':'しず','食堂':'しょくどう','魚':'さかな','七':'なな','時':'じ','先':'さき','学':'がく','夜明':'よあ','鳥':'とり','赤':'あか','青':'あお','白':'しろ','東':'ひがし','夏':'なつ','春':'はる','秋':'あき','上':'うえ','海':'うみ','昼':'ひる','夜':'よる','火曜日':'かようび','木曜日':'もくようび','電':'でん','車':'くるま','紙':'かみ','港':'みなと','病':'やまい','院':'いん','気':'き','分':'ぶん','天':'てん','才':'さい','生':'せい','活':'かつ','明':'あ','景':'けい','面':'めん','長':'ちょう','先輩':'せんぱい','火山':'かざん','車道':'しゃどう','電話':'でんわ','生先':'せいさき','生活':'せいかつ','気天':'きてん','天才':'てんさい','気分':'きぶん','大人':'おとな','学生':'がくせい','学大':'がくだい','手紙':'てがみ','紙手':'かみて','手足':'てあし','紙面':'しめん','港空':'みなとそら','空手':'からて','港口':'みなとぐち','院病':'いんびょう','病気':'びょうき','院長':'いんちょう','人気':'にんき','気人':'きじん','人生':'じんせい','夜空':'よぞら','空夜':'そらよ','夜景':'やけい','夜明け':'よあけ','火水':'ひみず','水山':'みずやま','車電':'くるまでん','山火':'やまび','水':'みず','火':'ひ','木':'き','山':'やま','人':'ひと','空':'そら','歩':'あるく','飲':'の','燃':'も','庭':'にわ','高':'たか','口':'くち','手':'て','足':'あし','耳':'みみ','雲':'くも','川':'かわ','三':'さん','洗':'あら','雪':'ゆき','霜':'しも'
+    '雨':'あめ','電車':'でんしゃ','食':'た','飯':'はん','駅':'えき','駅前':'えきまえ','思':'おも','遊':'あそ','今週':'いましゅう','向':'む','字幕':'じまく','一日十円':'いちにちじゅうえん','円':'えん','手順':'てじゅん','三分':'さんぷん','二分':'にふん','焼':'や','表':'ひょう','選':'えら','質問':'しつもん','答':'こた','内容':'ないよう','開館時間':'かいかんじかん','九時':'くじ','十七時':'じゅうしちじ','休館日':'きゅうかんび','期間':'きかん','二週間':'にしゅうかん','延滞料金':'えんたいりょうきん','十円':'じゅうえん','飲食':'いんしょく','禁止':'きんし','出発':'しゅっぱつ','到着':'とうちゃく','料金':'りょうきん','特徴':'とくちょう','直通':'ちょくつう','一回':'いっかい','三日':'みっか','七時':'しちじ','場所':'ばしょ','乗':'の','毎日六時':'まいにちろくじ','教室':'きょうしつ','大阪':'おおさか','新幹線':'しんかんせん','一度':'いちど','方':'かた','教':'おし','上手':'じょうず','増':'ふ','一日':'いちにち','一番好':'いちばんす','七時十分':'しちじじゅっぷん','五分':'ごふん','五時':'ごじ','使':'つか','便利':'べんり','停':'てい','傘':'かさ','入':'はい','助':'たす','十個覚':'じゅうこおぼ','卵焼':'たまごや','古':'ふる','同':'おな','夏休':'なつやす','寄':'よ','寒':'さむ','寿司':'すし','屋':'や','座':'すわ','待':'ま','持':'も','数学':'すうがく','新':'あたら','星':'ほし','時間':'じかん','暖':'あたた','服':'ふく','本屋':'ほんや','次':'つぎ','毎週':'まいしゅう','泊':'と','泳':'およ','混':'こ','満足':'まんぞく','漢字':'かんじ','特':'とく','疲':'つか','直':'なお','着':'つ','絵':'え','緑':'みどり','肉':'にく','自転車':'じてんしゃ','色':'いろ','花':'はな','貝':'かい','走':'はし','趣味':'しゅみ','辞書':'じしょ','速':'はや','週末':'しゅうまつ','遅':'おそ','部屋':'へや','野菜':'やさい','門':'もん','集':'あつ','元気':'げんき','電気':'でんき','七時半':'しちじはん','中':'なか','二時間':'にじかん','仕事':'しごと','作':'つく','出':'で','夕方':'ゆうがた','子':'こ','席':'せき','帰':'かえ','弁当':'べんとう','弟':'おとうと','早':'はや','晩':'ばん','朝早':'あさはや','毎朝七時':'まいあさしちじ','町':'まち','砂':'すな','窓':'まど','終':'お','起':'お','金曜日':'きんようび','静':'しず','食堂':'しょくどう','魚':'さかな','七':'なな','時':'じ','先':'さき','学':'がく','夜明':'よあ','鳥':'とり','赤':'あか','青':'あお','白':'しろ','東':'ひがし','夏':'なつ','春':'はる','秋':'あき','上':'うえ','海':'うみ','昼':'ひる','夜':'よる','火曜日':'かようび','木曜日':'もくようび','電':'でん','車':'くるま','紙':'かみ','港':'みなと','病':'やまい','院':'いん','気':'き','分':'ぶん','天':'てん','才':'さい','生':'せい','活':'かつ','明':'あ','景':'けい','面':'めん','長':'ちょう','先輩':'せんぱい','火山':'かざん','車道':'しゃどう','電話':'でんわ','生先':'せいさき','生活':'せいかつ','気天':'きてん','天才':'てんさい','気分':'きぶん','大人':'おとな','学生':'がくせい','学大':'がくだい','手紙':'てがみ','紙手':'かみて','手足':'てあし','紙面':'しめん','港空':'みなとそら','空手':'からて','港口':'みなとぐち','院病':'いんびょう','病気':'びょうき','院長':'いんちょう','人気':'にんき','気人':'きじん','人生':'じんせい','夜空':'よぞら','空夜':'そらよ','夜景':'やけい','夜明け':'よあけ','火水':'ひみず','水山':'みずやま','車電':'くるまでん','山火':'やまび','水':'みず','火':'ひ','木':'き','山':'やま','人':'ひと','空':'そら','歩':'あるく','飲':'の','燃':'も','庭':'にわ','高':'たか','口':'くち','手':'て','足':'あし','耳':'みみ','雲':'くも','川':'かわ','三':'さん','洗':'あら','雪':'ゆき','霜':'しも'
 };
 
 const esc = x => String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1141,17 +1303,18 @@ function ruby(text) {
 // Вопросы «как читается» и «что означает» не показывают чтение: иначе ответ был бы подсказан
 const isReadingQuiz = q => /^(Как читается|Что означает)/.test(q);
 function qHtml(text, withRuby, fillHtml) {
-    const fmt = t => withRuby ? ruby(t) : esc(t);
-    let used = false;
-    const blank = seg => { const hasStar = seg.includes('★'); return seg.split(/(___|★)/).map(part => {
+    const fmt = t => (withRuby ? ruby(t) : esc(t)).replace(/\[\[(.+?)\]\]/g, '<u class="kul">$1</u>');
+    let used = false, ph = 0;
+    const blank = seg => seg.split(/(___|★)/).map(part => {
         if (part === '___' || part === '★') {
             const cls = part === '★' ? 'blank star' : 'blank';
-            const target = hasStar ? part === '★' : part === '___';
-            if (fillHtml && target && !used) { used = true; return fillHtml; }
-            return `<span class="${cls}"></span>`;
+            let f = null;
+            if (Array.isArray(fillHtml)) { f = fillHtml[ph] || null; ph++; }
+            else if (fillHtml && !used) { const hasStar = seg.includes('★'); if (hasStar ? part === '★' : part === '___') { f = fillHtml; used = true; } }
+            return f || `<span class="${cls}"></span>`;
         }
         return fmt(part);
-    }).join(''); };
+    }).join('');
     const m = String(text).match(/「([\s\S]*?)」/);
     if (!m) return blank(text);
     const pre = text.slice(0, m.index).trim();
@@ -1223,6 +1386,17 @@ function renderSoundIcon() { document.getElementById('sound-icon').className = '
 function toggleSound() { soundOn = !soundOn; localStorage.setItem('kanjizen_sound', soundOn ? '1' : '0'); renderSoundIcon(); if (soundOn) sfxRight(); }
 
 // ----- Тема -----
+function toggleFuri() {
+    const off = document.documentElement.classList.toggle('no-furi');
+    localStorage.setItem('kanjizen_furi', off ? 'off' : 'on');
+}
+function speakText(btn) {
+    if (!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(decodeURIComponent(btn.dataset.t));
+    u.lang = 'ja-JP'; u.rate = 0.9;
+    speechSynthesis.speak(u);
+}
 function cyclePal() {
     const next = document.documentElement.dataset.pal === 'cyber' ? 'gold' : 'cyber';
     document.documentElement.dataset.pal = next;
@@ -1310,7 +1484,7 @@ function renderList() {
                <p class="text-sm"><b>Попробуйте бесплатно:</b> тесты 1–2 открыты всем. Остальные тесты раздела — в полном доступе.</p>
            </div>`
         : '';
-    const cards = [1, 2, 3, 4, 5, 6].map(n => testCard(n)).join('');
+    const cards = [1, 2, 3, 4, 5, 6, 7].map(n => testCard(n)).join('');
     view.innerHTML = `${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
 }
 
@@ -1342,16 +1516,27 @@ function startTest(n) {
             <div id="run-end"></div>
         </div>`;
     document.getElementById('run-stream').innerHTML = qs.map((_, k) => blockHtml(k)).join('');
+    document.querySelectorAll('#run-stream > article').forEach((el, i) => el.classList.add('ent-' + (i % 5)));
+    if (qs.some(q => q.slots)) document.getElementById('run-stream').insertAdjacentHTML('beforebegin',
+        '<div class="jlpt-head">Поставьте слово на место ★ · выберите правильный вариант</div>');
     updateProgress();
     renderEnd();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function tableHtml(t) {
+    if (Array.isArray(t)) return `<div class="ctab-wrap"><table class="ctab">${t.map((r, i) => `<tr>${r.map(c => i === 0 ? `<th>${ruby(c)}</th>` : `<td>${ruby(c)}</td>`).join('')}</tr>`).join('')}</table></div>`;
+    if (t.kind === 'recipe') return `<div class="rcp">${t.rows.map((r, i) => `<div class="rcp-step" style="animation-delay:${i * 0.12}s"><span class="rcp-n">${i + 1}</span><span class="rcp-ico">${r.icon}</span><span class="rcp-txt">${ruby(r.a)}</span><span class="rcp-time">${ruby(r.b)}</span></div>`).join('')}</div>`;
+    if (t.kind === 'trains') return `<div class="trn">${t.rows.map((r, i) => `<div class="trn-card" style="animation-delay:${i * 0.12}s"><div class="trn-head"><span class="trn-ico">${r.icon}</span><b class="trn-name">${esc(r.name)}</b></div><div class="trn-times">${esc(r.dep)} <span class="trn-arrow">→</span> ${esc(r.arr)}</div><div class="trn-meta"><span>${ruby(r.price)}</span><span>${ruby(r.note)}</span></div></div>`).join('')}</div>`;
+    if (t.kind === 'route') return `<div class="rt">${t.rows.map((r, i) => `<div class="rt-row" style="animation-delay:${i * 0.15}s"><div class="rt-name"><span class="rt-badge">${ruby(r.name)}</span></div><div class="rt-track"><span class="rt-st">${esc(r.dep)}</span><span class="rt-line"><i class="rt-bus">${r.icon}</i></span><span class="rt-st">${esc(r.arr)}</span></div><div class="rt-meta"><span class="rt-price">${ruby(r.price)}</span><span class="rt-note">${ruby(r.note)}</span></div></div>`).join('')}</div>`;
+    if (t.kind === 'cinema') return `<div class="cn">${t.rows.map((r, i) => `<div class="cn-card" style="animation-delay:${i * 0.18}s"><div class="cn-strip"></div><div class="cn-body"><div class="cn-top"><span class="cn-ico">${r.icon}</span><b class="cn-title">${ruby(r.name)}</b></div><div class="cn-show">${esc(r.dep)}<span class="cn-dash"> — </span>${esc(r.arr)}</div><div class="cn-foot"><span class="cn-price">${ruby(r.price)}</span><span class="cn-tag">${ruby(r.note)}</span></div></div></div>`).join('')}</div>`;
+    return `<div class="ntc">${t.rows.map((r, i) => `<div class="ntc-box" style="animation-delay:${i * 0.1}s"><span class="ntc-ico">${r.icon}</span><span class="ntc-k">${ruby(r.k)}</span><span class="ntc-v">${ruby(r.v)}</span></div>`).join('')}</div>`;
 }
 function blockHtml(k) {
     const q = run.qs[k];
     const sel = run.sel[k];
     const answered = sel !== undefined;
     const isRead = /^(Как читается|Что означает)/.test(q.q);
-    const withRuby = !isRead;
+    const withRuby = !isRead && !/^(Прочитайте подчёркнутое слово|Выберите подходящее слово)/.test(q.q);
     const isGrammar = q.q.includes('___');
     const kt = q.o.every(o => /^[\u4e00-\u9faf]$/.test(o)) ? ' kanji-tile' : '';
     const tiles = q.o.map((o, j) => {
@@ -1376,7 +1561,9 @@ function blockHtml(k) {
             : `<p class="verdict-in text-sm font-bold text-amber-800 dark:text-amber-300">Правильный ответ: ${withRuby ? ruby(q.a) : esc(q.a)}</p>`;
     }
     let fillHtml = null;
-    if (isGrammar && answered) {
+    if (q.slots && answered) {
+        fillHtml = q.slots.map((w, i) => `<span class="slot-word${i === q.star ? (run.ok[k] ? ' ok' : ' miss') : ''}" style="animation-delay:${i * 0.14}s">${ruby(w)}</span>`);
+    } else if (isGrammar && answered) {
         const chip = (t, c) => `<span class="blank filled ${c}">${withRuby ? ruby(t) : esc(t)}</span>`;
         fillHtml = run.ok[k] ? chip(q.a, 'ok') : chip(sel, 'miss') + '<span class="fill-arrow">→</span>' + chip(q.a, 'ok');
     }
@@ -1388,8 +1575,10 @@ function blockHtml(k) {
         : '';
     const state = !answered ? '' : (run.ok[k] ? 'state-ok' : 'state-miss');
     const qh = isRead ? targetHtml(q, answered, run.ok[k], k) : qHtml(q.q, withRuby, fillHtml);
+    const pIdx = [...new Set(run.qs.slice(0, k + 1).map(x => x.p).filter(Boolean))].length;
+    const tt = (PTITLE[run.n] || [])[pIdx - 1] || '';
     const _pas = (q.p && (k === 0 || run.qs[k - 1].p !== q.p))
-        ? `<div class="passage glass rounded-[28px] p-6 md:p-8 mt-6 border border-amber-900/10 dark:border-zen-700/60"><p class="q-pre">Текст</p><p class="passage-text">${q.p.split('。').filter(x => x.trim()).map((x, i) => `<span class="sent${i === 0 ? ' lead' : ''}">${ruby(x + '。')}</span>`).join('')}</p></div>`
+        ? `<div class="passage glass rounded-[28px] p-6 md:p-8 mt-6 border border-amber-900/10 dark:border-zen-700/60"><div class="passage-head"><span class="q-pre">Текст ${pIdx} из 3${tt ? ' · ' + tt : ''}</span><button class="speak-btn" onclick="speakText(this)" data-t="${encodeURIComponent(q.p)}"><i class="fa-solid fa-volume-high"></i> Слушать</button></div><p class="passage-text">${ruby(q.p).replace(/［(\d+)］/g, '<span class="mk">$1</span>')}</p>${q.tbl ? tableHtml(q.tbl) : ''}</div>`
         : '';
     return _pas + `<article id="qb-${k}" class="qcard ${state} glass rounded-[28px] p-6 md:p-9 border border-amber-900/10 dark:border-zen-700/60">
         <div class="flex items-end gap-4 mb-5">
@@ -1532,6 +1721,15 @@ function finishRun() {
     }, 900);
 }
 
+// названия текстов для чтения N5: тест → [текст 1, текст 2, текст 3]
+const PTITLE = {
+    1: ['Моя семья', 'Мой день', 'Дождливое утро'],
+    2: ['Автобусы в городе', 'Какой поезд выбрать', 'Сеансы в кино'],
+    3: ['Библиотека', 'Японская кухня', 'Вторник в библиотеке'],
+    4: ['Автобус до школы', 'Поездка в Токио', 'Старый велосипед'],
+    5: ['Хобби', 'Подготовка к тесту', 'Погода на неделе'],
+    6: ['Покупки', 'Обед с мамой', 'Летняя поездка']
+};
 // ----- Мини-игры: «Пары» и «Сборка». Тесты 3 и 4 в кандзи. -----
 const MINI = {
     'N5|kanji': {
