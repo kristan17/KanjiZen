@@ -1181,6 +1181,212 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         .jn-why span { display: flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--cp-success); margin-bottom: .35rem; }
         .jn-why p { font-size: 1rem; line-height: 1.7; color: var(--cp-text); }
         .jn-card .jr-done { justify-self: start; }
+        .jn-trp { margin-top: .6rem; }
+        .jn-gloss { display: block; font-size: .95rem; font-weight: 600; color: var(--cp-muted); font-family: inherit; }
+        .jn-opts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .5rem; }
+        .jn-opt { display: flex; flex-direction: column; gap: .15rem; padding: .6rem .8rem; border-radius: 14px; background: var(--cp-surface); border: 1px solid var(--cp-line); color: var(--cp-text); }
+        .jn-opt b { font-family: 'Noto Sans JP', sans-serif; font-size: 1.05rem; font-weight: 800; }
+        .jn-opt small { font-size: .82rem; color: var(--cp-muted); }
+        .jn-opt.ok { border-color: var(--cp-success); background: color-mix(in srgb, var(--cp-success) 14%, var(--cp-surface)); }
+        .jn-opt.bad { border-color: var(--cp-danger); background: color-mix(in srgb, var(--cp-danger) 14%, var(--cp-surface)); }
+
+        /* ---- профиль ---- */
+        .pf-card { display: flex; gap: 1.4rem; align-items: center; padding: 1.5rem; border-radius: 26px; border: 1px solid var(--cp-line); margin-bottom: 1rem; flex-wrap: wrap; }
+        .pf-av { width: 6.5rem; height: 6.5rem; flex-shrink: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cp-surface2), var(--cp-bg2)); font-size: 2.6rem; font-weight: 900; color: var(--cp-primary); font-family: 'Noto Sans JP', sans-serif; border: 4px solid var(--cp-primary); animation: pfGlow 3.2s ease-in-out infinite; }
+        .pf-main { flex: 1; min-width: 14rem; display: flex; flex-direction: column; gap: .4rem; }
+        .pf-name { font-size: 1.5rem; font-weight: 900; color: var(--cp-text); background: transparent; border: none; border-bottom: 2px dashed var(--cp-line); padding: .1rem 0; outline: none; }
+        .pf-name:focus { border-bottom-color: var(--cp-accent); }
+        .pf-title { align-self: flex-start; padding: .2rem .7rem; border-radius: 9999px; font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; background: color-mix(in srgb, var(--cp-accent) 18%, transparent); color: var(--cp-accent); }
+        .pf-lvl { display: flex; justify-content: space-between; color: var(--cp-text); font-size: .95rem; }
+        .pf-lvl b { font-size: 1.3rem; color: var(--cp-primary); }
+        .pf-bar { height: .5rem; border-radius: 9999px; background: var(--cp-line); overflow: hidden; }
+        .pf-bar.big { height: .8rem; }
+        .pf-bar i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, var(--cp-success), var(--cp-accent), var(--cp-primary)); background-size: 200% 100%; animation: barFlow 3s linear infinite; transition: width .8s ease; }
+        .pf-next { font-size: .85rem; color: var(--cp-muted); }
+        .pf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-bottom: 1.4rem; }
+        .pf-stats div { text-align: center; padding: .9rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .pf-stats b { display: block; font-size: 1.6rem; font-weight: 900; color: var(--cp-text); }
+        .pf-stats span { font-size: .8rem; color: var(--cp-muted); }
+        .pf-h { font-size: 1.1rem; font-weight: 900; color: var(--cp-accent); margin: 1.2rem 0 .7rem; }
+        .pf-sub { font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--cp-muted); margin: .8rem 0 .4rem; }
+        .pf-achs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .7rem; }
+        .pf-ach { display: flex; gap: .8rem; padding: .9rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); opacity: .75; }
+        .pf-ach.done { opacity: 1; border-color: var(--cp-success); box-shadow: 0 0 20px -10px var(--cp-success); }
+        .pf-ach-ico { width: 2.6rem; height: 2.6rem; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--cp-surface); color: var(--cp-muted); }
+        .pf-ach.done .pf-ach-ico { background: var(--cp-success); color: #0b1a06; animation: spIn .8s cubic-bezier(.2,1.3,.3,1) both; }
+        .pf-ach-t { font-weight: 900; color: var(--cp-text); }
+        .pf-ach-d { font-size: .82rem; color: var(--cp-muted); margin: .1rem 0 .4rem; }
+        .pf-ach-n { font-size: .75rem; color: var(--cp-muted); margin-top: .3rem; }
+        .pf-cos-row { display: flex; flex-wrap: wrap; gap: .7rem; }
+        .pf-cos { width: 9.5rem; padding: .8rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); display: flex; flex-direction: column; align-items: center; gap: .4rem; text-align: center; }
+        .pf-cos.closed { opacity: .6; }
+        .pf-cos-sw { width: 3.2rem; height: 3.2rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-surface), var(--cp-bg2)); border: 4px solid var(--cp-primary); }
+        .pf-cos-av { width: 3.2rem; height: 3.2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-family: 'Noto Sans JP', sans-serif; color: var(--cp-primary); background: var(--cp-surface); }
+        .pf-cos-n { font-weight: 800; color: var(--cp-text); }
+        .pf-lock { font-size: .72rem; color: var(--cp-muted); }
+        .pf-sel { font-size: .8rem; font-weight: 900; color: var(--cp-success); }
+        .pf-use { padding: .3rem .9rem; border-radius: 9999px; border: 1px solid var(--cp-accent); color: var(--cp-accent); font-weight: 800; font-size: .8rem; }
+        .pf-use:hover { background: var(--cp-accent); color: #140c02; }
+        .fr-gold { border-color: #f5c04a !important; box-shadow: 0 0 0 4px #f5c04a33; }
+        .fr-sakura { border-color: #ff9ec7 !important; box-shadow: 0 0 0 4px #ff9ec733; }
+        .fr-ink { border-color: #8a8a8a !important; box-shadow: 0 0 0 4px #5a5a5a44; }
+        .fr-neon { border-color: #3ff5c4 !important; box-shadow: 0 0 22px #3ff5c466; }
+        @keyframes pfGlow { 50% { box-shadow: 0 0 26px -4px var(--cp-primary); } }
+
+        /* ---- журнал: исчезание карточки ---- */
+        .jn-card { overflow: hidden; }
+        .jn-leave { animation: jnOut .55s cubic-bezier(.5,0,.2,1) forwards !important; pointer-events: none; }
+        @keyframes jnOut {
+            0% { opacity: 1; transform: none; max-height: 1000px; margin-bottom: 1rem; }
+            55% { opacity: 0; transform: translateX(46px) scale(.96); max-height: 1000px; margin-bottom: 1rem; }
+            100% { opacity: 0; transform: translateX(70px) scale(.94); max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; border-width: 0; }
+        }
+        /* ---- прогресс: крупный и красивый ---- */
+        .pg-hero { position: relative; overflow: hidden; border-radius: 28px; padding: 1.6rem 1.7rem; margin-bottom: 1.1rem; background: radial-gradient(circle at 0% 0%, rgba(245,192,74,.2), transparent 55%), radial-gradient(circle at 100% 100%, rgba(124,224,124,.13), transparent 50%), var(--cp-surface); border: 1px solid var(--cp-line); box-shadow: 0 30px 60px -36px var(--cp-primary); }
+        .pg-hero-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .pg-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; color: var(--cp-accent); }
+        .pg-big { font-size: 2.6rem; font-weight: 900; color: var(--cp-text); line-height: 1.1; margin-top: .25rem; font-variant-numeric: tabular-nums; }
+        .pg-big span { font-size: 1.05rem; color: var(--cp-muted); font-weight: 700; }
+        .pg-big.pg-soon { font-size: 2rem; color: var(--cp-muted); }
+        .pg-sub { color: var(--cp-muted); font-size: .95rem; margin-top: .15rem; }
+        .pg-ring { --p: 0; position: relative; width: 6.6rem; height: 6.6rem; flex-shrink: 0; border-radius: 9999px; background: conic-gradient(#7ce07c, #f5c04a, #ff7ac4, #4f8cff calc(var(--p) * 1%), var(--cp-line) 0); display: flex; align-items: center; justify-content: center; animation: ringIn 1s ease both; }
+        .pg-ring::before { content: ''; position: absolute; inset: 9px; border-radius: 9999px; background: var(--cp-surface2); }
+        .pg-ring span { position: relative; font-weight: 900; font-size: 1.1rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .pg-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-top: 1.3rem; }
+        @media (max-width: 560px) { .pg-tiles { grid-template-columns: 1fr; } }
+        .pg-tile { display: flex; flex-direction: column; gap: .4rem; align-items: flex-start; padding: .95rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); text-align: left; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+        .pg-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 26px -16px var(--cp-primary); }
+        .pg-tile.active { border-color: var(--cp-primary); box-shadow: 0 0 24px -8px var(--cp-primary); }
+        .pg-ico { width: 2.3rem; height: 2.3rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--cp-primary) 18%, transparent); color: var(--cp-primary); }
+        .pg-tname { font-weight: 800; color: var(--cp-text); }
+        .pg-tcount { font-size: .85rem; color: var(--cp-muted); font-variant-numeric: tabular-nums; }
+        .pg-tbar { width: 100%; height: .42rem; border-radius: 9999px; background: var(--cp-line); overflow: hidden; }
+        .pg-tbar i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, var(--cp-success), var(--cp-primary)); transition: width .9s cubic-bezier(.2,.9,.3,1); }
+        .pg-foot { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-top: 1.1rem; font-size: .85rem; color: var(--cp-muted); flex-wrap: wrap; }
+        .pg-foot > span:first-child i { color: var(--cp-primary); }
+        .streak-chip { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .8rem; border-radius: 9999px; background: linear-gradient(135deg, #ff7a3d, #f5c04a); color: #140c02; font-weight: 900; font-size: .8rem; }
+        .streak-chip i { animation: fireFlick 1.8s ease-in-out infinite; }
+        /* ---- нижняя панель ---- */
+        .dock { position: fixed; left: 50%; bottom: 1.1rem; z-index: 60; display: flex; gap: .3rem; padding: .4rem; border-radius: 9999px; background: color-mix(in srgb, var(--cp-surface) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--cp-line); box-shadow: 0 22px 50px -20px rgba(0,0,0,.6); transform: translateX(-50%); animation: dockIn .6s cubic-bezier(.2,.9,.3,1) both; }
+        @keyframes dockIn { from { opacity: 0; transform: translate(-50%, 30px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        .dock-btn { display: flex; align-items: center; gap: .5rem; padding: .65rem 1.05rem; border-radius: 9999px; color: var(--cp-text); font-weight: 800; font-size: .9rem; white-space: nowrap; transition: background .25s ease, transform .25s ease; }
+        .dock-btn:hover { background: color-mix(in srgb, var(--cp-primary) 16%, transparent); transform: translateY(-2px); }
+        .dock-btn > i { color: var(--cp-primary); font-size: 1rem; }
+        @media (max-width: 560px) { .dock-btn .dl { display: none; } .dock-btn { padding: .65rem .8rem; } .dock-btn .pro { display: none; } }
+        .in-run #dock { display: none; }
+
+        /* ---- прогресс: компактный, одно золотое кольцо ---- */
+        .pg-ring { --p: 0; position: relative; width: 6rem; height: 6rem; flex-shrink: 0; border-radius: 9999px; background: conic-gradient(var(--cp-primary) calc(var(--p) * 1%), var(--cp-line) 0); display: flex; align-items: center; justify-content: center; }
+        .pg-ring::before { content: ''; position: absolute; inset: 8px; border-radius: 9999px; background: var(--cp-surface2); }
+        .pg-ring span { position: relative; font-weight: 900; font-size: 1.05rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .pg-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .pg-big { font-size: 1.9rem; font-weight: 900; color: var(--cp-text); line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .pg-big span { font-size: .95rem; color: var(--cp-muted); font-weight: 700; }
+        .pg-big.pg-soon { color: var(--cp-muted); font-size: 1.5rem; }
+        .pg-sub { color: var(--cp-muted); font-size: .9rem; margin-top: .15rem; }
+        .pg-cats { display: grid; gap: .5rem; margin-top: 1.1rem; }
+        .pg-foot { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-top: 1rem; font-size: .85rem; color: var(--cp-muted); flex-wrap: wrap; }
+        /* ---- три крупные кнопки под заголовком ---- */
+        .act-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-bottom: 1.2rem; }
+        @media (max-width: 720px) { .act-grid { grid-template-columns: 1fr; } }
+        .act-card { position: relative; display: flex; align-items: center; gap: .9rem; padding: 1rem 1.1rem; border-radius: 22px; background: var(--cp-surface); border: 1px solid var(--cp-line); text-align: left; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        .act-card:hover { transform: translateY(-3px); box-shadow: 0 18px 30px -18px var(--cp-primary); border-color: var(--cp-primary); }
+        .act-txt { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+        .act-t { font-weight: 900; font-size: 1.05rem; color: var(--cp-text); }
+        .act-s { font-size: .8rem; color: var(--cp-muted); }
+        .act-ico { width: 3rem; height: 3rem; flex-shrink: 0; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; }
+        .act-err .act-ico { background: linear-gradient(135deg, #ff8a7a, #c9483a); color: #fff; }
+        .act-exam .act-ico { background: linear-gradient(135deg, #b5e48c, #5a9b3a); color: #0b1a06; }
+        .act-av { width: 3rem; height: 3rem; flex-shrink: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-family: 'Noto Sans JP', sans-serif; font-size: 1.1rem; color: var(--cp-primary); background: var(--cp-surface2); border: 3px solid var(--cp-primary); }
+        .act-go { margin-left: auto; color: var(--cp-muted); }
+        .act-badge { position: absolute; top: .6rem; right: .7rem; min-width: 1.5rem; height: 1.5rem; padding: 0 .4rem; border-radius: 9999px; background: #e5484d; color: #fff; font-size: .75rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .act-exam .pro { margin-left: auto; }
+
+        /* ---- шапка: профиль и быстрые значки ---- */
+        .hdr-pf { display: inline-flex; align-items: center; gap: .5rem; height: 2.75rem; padding: 0 .9rem 0 .35rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); font-weight: 800; transition: transform .2s ease, box-shadow .2s ease; }
+        .hdr-pf:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -10px var(--cp-primary); }
+        .hdr-av { width: 2.1rem; height: 2.1rem; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; font-size: .95rem; color: var(--cp-primary); background: var(--cp-surface); border: 2px solid var(--cp-primary); }
+        .hdr-pf-n { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .9rem; }
+        @media (max-width: 640px) { .hdr-pf-n { display: none; } }
+        .hdr-jr, .hdr-ex { position: relative; }
+        .hdr-ex.on { border-color: var(--cp-success); color: var(--cp-success); }
+        .hdr-dot { position: absolute; top: -4px; right: -4px; min-width: 1.15rem; height: 1.15rem; padding: 0 .3rem; border-radius: 9999px; background: #e5484d; color: #fff; font-size: .68rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .hdr-sep { width: 1px; height: 1.6rem; background: var(--cp-line); margin: 0 .2rem; }
+        /* ---- главная кнопка «Продолжить» ---- */
+        .nx { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.3rem; border-radius: 24px; margin-bottom: 1rem; border: 1px solid var(--cp-line); background: radial-gradient(circle at 0% 50%, rgba(245,192,74,.18), transparent 60%), var(--cp-surface); box-shadow: 0 20px 40px -28px var(--cp-primary); }
+        .nx-ico { width: 3.2rem; height: 3.2rem; flex-shrink: 0; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; animation: nxPulse 2.4s ease-in-out infinite; }
+        .nx-ico.nx-done { background: linear-gradient(135deg, #b5e48c, #5a9b3a); color: #0b1a06; animation: none; }
+        @keyframes nxPulse { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--cp-primary) 14%, transparent); } }
+        .nx-txt { flex: 1; min-width: 0; }
+        .nx-l { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 900; color: var(--cp-accent); }
+        .nx-t { font-size: 1.2rem; font-weight: 900; color: var(--cp-text); margin-top: .1rem; }
+        .nx-btn { display: inline-flex; align-items: center; gap: .5rem; height: 2.9rem; padding: 0 1.3rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease; }
+        .nx-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -12px var(--cp-primary); }
+        @media (max-width: 560px) { .nx { flex-wrap: wrap; } .nx-btn { width: 100%; justify-content: center; } }
+
+        /* ---- счётчик ошибок: мягкий значок ---- */
+        .hdr-jr { overflow: visible; }
+        .hdr-dot { top: -7px !important; right: -7px !important; min-width: 1.3rem !important; height: 1.3rem !important; padding: 0 .35rem !important; font-size: .7rem !important; background: linear-gradient(135deg, #ffc978, #e5624d) !important; border: 2px solid var(--cp-surface) !important; box-shadow: 0 4px 12px -4px rgba(229,98,77,.75); color: #2a1206 !important; line-height: 1; letter-spacing: .01em; }
+        /* ---- следующий тест в сетке ---- */
+        .tcard.next-card { border-color: var(--cp-primary) !important; box-shadow: 0 0 0 1px var(--cp-primary), 0 22px 40px -20px var(--cp-primary) !important; }
+        .next-badge { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .7rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-size: .68rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+        .next-badge i { font-size: .6rem; }
+
+        /* ---- журнал: без повторной анимации после удаления ---- */
+        #journal.silent .jn-card, #journal.silent .jn-group { animation: none !important; }
+        /* ---- серия дней: спокойный значок ---- */
+        .sk { display: inline-flex; align-items: center; gap: .55rem; padding: .3rem .85rem .3rem .3rem; border-radius: 9999px; background: linear-gradient(135deg, rgba(245,192,74,.16), rgba(229,98,77,.08)); border: 1px solid color-mix(in srgb, var(--cp-primary) 35%, transparent); font-size: .8rem; color: var(--cp-muted); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); }
+        .sk-ico { width: 1.7rem; height: 1.7rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, #ffe2a0, #e5624d); color: #2a1206; font-size: .72rem; box-shadow: 0 0 14px -3px rgba(229,98,77,.7); animation: skFlame 2.4s ease-in-out infinite; }
+        @keyframes skFlame { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 20px -2px rgba(255,160,90,.9); } }
+        .sk-n { font-weight: 900; font-size: .95rem; color: var(--cp-primary); font-variant-numeric: tabular-nums; }
+        .sk-l { font-weight: 700; color: var(--cp-text); }
+
+        /* ---- журнал: премиальное оформление ---- */
+        .jn-card { position: relative; padding: 1.7rem 1.8rem; border-radius: 30px; gap: 1.15rem; background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--cp-primary) 9%, transparent), transparent 46%), var(--cp-surface2); border: 1px solid var(--cp-line); box-shadow: 0 34px 60px -44px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04); }
+        .jn-head { gap: .75rem; }
+        .jn-num { width: 2.3rem; height: 2.3rem; border-radius: 12px; background: transparent; border: 1px solid var(--cp-primary); color: var(--cp-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; font-weight: 700; letter-spacing: .05em; }
+        .jn-kind { font-size: .66rem; letter-spacing: .24em; color: var(--cp-muted); }
+        .jn-label { display: flex; align-items: center; gap: .6rem; font-size: .66rem; letter-spacing: .24em; font-weight: 800; color: var(--cp-muted); margin-bottom: .1rem; }
+        .jn-label::after { content: ''; flex: 1; height: 1px; background: var(--cp-line); }
+        .jn-label i { margin-right: 0; }
+        .jn-pass { background: transparent; border: none; border-left: 2px solid var(--cp-primary); border-radius: 0; padding: .1rem 0 .1rem 1.1rem; }
+        .jn-jp { font-size: 1.12rem; line-height: 2.1; color: var(--cp-text); }
+        .jn-q { font-size: 1.5rem; font-weight: 800; line-height: 1.9; }
+        .jn-gap { border-bottom: 2px solid var(--cp-primary); background: color-mix(in srgb, var(--cp-primary) 10%, transparent); border-radius: 8px; padding: 0 .5rem; }
+        .jn-answers { gap: .8rem; }
+        .jn-you, .jn-ok { background: transparent; border-radius: 20px; padding: 1.05rem 1.2rem; }
+        .jn-you { border: 1px solid color-mix(in srgb, #e5624d 55%, transparent); color: #e5624d; background: color-mix(in srgb, #e5624d 6%, transparent); }
+        .jn-ok { border: 1px solid color-mix(in srgb, #7cc878 60%, transparent); color: #7cc878; background: color-mix(in srgb, #7cc878 7%, transparent); }
+        .jn-you span, .jn-ok span { font-size: .66rem; letter-spacing: .18em; }
+        .jn-you b, .jn-ok b { font-size: 1.22rem; }
+        .jn-opts-grid { gap: .6rem; }
+        .jn-opt { border-radius: 18px; padding: .75rem .95rem; background: transparent; border: 1px solid var(--cp-line); transition: transform .25s ease, border-color .25s ease; }
+        .jn-opt:hover { transform: translateY(-2px); border-color: var(--cp-accent); }
+        .jn-opt.ok { border-color: #7cc878; background: color-mix(in srgb, #7cc878 9%, transparent); }
+        .jn-opt.bad { border-color: #e5624d; background: color-mix(in srgb, #e5624d 8%, transparent); }
+        .jn-opt b { font-size: 1.05rem; }
+        .jn-full { background: transparent; border-radius: 20px; border: 1px solid var(--cp-line); padding: 1.05rem 1.2rem; }
+        .jn-tr { background: transparent; border-radius: 20px; border-left: 2px solid var(--cp-accent); padding: .3rem 0 .3rem 1.1rem; }
+        .jn-tr span { font-size: .66rem; letter-spacing: .2em; }
+        .jn-tr p { font-size: 1.08rem; font-style: italic; }
+        .jn-card .jr-done { justify-self: start; height: 2.7rem; padding: 0 1.25rem; border-radius: 9999px; border: 1px solid var(--cp-success); color: var(--cp-success); background: transparent; font-weight: 800; letter-spacing: .02em; transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease; }
+        .jn-card .jr-done:hover { background: var(--cp-success); color: #0b1a06; transform: translateY(-2px); box-shadow: 0 12px 24px -14px var(--cp-success); }
+        .jn-group { margin-bottom: 2.4rem; }
+        .jn-gtitle { font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: 1rem; padding-bottom: .6rem; border-bottom: 1px solid var(--cp-line); }
+        .jn-gtitle span { background: transparent; border: 1px solid var(--cp-line); color: var(--cp-muted); }
+        .jn-card { animation: jnIn .6s cubic-bezier(.2,.9,.3,1) both; }
+        @keyframes jnIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        #journal .jr-title { font-size: 2.1rem; letter-spacing: -.01em; }
+        .jr-lead { font-size: 1.02rem; }
+
+        /* ---- кольцо прогресса: зелёное ---- */
+        .pg-ring { background: conic-gradient(#8fd98a, #5fb865 calc(var(--p) * 1%), var(--cp-line) 0) !important; }
+        /* ---- серия дней: тонкая пилюля с пламенем ---- */
+        .sk { display: inline-flex; align-items: center; gap: .45rem; padding: .32rem .9rem .32rem .7rem; border-radius: 9999px; background: color-mix(in srgb, var(--cp-primary) 8%, transparent); border: 1px solid color-mix(in srgb, var(--cp-primary) 28%, transparent); font-size: .8rem; color: var(--cp-muted); }
+        .sk-flame { width: .95rem; height: .95rem; color: #f08a4b; filter: drop-shadow(0 0 5px rgba(240,138,75,.55)); transform-origin: 50% 90%; animation: skFlick 2.6s ease-in-out infinite; }
+        @keyframes skFlick { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.06, 1.12) rotate(3deg); } }
+        .sk-n { font-weight: 900; font-size: .9rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .sk-l { font-weight: 600; }
     </style>
 <script>
 (function () {
@@ -1208,6 +1414,10 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         </a>
         <div class="flex items-center gap-2">
             <a href="index.html" class="h-11 px-4 inline-flex items-center gap-2 rounded-2xl border border-amber-900/15 dark:border-zen-700 text-sm font-semibold hover:border-amber-400 transition-colors"><i class="fa-solid fa-arrow-left text-xs"></i><span class="hidden sm:inline">Справочник</span></a>
+            <button id="hdr-profile" onclick="renderProfile()" class="hdr-pf" title="Профиль"><span id="hdr-av" class="hdr-av">漢</span><span id="hdr-name" class="hdr-pf-n">Ученик</span></button>
+            <button onclick="renderJournal()" class="hdr-btn hdr-light hdr-jr" title="Мои ошибки"><i class="fa-solid fa-book-open"></i><span id="hdr-jr-n" class="hdr-dot" style="display:none"></span></button>
+            <button onclick="toggleExam()" class="hdr-btn hdr-light hdr-ex" title="Режим экзамена"><i class="fa-solid fa-stopwatch"></i></button>
+            <span class="hdr-sep"></span>
             <button onclick="toggleSound()" class="hdr-btn hdr-light hdr-sound" title="Звук"><i id="sound-icon" class="fa-solid fa-volume-high"></i></button>
             <button onclick="toggleFuri()" class="hdr-btn hdr-light hdr-furi" title="Фуригана: вкл / выкл"><span class="font-jp font-black">あ</span></button>
             <button onclick="cyclePal()" class="hdr-btn hdr-light hdr-pal" title="Палитра: обычная / киберпанк"><i class="fa-solid fa-palette"></i></button>
@@ -1221,12 +1431,7 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         <p class="text-[11px] uppercase tracking-[0.3em] font-black text-amber-700 dark:text-amber-400">Тренировка</p>
         <h1 class="text-4xl md:text-5xl font-black mt-2 leading-tight"><span class="gold-text">Тесты JLPT</span></h1>
         <p class="text-zen-500 dark:text-zen-300 mt-3 max-w-xl mx-auto">Выберите уровень и раздел, отвечайте на вопросы, а ошибки сохраним для повтора.</p>
-        <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs font-bold text-zen-600 dark:text-zen-300">
-            <span class="feat-chip"><b class="step-n">1</b>выберите уровень</span>
-            <span class="feat-chip"><b class="step-n">2</b>решайте задания</span>
-            <span class="feat-chip"><b class="step-n">3</b>повторите ошибки</span>
-        </div>
-    </section>
+        </section>
 
     <div id="controls" class="sticky top-20 z-30 flex flex-col items-center gap-3 mb-8">
         <div id="lvl-switch" class="relative flex items-center gap-1 p-1 rounded-full glass border border-amber-900/10 dark:border-zen-700/60">
@@ -1480,7 +1685,105 @@ const TRQ = {
  "わたしは ___ ★ ___ ___ 。|京都": "На прошлой неделе я ездил в Киото.",
  "明日は ___ ___ ★ ___ 。|いい": "Завтра, наверное, будет хорошая погода.",
  "この ___ ___ ★ ___ 。|広い": "Эта комната просторная.",
- "先生は ___ ★ ___ ___ 。|教室": "Учитель сейчас в классе."
+ "先生は ___ ★ ___ ___ 。|教室": "Учитель сейчас в классе.",
+ "Как читается 学校 (школа)?": "学校 — школа.",
+ "Как читается 図書館 (библиотека)?": "図書館 — библиотека.",
+ "Как читается 病院 (больница)?": "病院 — больница.",
+ "Что означает слово 天気?": "天気 — погода.",
+ "Как читается 毎朝 (каждое утро)?": "毎朝 — каждое утро.",
+ "Что означает 三月?": "三月 — март.",
+ "Как читается 広い (просторный)?": "広い — просторный.",
+ "Как читается 会社 (компания, работа)?": "会社 — компания, работа.",
+ "Как читается 外国 (заграница)?": "外国 — заграница.",
+ "Что означает 名前?": "名前 — имя.",
+ "「あしたは___が降るでしょう。」": "Завтра, наверное, пойдёт дождь.",
+ "「わたしは___が好きです。」": "Я люблю собак.",
+ "「毎朝___を飲みます。」": "Каждое утро я пью воду.",
+ "「あの___は高いです。」": "Та гора высокая.",
+ "「庭に大きい___があります。」": "Во дворе есть большое дерево.",
+ "「___が燃えています。」": "Горит огонь.",
+ "「わたしは___で見ます。」": "Я смотрю глазами.",
+ "「毎朝、___を洗います。」": "Каждое утро я мою руки.",
+ "「きょうは___がきれいです。」": "Сегодня небо красивое.",
+ "「あそこに___があります。」": "Там есть река.",
+ "ここに [[山]]があります。": "Здесь есть гора.",
+ "毎朝、[[水]]を飲みます。": "Каждое утро я пью воду.",
+ "[[火]]をつけます。": "Я зажигаю огонь.",
+ "わたしは[[犬]]が好きです。": "Я люблю собак.",
+ "あした[[雨]]が降るでしょう。": "Завтра, наверное, пойдёт дождь.",
+ "[[本]]を読みます。": "Я читаю книгу.",
+ "[[日]]曜日は休みです。": "В воскресенье выходной.",
+ "あの[[人]]は先生です。": "Тот человек — учитель.",
+ "[[休]]みの日に出かけます。": "В выходной день я выхожу из дома.",
+ "[[目]]がきれいです。": "У вас красивые глаза.",
+ "[[口]]をあけてください。": "Откройте, пожалуйста, рот.",
+ "[[手]]をあらいます。": "Я мою руки.",
+ "[[はし]]を渡りました。": "Я перешёл через мост.",
+ "[[かいしゃ]]で働きます。": "Я работаю в компании.",
+ "[[でんしゃ]]に乗ります。": "Я сажусь в поезд.",
+ "あした、[[てんき]]がいいです。": "Завтра хорошая погода.",
+ "[[がっこう]]で勉強します。": "Я учусь в школе.",
+ "[[いし]]があります。": "Здесь есть камень.",
+ "[[そら]]があおいです。": "Небо голубое.",
+ "[[あめ]]がふっています。": "Идёт дождь.",
+ "[[がくせい]]です。": "Я студент.",
+ "[[いぬ]]をかいます。": "Я покупаю собаку.",
+ "[[ねこ]]がねています。": "Кошка спит.",
+ "[[みせ]]に行きます。": "Я иду в магазин.",
+ "一番安いバスはどれですか。": "Какой автобус самый дешёвый?",
+ "一番長く乗るバスはどれですか。": "Какой автобус едет дольше всех?",
+ "止まらずに行くバスはどれですか。": "Какой автобус идёт без остановок?",
+ "一番速い電車はどれですか。": "Какой поезд самый быстрый?",
+ "一番安い電車はどれですか。": "Какой поезд самый дешёвый?",
+ "乗りかえなしで5000円より安い電車はどれですか。": "Какой поезд без пересадок дешевле 5000 иен?",
+ "一番安い映画はどれですか。": "Какой фильм самый дешёвый?",
+ "一番長い映画はどれですか。": "Какой фильм идёт дольше всех?",
+ "12時より後に始まって1100円より安い映画はどれですか。": "Какой фильм начинается после 12:00 и стоит меньше 1100 иен?",
+ "一番安いものはどれですか。": "Что самое дешёвое?",
+ "人気があるものはどれですか。": "Что популярно?",
+ "ラーメンとサラダを一つずつ頼むと、合計はいくらですか。": "Сколько стоят рамен и салат вместе?",
+ "水曜日は何をしますか。": "Что делают в среду?",
+ "プールは何曜日ですか。": "В какой день бассейн?",
+ "一番遅い時間に予定がある日はどれですか。": "В какой день самое позднее занятие?",
+ "どこに行きますか。": "Куда идти?",
+ "何を持って行きますか。": "Что взять с собой?",
+ "何時から何時までですか。": "С какого по какое время?",
+ "ゆみさんは今どこにいますか。": "Где сейчас Юми?",
+ "天気はどうですか。": "Какая погода?",
+ "ゆみさんの気持ちはどうですか。": "Каково настроение Юми?",
+ "かさを忘れたのは何曜日ですか。": "В какой день забыли зонт?",
+ "本を何さつ借りましたか。": "Сколько книг взяли?",
+ "公園を歩いたのは何曜日ですか。": "В какой день гуляли в парке?",
+ "お祭りはどこでありますか。": "Где проходит фестиваль?",
+ "入るのにお金はいりますか。": "Нужно ли платить за вход?",
+ "お祭りは何時に終わりますか。": "Во сколько заканчивается фестиваль?",
+ "パンはいくらですか。": "Сколько стоит хлеб?",
+ "りんごは何こ買いましたか。": "Сколько яблок купили?",
+ "合計はいくらですか。": "Какая сумма?",
+ "最初に何をしますか。": "Что делать первым?",
+ "二番目はどちらに曲がりますか。": "В какую сторону повернуть на втором шаге?",
+ "学校はどこにありますか。": "Где школа?",
+ "どのお店のクーポンですか。": "Для какого магазина купон?",
+ "いくら安くなりますか。": "На сколько дешевле?",
+ "何枚使えますか。": "Сколько купонов можно использовать?",
+ "［1］に入る言葉はどれですか。": "Мама рано встаёт (早く起きて).",
+ "［2］に入る言葉はどれですか。": "Папа работает в компании (会社で働いて).",
+ "家族は何人ですか。": "Сколько человек в семье? — Четыре.",
+ "［3］に入る言葉はどれですか。": "В школе учат японский и математику.",
+ "［4］に入る言葉はどれですか。": "Обедают с друзьями в столовой.",
+ "何時に家を出ますか。": "Во сколько выходит из дома? — В 7:30.",
+ "［5］に入る言葉はどれですか。": "Очень холодно.",
+ "［6］に入る言葉はどれですか。": "Дождь прекратился в обед.",
+ "駅までどうやって行きましたか。": "Как шёл до станции? — Шёл пешком с зонтом.",
+ "［7］に入る言葉はどれですか。": "Утром идёт в парк.",
+ "［8］に入る言葉はどれですか。": "Играет в футбол с друзьями.",
+ "日曜日は何をしますか。": "Что делает в воскресенье? — Читает книги дома.",
+ "［9］に入る言葉はどれですか。": "Порезали овощи.",
+ "［10］に入る言葉はどれですか。": "Пахло очень вкусно.",
+ "誰と晩ご飯を作りましたか。": "С кем готовили ужин? — С мамой.",
+ "［11］に入る言葉はどれですか。": "В поезде читал книгу.",
+ "［12］に入る言葉はどれですか。": "Сделали много фотографий.",
+ "帰りは何に乗りましたか。": "На чём ехали обратно? — На синкансэне."
 };
 
 (function () {
@@ -1499,6 +1802,196 @@ const TRQ = {
         }));
     }
 })();
+const TRP = {
+ "わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。": "Моя семья: четыре человека. Есть папа, мама и старший брат. Папа работает в компании. Мама встаёт рано утром и готовит завтрак. Брат учится в университете. Я каждый день хожу в школу. По выходным вся семья вместе готовит и ест. Очень дружная семья.",
+ "わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。": "Я встаю каждое утро в семь часов. В 7:30 выхожу из дома и еду в школу на электричке. В школе я учу японский и математику [3]. Обедаю с друзьями в столовой [4]. После обеда читаю книги в библиотеке. Домой возвращаюсь в пять. Каждый день очень занят.",
+ "今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。": "С утра идёт дождь. Очень [5]. Я взял зонт и пошёл до станции пешком. Электричка немного опоздала. Когда пришёл в школу, учитель сказал «доброе утро». Дождь прекратился примерно в обед [6]. После обеда стало немного теплее.",
+ "わたしの週末は楽しいです。土曜日は朝［7］、公園へ行きます。友達と［8］をします。昼ご飯は母が作ったおにぎりです。日曜日は家で本を読みます。夜は家族と一緒にテレビを見ます。とても楽しい週末です。": "Мои выходные весёлые. В субботу утром я иду в парк [7]. С друзьями я играю в [8]. На обед — онигири, которые сделала мама. В воскресенье читаю книги дома. Вечером смотрю телевизор с семьёй. Очень весёлые выходные.",
+ "今日は母と一緒に晩ご飯を作りました。まず野菜を［9］。次に肉を焼きます。とても［10］匂いがしました。ご飯と味噌汁も作りました。みんなで食べて、とても楽しかったです。": "Сегодня я готовил ужин вместе с мамой. Сначала я [9] овощи. Потом жарю мясо. Пахло очень [10]. Ещё мы сделали рис и мисо-суп. Все вместе поели, было очень весело.",
+ "先週、電車で京都へ行きました。駅には人がたくさんいました。電車の中で［11］を読みました。京都のお寺はとても大きかったです。写真をたくさん［12］。帰りは新幹線に乗りました。楽しい旅行でした。": "На прошлой неделе я ездил в Киото на электричке. На вокзале было много людей. В поезде я [11] книгу. Храмы в Киото очень большие. Я сделал [12] много фотографий. Обратно ехал на синкансэне. Поездка была весёлой.",
+ "わたしのまちのバスの時間です。どのバスに乗りますか。": "Расписание автобусов в моём городе. На какой автобус вы сядете?",
+ "東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。": "Вы едете из Токио в Осаку. Посмотрите таблицу и выберите лучшую электричку.",
+ "今週の映画の時間です。どの映画を見ますか。": "Расписание сеансов на этой неделе. Какой фильм вы посмотрите?",
+ "レストランのメニューです。いくらか、どれが人気か、よく見てください。": "Меню ресторана. Посмотрите, сколько что стоит и что популярно.",
+ "わたしの一週間の予定です。どの日に何がありますか。": "Моё расписание на неделю. Что и в какой день?",
+ "学校からのお知らせです。よく読んでから、答えてください。": "Объявление из школы. Внимательно прочитайте и ответьте.",
+ "ともだちからはがきが届きました。": "Пришла открытка от подруги.",
+ "わたしの日記です。一週間の始めを書きました。": "Моя запись в дневнике. Я написал о начале недели.",
+ "まちのお祭りのポスターです。よく見てから答えてください。": "Афиша городского фестиваля. Посмотрите внимательно и ответьте.",
+ "スーパーのレシートです。買ったものと値段を見てください。": "Чек из супермаркета. Посмотрите покупки и цены.",
+ "学校までの道を説明します。順番に読んでください。": "Объясняю, как дойти до школы. Читайте по порядку.",
+ "パン屋のクーポンです。使い方を読んでください。": "Купон пекарни. Прочитайте, как им пользоваться."
+};
+const ANS_TR = {
+ "起きて": "вставая (рано)",
+ "働いて": "работая",
+ "四人": "четыре человека",
+ "勉強します": "учусь",
+ "食べます": "ем",
+ "7時半": "7:30",
+ "寒い": "холодно",
+ "やみました": "прекратился",
+ "傘を持って歩いて": "шёл пешком с зонтом",
+ "3ごう": "3-й автобус",
+ "2ごう": "2-й автобус",
+ "1ごう": "1-й автобус",
+ "はやて": "поезд «はやて»",
+ "ふつう": "обычный поезд",
+ "さくら": "поезд «さくら»",
+ "さくら映画": "фильм «さくら映画»",
+ "そら映画": "фильм «そら映画»",
+ "早く": "рано",
+ "サッカー": "футбол",
+ "家で本を読む": "читает книги дома",
+ "切りました": "порезали",
+ "いい": "хорошо",
+ "お母さん": "мама",
+ "本": "книга",
+ "撮りました": "сфотографировал",
+ "新幹線": "синкансэн",
+ "ジュース": "сок",
+ "ラーメン": "рамэн",
+ "1050円": "1050 иен",
+ "休み": "выходной",
+ "木曜日": "четверг",
+ "金曜日": "пятница",
+ "体育館": "спортзал",
+ "うわばき": "сменная обувь",
+ "十時から十二時": "с 10 до 12",
+ "京都": "Киото",
+ "晴れ": "ясно",
+ "楽しい": "весело",
+ "月曜日": "понедельник",
+ "三さつ": "три книги",
+ "駅前の公園": "парк у станции",
+ "いいえ、無料です": "нет, бесплатно",
+ "十五時": "15:00",
+ "400円": "400 иен",
+ "三つ": "три штуки",
+ "900円": "900 иен",
+ "まっすぐ行く": "идти прямо",
+ "右": "направо",
+ "すぐ左": "сразу налево",
+ "パン屋": "пекарня",
+ "百円": "100 иен",
+ "一枚": "один",
+ "寝て": "ложась спать",
+ "行って": "идя",
+ "食べて": "поев",
+ "遊んで": "играя",
+ "三人": "три человека",
+ "五人": "пять человек",
+ "二人": "два человека",
+ "寝ます": "сплю",
+ "買います": "покупаю",
+ "読みます": "читаю",
+ "見ます": "смотрю",
+ "7時": "7:00",
+ "5時": "5:00",
+ "8時": "8:00",
+ "にぎやか": "оживлённо",
+ "静か": "тихо",
+ "きれい": "красиво",
+ "食べました": "поел",
+ "読みました": "читал",
+ "寝ました": "спал",
+ "自転車で": "на велосипеде",
+ "車で": "на машине",
+ "バスで": "на автобусе",
+ "全部同じ": "все одинаково",
+ "ない": "такого нет",
+ "はな映画": "фильм «はな映画»",
+ "重く": "тяжело",
+ "軽く": "легко",
+ "高く": "дорого",
+ "泣き": "плач",
+ "寝": "сон",
+ "消し": "стирание",
+ "公園でサッカー": "играет в футбол в парке",
+ "海へ行く": "едет к морю",
+ "買い物をする": "ходит за покупками",
+ "見ました": "посмотрели",
+ "聞きました": "послушали",
+ "重い": "тяжёлый",
+ "遠い": "далеко",
+ "高い": "дорогой",
+ "お父さん": "папа",
+ "友達": "друг",
+ "ひとり": "один",
+ "犬": "собака",
+ "車": "машина",
+ "花": "цветок",
+ "書きました": "написал",
+ "飲みました": "выпил",
+ "バス": "автобус",
+ "自転車": "велосипед",
+ "飛行機": "самолёт",
+ "サラダ": "салат",
+ "カレーライス": "карри с рисом",
+ "1100円": "1100 иен",
+ "1000円": "1000 иен",
+ "1150円": "1150 иен",
+ "プール": "бассейн",
+ "ピアノ": "пианино",
+ "英語": "английский",
+ "火曜日": "вторник",
+ "教室": "класс",
+ "図書室": "читальный зал",
+ "校庭": "школьный двор",
+ "お弁当": "обед с собой",
+ "傘": "зонт",
+ "ノート": "тетрадь",
+ "九時から十一時": "с 9 до 11",
+ "十時から十一時": "с 10 до 11",
+ "十二時から二時": "с 12 до 2",
+ "東京": "Токио",
+ "大阪": "Осака",
+ "札幌": "Саппоро",
+ "雨": "дождь",
+ "雪": "снег",
+ "くもり": "облачно",
+ "さびしい": "грустно",
+ "ねむい": "хочется спать",
+ "こわい": "страшно",
+ "水曜日": "среда",
+ "一さつ": "одна книга",
+ "二さつ": "две книги",
+ "四さつ": "четыре книги",
+ "学校": "школа",
+ "図書館": "библиотека",
+ "病院": "больница",
+ "はい、百円です": "да, 100 иен",
+ "はい、千円です": "да, 1000 иен",
+ "いいえ、有料です": "нет, платно",
+ "十時": "10:00",
+ "十二時": "12:00",
+ "十七時": "17:00",
+ "200円": "200 иен",
+ "300円": "300 иен",
+ "二つ": "две штуки",
+ "一つ": "одна штука",
+ "五つ": "пять штук",
+ "800円": "800 иен",
+ "700円": "700 иен",
+ "右に曲がる": "повернуть направо",
+ "左に曲がる": "повернуть налево",
+ "止まる": "остановиться",
+ "左": "налево",
+ "後ろ": "сзади",
+ "まっすぐ": "прямо",
+ "すぐ右": "сразу направо",
+ "駅の前": "перед станцией",
+ "公園の中": "в парке",
+ "本屋": "книжный магазин",
+ "花屋": "цветочный магазин",
+ "くだものの店": "фруктовый магазин",
+ "五十円": "50 иен",
+ "千円": "1000 иен",
+ "二百円": "200 иен",
+ "二枚": "два",
+ "三枚": "три",
+ "何枚でも": "сколько угодно"
+};
 const FREE_TESTS = 7;        // сколько тестов открыто всем в каждом разделе
 const TESTS_PER_SECTION = 7; // всего тестов в разделе
 
@@ -1736,8 +2229,11 @@ const FURI = {
 
 const esc = x => String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sectionKey = (lvl, cat) => `${lvl}|${cat}`;
-const isFreeTest = (lvl, cat, n) => n <= FREE_TESTS && !!BANK[sectionKey(lvl, cat)];
-const isOpenTest = (lvl, cat, n) => isFreeTest(lvl, cat, n) || owned.includes(lvl);
+const TRIAL_PER_SECTION = 3;   // сколько первых тестов каждого раздела открыты всем
+const hasContent = (lvl, cat, n) => !!((BANK[sectionKey(lvl, cat)] || [])[n - 1]) || !!miniOf(sectionKey(lvl, cat), n);
+const isFreeTest = (lvl, cat, n) => n <= TRIAL_PER_SECTION && hasContent(lvl, cat, n);
+const PAYWALL_ENABLED = false; // включим, когда подключим базу и оплату
+const isOpenTest = (lvl, cat, n) => !PAYWALL_ENABLED || isPremium() || isFreeTest(lvl, cat, n) || owned.includes(lvl);
 
 // ----- Фуригана и вопросы -----
 function ruby(text) {
@@ -1889,10 +2385,11 @@ function testCard(n) {
     const stat = JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null');
     const delay = `animation-delay:${n * 70}ms`;
     if (open) {
-        return `<button onclick="startTest(${n})" class="tcard rise ${stat && stat.solved ? 'solved' : ''}" style="${delay}">
+        return `<button onclick="startTest(${n})" class="tcard rise ${stat && stat.solved ? 'solved' : ''} ${nextTestN() === n ? 'next-card' : ''}" style="${delay}">
             <div class="flex items-start justify-between gap-2">
                 <span class="tnum">${String(n).padStart(2, '0')}</span>
                 <div class="flex flex-col items-end gap-2">
+                    ${nextTestN() === n ? '<span class="next-badge"><i class="fa-solid fa-play"></i>Продолжить</span>' : ''}
                     ${free ? '<span class="chip-free">Бесплатно</span>' : ''}
                     ${stat && stat.solved ? '<span class="solved-badge"><i class="fa-solid fa-check"></i>Решён</span>' : ''}
                 </div>
@@ -1957,29 +2454,6 @@ function dailyHtml() {
         <button onclick="startDaily()" class="daily-btn">Начать <i class="fa-solid fa-arrow-right"></i></button>
     </div>`;
 }
-function progressHtml() {
-    const list = allSlots();
-    const solved = list.filter(isSolvedSlot).length;
-    let stars = 0;
-    list.forEach(x => { const st = JSON.parse(localStorage.getItem(`kz_test_${sectionKey(x.lvl, x.cat)}_${x.n}`) || 'null'); if (st && st.stars) stars += st.stars; });
-    const mistakes = Object.values(mistakeStore()).reduce((a, b) => a + b.length, 0);
-    const pct = list.length ? Math.round(solved / list.length * 100) : 0;
-    const cats = ['kanji', 'grammar', 'reading'].map(c => {
-        const items = list.filter(x => x.cat === c);
-        const s2 = items.filter(isSolvedSlot).length;
-        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
-        return `<div class="pg-cat"><span class="pg-name">${CAT[c].name}</span><div class="pg-bar"><i style="width:${p}%"></i></div><b class="pg-num">${s2}/${items.length}</b></div>`;
-    }).join('');
-    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
-        <div class="pg-top">
-            <div><p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400">Ваш прогресс</p>
-            <p class="font-black text-2xl mt-1">${solved} <span class="text-base text-zen-500 dark:text-zen-300">из ${list.length} тестов</span></p></div>
-            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
-        </div>
-        <div class="pg-cats">${cats}</div>
-        <p class="text-xs text-zen-500 dark:text-zen-300 mt-3">Звёзд: <b>${stars}</b> · Ошибок в копилке: <b>${mistakes}</b></p>
-    </div>`;
-}
 function retryHtml() {
     const sk = sectionKey(activeLevel, activeCat);
     const st = mistakeStore();
@@ -2024,34 +2498,6 @@ function injectHeaderHint() {
 }
 function addQHints() { /* подсказка теперь в верхней панели */ }
 function setCatFromProgress(c) { activeCat = c; syncChrome(); renderList(); }
-function progressHtml() {
-    const lvl = activeLevel;
-    const inLvl = allSlots().filter(x => x.lvl === lvl);
-    const sec = inLvl.filter(x => x.cat === activeCat);
-    const secSolved = sec.filter(isSolvedSlot).length;
-    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
-    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
-    const bars = ['kanji', 'grammar', 'reading'].map(c => {
-        const items = inLvl.filter(x => x.cat === c);
-        const s2 = items.filter(isSolvedSlot).length;
-        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
-        return `<button class="pg-cat ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
-            <span class="pg-name">${CAT[c].name}</span>
-            <div class="pg-bar"><i style="width:${p}%"></i></div>
-            <b class="pg-num">${items.length ? s2 + '/' + items.length : 'скоро'}</b></button>`;
-    }).join('');
-    const head = sec.length
-        ? `<p class="font-black text-2xl mt-1">${secSolved} <span class="text-base text-zen-500 dark:text-zen-300">из ${sec.length} · ${CAT[activeCat].name} · ${lvl}</span></p>`
-        : `<p class="font-black text-xl mt-1 text-zen-500 dark:text-zen-300">Тесты ${lvl} · ${CAT[activeCat].name} пока не добавлены</p>`;
-    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
-        <div class="pg-top">
-            <div><p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400">Прогресс · ${lvl}</p>${head}</div>
-            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
-        </div>
-        <div class="pg-cats">${bars}</div>
-        <p class="text-xs text-zen-500 dark:text-zen-300 mt-3">Звёзд в разделе: <b>${secStars}</b></p>
-    </div>`;
-}
 
 function isPremium() { return localStorage.getItem('kz_plan') === 'premium'; }
 function examOn() { return localStorage.getItem('kz_exam') === '1' && isPremium(); }
@@ -2238,7 +2684,7 @@ function renderJournal() {
                 : `<p class="jr-q">${esc(x.q)}</p>
                    <p class="jr-a">Правильно: <b>${esc(x.a)}</b></p>
                    ${x.e ? `<p class="jr-e">${esc(x.e)}</p>` : ''}`}
-            <button class="jr-del" onclick="clearMistakeIdx(${i})" title="Убрать"><i class="fa-solid fa-xmark"></i></button>
+            <button class="jr-del" onclick="clearMistakeIdxAnim(${i}, this)" title="Убрать"><i class="fa-solid fa-xmark"></i></button>
         </div>`).join('')
         : '<p class="jr-empty">Ошибок пока нет. Так держать!</p>';
     view.innerHTML = `
@@ -2254,7 +2700,7 @@ function renderJournal() {
             <p class="jr-count">${items.length} в копилке</p>
             <div class="jr-list">${rows}</div>
         </div>`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function toggleExam() {
     if (!isPremium()) { showPaywall('Режим экзамена'); return; }
@@ -2263,6 +2709,7 @@ function toggleExam() {
 }
 function toolsHtml() {
     return `<div class="tools rise">
+        <button class="tool-btn" onclick="renderProfile()"><i class="fa-solid fa-user"></i> Профиль</button>
         <button class="tool-btn" onclick="renderJournal()"><i class="fa-solid fa-book"></i> Мои ошибки</button>
         <button class="tool-btn ${examOn() ? 'on' : ''}" onclick="toggleExam()"><i class="fa-solid fa-stopwatch"></i> Режим экзамена ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
     </div>`;
@@ -2275,14 +2722,14 @@ function jrQuestion(x, i) {
         <p class="jr-q">${esc(x.q)}</p>
         <p class="jr-ans"><span>Правильный ответ</span><b>${esc(x.a)}</b></p>
         ${x.e ? `<p class="jr-e"><i class="fa-solid fa-lightbulb"></i>${esc(x.e)}</p>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял</button>
     </article>`;
 }
 function jrMini(x, i) {
     return `<article class="jr-card">
         <p class="jr-q">Задание: ${esc(x.title || '')}</p>
         <p class="jr-e"><i class="fa-solid fa-rotate"></i>Пройдите это задание ещё раз в разделе «Повторить ошибки».</p>
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял</button>
     </article>`;
 }
 function renderJournal() {
@@ -2325,7 +2772,7 @@ function renderJournal() {
             </div>
             ${body}
         </div>`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function saveMistake(k) {
@@ -2360,7 +2807,7 @@ function jrQuestion(x, i, pos) {
             <div class="jd-right"><span>Правильно</span><b>${ruby(x.a)}</b><i class="fa-solid fa-check"></i></div>
         </div>
         ${x.e ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(x.e)}</p></div>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
     </article>`;
 }
 function jrMiniFull(r, type) {
@@ -2379,7 +2826,7 @@ function jrMini(x, i, pos) {
         <p class="jd-q">Правильная фраза:</p>
         <p class="jd-sent">${ruby(full)}</p>
         ${r.why ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(r.why)}</p></div>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
     </article>`;
 }
 function renderJournal() {
@@ -2421,7 +2868,7 @@ function renderJournal() {
             </div>
             ${body}
         </div>`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function jrMini(x, i, pos) {
@@ -2439,7 +2886,7 @@ function jrMini(x, i, pos) {
         <p class="jd-sent">${ruby(full)}</p>
         ${tr ? `<p class="jd-tr">${esc(tr)}</p>` : ''}
         ${r.why ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(r.why)}</p></div>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
     </article>`;
 }
 
@@ -2487,7 +2934,7 @@ function renderCards() {
     upsell.classList.remove('hidden');
     CARDS = allMistakes().filter(x => !x.__mini);
     drawCards();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function fcKnow() { const x = CARDS.shift(); if (x) removeMistake(x.mk, x.q); drawCards(); }
 function fcAgain() { CARDS.push(CARDS.shift()); drawCards(); }
@@ -2544,12 +2991,13 @@ function streakHtml() {
 
 function jnPassage(x) {
     if (!x.p) return '';
-    return `<div class="jn-pass"><p class="jn-label"><i class="fa-solid fa-book-open"></i> Текст, к которому относится вопрос</p><div class="jn-jp">${ruby(x.p)}</div></div>`;
+    const trp = TRP[x.p] || '';
+    return `<div class="jn-pass"><p class="jn-label"><i class="fa-solid fa-book-open"></i> Текст, к которому относится вопрос</p><div class="jn-jp">${ruby(x.p)}</div>${trp ? `<div class="jn-tr jn-trp"><span>Перевод текста</span><p>${esc(trp)}</p></div>` : ''}</div>`;
 }
 function jnTable(x) { return x.tbl ? `<div class="jn-tbl">${tableHtml(x.tbl)}</div>` : ''; }
 function jnQuestion(x) {
     const t = cleanQ(x.q);
-    return `<p class="jn-q">${ruby(t).replace(/___/g, '<span class="jn-gap">＿＿＿</span>')}</p>`;
+    return `<p class="jn-q">${ruby(t).replace(/___/g, '<span class="jn-gap">＿＿＿</span>').replace(/\[\[(.+?)\]\]/g, '<u class="kul">$1</u>')}</p>`;
 }
 function jnFull(x) {
     const t = cleanQ(x.q);
@@ -2567,12 +3015,13 @@ function jnCard(x, i, pos) {
         ${jnQuestion(x)}
         <div class="jn-answers">
             <div class="jn-you"><span>Вы ответили</span><b>${x.chosen ? ruby(x.chosen) : 'ответ не сохранён'}</b></div>
-            <div class="jn-ok"><span>Правильный ответ</span><b>${ruby(x.a)}</b></div>
+            <div class="jn-ok"><span>Правильный ответ</span><b>${ruby(x.a)}</b>${ANS_TR[x.a] ? `<small class="jn-gloss">${esc(ANS_TR[x.a])}</small>` : ''}</div>
         </div>
+        ${jnOptions(x)}
         ${jnFull(x)}
         ${tr ? `<div class="jn-tr"><span>Перевод</span><p>${esc(tr)}</p></div>` : ''}
         ${x.e ? `<div class="jn-why"><span><i class="fa-solid fa-lightbulb"></i> Почему ответ такой</span><p>${esc(x.e)}</p></div>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
     </article>`;
 }
 function jnMini(x, i, pos) {
@@ -2590,7 +3039,7 @@ function jnMini(x, i, pos) {
         <p class="jn-jp jn-big">${ruby(full)}</p>
         ${tr ? `<div class="jn-tr"><span>Перевод</span><p>${esc(tr)}</p></div>` : ''}
         ${r.why ? `<div class="jn-why"><span><i class="fa-solid fa-lightbulb"></i> Почему так</span><p>${esc(r.why)}</p></div>` : ''}
-        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+        <button class="jr-done" onclick="clearMistakeIdxAnim(${i}, this)"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
     </article>`;
 }
 function renderJournal() {
@@ -2628,7 +3077,359 @@ function renderJournal() {
             </div>
             ${body}
         </div>`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function jnOptions(x) {
+    if (!x.o || x.o.length < 2) return '';
+    const items = x.o.map(o => {
+        const cls = o === x.a ? 'ok' : (o === x.chosen ? 'bad' : '');
+        const gl = ANS_TR[o] ? `<small>${esc(ANS_TR[o])}</small>` : '';
+        return `<div class="jn-opt ${cls}"><b>${ruby(o)}</b>${gl}</div>`;
+    }).join('');
+    return `<div class="jn-opts"><p class="jn-label">Все варианты</p><div class="jn-opts-grid">${items}</div></div>`;
+}
+
+const PROFILE_KEY = 'kz_profile';
+const ACHIEVEMENTS = [
+    { id: 'first',   title: 'Первый шаг',    desc: 'Решите первый тест',                need: 1,  stat: 'solved' },
+    { id: 'five',    title: 'Разогрелись',   desc: 'Решите 5 тестов',                   need: 5,  stat: 'solved' },
+    { id: 'twenty',  title: 'Упорный',       desc: 'Решите 20 тестов',                  need: 20, stat: 'solved' },
+    { id: 'learn10', title: 'Знаток кандзи', desc: 'Выучите 10 кандзи в справочнике',   need: 10, stat: 'learned' },
+    { id: 'stars15', title: 'Звёздный счёт', desc: 'Наберите 15 звёзд',                 need: 15, stat: 'stars' },
+    { id: 'perfect', title: 'Безупречно',    desc: '3 звезды в трёх тестах',            need: 3,  stat: 'threeStar' },
+    { id: 'streak3', title: 'Три дня',       desc: 'Серия из 3 дней подряд',            need: 3,  stat: 'streak' },
+    { id: 'streak7', title: 'Неделя',        desc: 'Серия из 7 дней подряд',            need: 7,  stat: 'streak' }
+];
+const COSMETICS = [
+    { kind: 'frame', id: 'gold',   name: 'Золотая', how: { free: true } },
+    { kind: 'frame', id: 'sakura', name: 'Сакура',  how: { ach: 'five' } },
+    { kind: 'frame', id: 'ink',    name: 'Тушь',    how: { ach: 'streak7' } },
+    { kind: 'frame', id: 'neon',   name: 'Неон',    how: { premium: true } },
+    { kind: 'title', id: 'novice',  name: 'Новичок', how: { free: true } },
+    { kind: 'title', id: 'student', name: 'Ученик',  how: { ach: 'first' } },
+    { kind: 'title', id: 'scholar', name: 'Знаток',  how: { ach: 'learn10' } },
+    { kind: 'title', id: 'master',  name: 'Мастер',  how: { premium: true } },
+    { kind: 'avatar', id: '漢',  name: '漢',  how: { free: true } },
+    { kind: 'avatar', id: '桜',  name: '桜',  how: { ach: 'five' } },
+    { kind: 'avatar', id: '富士', name: '富士', how: { ach: 'twenty' } },
+    { kind: 'avatar', id: '龍',  name: '龍',  how: { premium: true } }
+];
+function pfIsPremium() { return localStorage.getItem('kz_plan') === 'premium'; }
+function getProfile() {
+    const d = { name: 'Ученик', avatar: '漢', frame: 'gold', title: 'novice' };
+    try { return { ...d, ...(JSON.parse(localStorage.getItem(PROFILE_KEY)) || {}) }; } catch (e) { return d; }
+}
+function saveProfile(p) { localStorage.setItem(PROFILE_KEY, JSON.stringify(p)); }
+function pfEsc(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+function pfStreak() {
+    const days = new Set(JSON.parse(localStorage.getItem('kz_days') || '[]'));
+    const d = new Date();
+    if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+    let n = 0;
+    while (days.has(d.toISOString().slice(0, 10))) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+}
+function pfStats() {
+    let solved = 0, stars = 0, threeStar = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith('kz_test_')) continue;
+        try {
+            const st = JSON.parse(localStorage.getItem(k));
+            if (st && st.solved) solved++;
+            if (st && st.stars) { stars += st.stars; if (st.stars === 3) threeStar++; }
+        } catch (e) {}
+    }
+    let learned = 0;
+    try { learned = (JSON.parse(localStorage.getItem('kanjizen_learned')) || []).length; } catch (e) {}
+    const streak = pfStreak();
+    const xp = solved * 100 + stars * 40 + streak * 20 + learned * 15;
+    const lvl = Math.floor(Math.sqrt(xp / 100)) + 1;
+    const curXp = Math.pow(lvl - 1, 2) * 100, nextXp = Math.pow(lvl, 2) * 100;
+    const pct = Math.min(100, Math.round((xp - curXp) / (nextXp - curXp) * 100));
+    return { solved, stars, threeStar, streak, learned, xp, lvl, nextXp, pct };
+}
+function achievementDone(id, st) {
+    const a = ACHIEVEMENTS.find(x => x.id === id);
+    return !!a && (st[a.stat] || 0) >= a.need;
+}
+function cosmeticOpen(c, st) {
+    if (c.how.free) return true;
+    if (c.how.ach) return achievementDone(c.how.ach, st);
+    if (c.how.premium) return pfIsPremium();
+    return false;
+}
+function cosmeticHow(c) {
+    if (c.how.free) return 'Бесплатно';
+    if (c.how.ach) return 'Достижение: ' + ((ACHIEVEMENTS.find(a => a.id === c.how.ach) || {}).title || '');
+    return 'Premium';
+}
+function setProfileField(k, v) {
+    const p = getProfile(); p[k] = v; saveProfile(p);
+    if (typeof refreshProfileUI === 'function') refreshProfileUI();
+}
+function buildProfileHtml(st, p) {
+    const title = (COSMETICS.find(c => c.kind === 'title' && c.id === p.title) || { name: 'Новичок' }).name;
+    const achHtml = ACHIEVEMENTS.map(a => {
+        const cur = st[a.stat] || 0, done = cur >= a.need;
+        return `<div class="pf-ach ${done ? 'done' : ''}">
+            <div class="pf-ach-ico"><i class="fa-solid ${done ? 'fa-trophy' : 'fa-lock'}"></i></div>
+            <div><p class="pf-ach-t">${a.title}</p><p class="pf-ach-d">${a.desc}</p>
+            <div class="pf-bar"><i style="width:${Math.min(100, Math.round(cur / a.need * 100))}%"></i></div>
+            <p class="pf-ach-n">${Math.min(cur, a.need)} / ${a.need}</p></div></div>`;
+    }).join('');
+    const cosHtml = kind => COSMETICS.filter(c => c.kind === kind).map(c => {
+        const open = cosmeticOpen(c, st);
+        const sel = p[kind] === c.id;
+        const act = !open ? `<span class="pf-lock"><i class="fa-solid fa-lock"></i> ${pfEsc(cosmeticHow(c))}</span>`
+            : (sel ? '<span class="pf-sel"><i class="fa-solid fa-check"></i> Выбрано</span>'
+                   : `<button class="pf-use" onclick="setProfileField('${kind}', '${c.id}')">Выбрать</button>`);
+        const sw = kind === 'avatar' ? `<div class="pf-cos-av">${c.name}</div>`
+                 : `<div class="pf-cos-sw ${kind === 'frame' ? 'fr-' + c.id : ''}"></div>`;
+        return `<div class="pf-cos ${open ? '' : 'closed'}">${sw}<p class="pf-cos-n">${c.name}</p>${act}</div>`;
+    }).join('');
+    return `
+        <div class="pf-card glass">
+            <div class="pf-av fr-${p.frame}"><span>${pfEsc(p.avatar)}</span></div>
+            <div class="pf-main">
+                <input class="pf-name" value="${pfEsc(p.name)}" maxlength="20" onchange="setProfileField('name', this.value.trim() || 'Ученик')" aria-label="Имя">
+                <span class="pf-title">${title}</span>
+                <div class="pf-lvl"><span>Уровень <b>${st.lvl}</b></span><span>${st.xp} XP</span></div>
+                <div class="pf-bar big"><i style="width:${st.pct}%"></i></div>
+                <p class="pf-next">До уровня ${st.lvl + 1}: ${Math.max(0, st.nextXp - st.xp)} XP</p>
+            </div>
+        </div>
+        <div class="pf-stats">
+            <div><b>${st.solved}</b><span>тестов</span></div>
+            <div><b>${st.learned}</b><span>кандзи</span></div>
+            <div><b>${st.streak}</b><span>дней подряд</span></div>
+        </div>
+        <h3 class="pf-h">Достижения</h3>
+        <div class="pf-achs">${achHtml}</div>
+        <h3 class="pf-h">Оформление</h3>
+        <p class="pf-sub">Рамка</p><div class="pf-cos-row">${cosHtml('frame')}</div>
+        <p class="pf-sub">Звание</p><div class="pf-cos-row">${cosHtml('title')}</div>
+        <p class="pf-sub">Иконка</p><div class="pf-cos-row">${cosHtml('avatar')}</div>`;
+}
+
+function refreshProfileUI() { renderProfile(); }
+function renderProfile() {
+    run = null; clearInterval(_examIv);
+    controls.classList.remove('hidden'); upsell.classList.remove('hidden');
+    view.innerHTML = `<div id="profile" class="rise">
+        <div class="jr-top"><button class="tool-btn" onclick="renderList()"><i class="fa-solid fa-arrow-left"></i> К тестам</button></div>
+        ${buildProfileHtml(pfStats(), getProfile())}
+    </div>`;
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+{
+    const cmi = clearMistakeIdx;
+    clearMistakeIdx = function (i) { window.__noScroll = true; try { cmi(i); } finally { window.__noScroll = false; } };
+}
+{
+    const rjs = renderJournal;
+    renderJournal = function () {
+        rjs();
+        const j = document.getElementById('journal');
+        if (j && window.__journalSilent) j.classList.add('silent');
+    };
+}
+function fxDone() { fxTone(784, 0.16, 'sine', 0.08); fxTone(1175, 0.24, 'sine', 0.06, 0.07); }
+function jnIndexCards() {
+    document.querySelectorAll('#journal .jn-card').forEach((c, i) => { c.dataset.idx = i; });
+}
+function jnUpdateCounts() {
+    const cards = document.querySelectorAll('#journal .jn-card');
+    const b = document.querySelector('#journal .jr-count b');
+    if (b) b.textContent = cards.length;
+    document.querySelectorAll('#journal .jn-group').forEach(g => {
+        const sp = g.querySelector('.jn-gtitle span');
+        if (sp) sp.textContent = g.querySelectorAll('.jn-card').length;
+    });
+    if (typeof updateHeaderTools === 'function') updateHeaderTools();
+    if (!cards.length) renderJournal();
+}
+function clearMistakeIdxAnim(i, btn) {
+    const card = btn && btn.closest('.jn-card');
+    if (!card || card.classList.contains('jn-leave')) return;
+    const x = allMistakes()[+card.dataset.idx];
+    if (!x) return;
+    fxDone();
+    card.classList.add('jn-leave');
+    setTimeout(() => {
+        if (x.__mini) removeMiniRound(x.mk, x.rk); else removeMistake(x.mk, x.q);
+        const sec = card.closest('.jn-group');
+        card.remove();
+        if (sec && !sec.querySelector('.jn-card')) sec.remove();
+        jnIndexCards();
+        jnUpdateCounts();
+    }, 560);
+}
+{
+    const rj2 = renderJournal;
+    renderJournal = function () { rj2(); jnIndexCards(); };
+}
+function clearMistakeIdxOld(i, btn) {
+    const card = btn && btn.closest('.jn-card');
+    if (!card) { clearMistakeIdx(i); return; }
+    fxDone();
+    card.classList.add('jn-leave');
+    setTimeout(() => { window.__journalSilent = true; try { clearMistakeIdx(i); } finally { window.__journalSilent = false; } }, 560);
+}
+function streakChip() {
+    const n = streakCount();
+    return `<span class="sk"><svg class="sk-flame" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5c.9 3.3 4.6 5.4 4.6 10.1a4.6 4.6 0 0 1-9.2 0c0-2.1 1-3.6 2.1-4.6.2 1.7 1 2.7 2 3.2C11.2 7.4 11.6 4.9 12 2.5z"/></svg><span class="sk-n">${n}</span><span class="sk-l">${dayWord(n)} подряд</span></span>`;
+}
+function progressHtml() {
+    const lvl = activeLevel;
+    const inLvl = allSlots().filter(x => x.lvl === lvl);
+    const sec = inLvl.filter(x => x.cat === activeCat);
+    const secSolved = sec.filter(isSolvedSlot).length;
+    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
+    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
+    const icons = { kanji: 'fa-pen-nib', grammar: 'fa-book-open', reading: 'fa-scroll' };
+    const tiles = ['kanji', 'grammar', 'reading'].map(c => {
+        const items = inLvl.filter(x => x.cat === c);
+        const s2 = items.filter(isSolvedSlot).length;
+        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
+        return `<button class="pg-tile ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
+            <span class="pg-ico"><i class="fa-solid ${icons[c]}"></i></span>
+            <span class="pg-tname">${CAT[c].name}</span>
+            <span class="pg-tcount">${items.length ? s2 + ' из ' + items.length : 'скоро'}</span>
+            <span class="pg-tbar"><i style="width:${p}%"></i></span>
+        </button>`;
+    }).join('');
+    const head = sec.length
+        ? `<p class="pg-big">${secSolved}<span> из ${sec.length}</span></p><p class="pg-sub">${CAT[activeCat].name} · ${lvl}</p>`
+        : `<p class="pg-big pg-soon">Скоро</p><p class="pg-sub">${CAT[activeCat].name} · ${lvl} пока не добавлен</p>`;
+    return `<section class="pg-hero rise">
+        <div class="pg-hero-top">
+            <div><p class="pg-label">Ваш прогресс</p>${head}</div>
+            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
+        </div>
+        <div class="pg-tiles">${tiles}</div>
+        <div class="pg-foot"><span><i class="fa-solid fa-star"></i> ${secStars} звёзд в разделе</span>${streakChip()}</div>
+    </section>`;
+}
+function renderDock() {
+    let d = document.getElementById('dock');
+    if (!d) { d = document.createElement('nav'); d.id = 'dock'; d.className = 'dock'; document.body.appendChild(d); }
+    d.innerHTML = `
+        <button class="dock-btn" onclick="renderProfile()"><i class="fa-solid fa-user"></i><span class="dl">Профиль</span></button>
+        <button class="dock-btn" onclick="renderJournal()"><i class="fa-solid fa-book"></i><span class="dl">Мои ошибки</span></button>
+        <button class="dock-btn" onclick="toggleExam()"><i class="fa-solid fa-stopwatch"></i><span class="dl">Экзамен</span>${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>`;
+}
+{
+    const rl = renderList;
+    renderList = function () { document.body.classList.remove('in-run'); rl(); renderDock(); };
+    const rj = renderJournal;
+    renderJournal = function () { document.body.classList.remove('in-run'); rj(); };
+    const rp = renderProfile;
+    renderProfile = function () { document.body.classList.remove('in-run'); rp(); };
+    const rc = renderCards;
+    renderCards = function () { document.body.classList.remove('in-run'); rc(); };
+    const st = startTest;
+    startTest = function (n) { document.body.classList.add('in-run'); st(n); };
+    const sm = startMini;
+    startMini = function (n, c) { document.body.classList.add('in-run'); sm(n, c); };
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderDock); else renderDock();
+function renderDock() { const d = document.getElementById('dock'); if (d) d.remove(); }
+
+function progressHtml() {
+    const lvl = activeLevel;
+    const inLvl = allSlots().filter(x => x.lvl === lvl);
+    const sec = inLvl.filter(x => x.cat === activeCat);
+    const secSolved = sec.filter(isSolvedSlot).length;
+    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
+    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
+    const bars = ['kanji', 'grammar', 'reading'].map(c => {
+        const items = inLvl.filter(x => x.cat === c);
+        const s2 = items.filter(isSolvedSlot).length;
+        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
+        return `<button class="pg-cat ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
+            <span class="pg-name">${CAT[c].name}</span>
+            <div class="pg-bar"><i style="width:${p}%"></i></div>
+            <b class="pg-num">${items.length ? s2 + '/' + items.length : 'скоро'}</b></button>`;
+    }).join('');
+    const head = sec.length
+        ? `<p class="pg-big">${secSolved} <span>из ${sec.length} тестов</span></p><p class="pg-sub">${CAT[activeCat].name} · ${lvl}</p>`
+        : `<p class="pg-big pg-soon">Скоро</p><p class="pg-sub">${CAT[activeCat].name} · ${lvl} пока не добавлен</p>`;
+    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
+        <div class="pg-top">
+            <div><p class="pg-label">Прогресс · ${lvl}</p>${head}</div>
+            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
+        </div>
+        <div class="pg-cats">${bars}</div>
+        <div class="pg-foot"><span>Звёзд в разделе: <b>${secStars}</b></span>${streakChip()}</div>
+    </div>`;
+}
+function actionsHtml() {
+    const p = getProfile(), st = pfStats(), jc = allMistakes().length;
+    return `<div class="act-grid">
+        <button class="act-card act-prof" onclick="renderProfile()">
+            <span class="act-av fr-${p.frame}">${pfEsc(p.avatar)}</span>
+            <span class="act-txt"><span class="act-t">${pfEsc(p.name)}</span><span class="act-s">Уровень ${st.lvl} · ${st.xp} XP</span></span>
+            <i class="fa-solid fa-chevron-right act-go"></i>
+        </button>
+        <button class="act-card act-err" onclick="renderJournal()">
+            <span class="act-ico"><i class="fa-solid fa-book-open"></i></span>
+            <span class="act-txt"><span class="act-t">Мои ошибки</span><span class="act-s">${jc ? jc + ' ' + plural(jc) + ' для разбора' : 'Ошибок нет'}</span></span>
+            ${jc ? `<span class="act-badge">${jc}</span>` : ''}
+        </button>
+        <button class="act-card act-exam" onclick="toggleExam()">
+            <span class="act-ico"><i class="fa-solid fa-stopwatch"></i></span>
+            <span class="act-txt"><span class="act-t">Режим экзамена</span><span class="act-s">${examOn() ? 'Включён: 15 минут' : 'Таймер и примерный балл'}</span></span>
+            ${isPremium() ? '' : '<span class="pro">Premium</span>'}
+        </button>
+    </div>`;
+}
+function nextHtml() {
+    const key = sectionKey(activeLevel, activeCat);
+    const list = [];
+    for (let n = 1; n <= TESTS_PER_SECTION; n++) if (hasContent(activeLevel, activeCat, n)) list.push(n);
+    if (!list.length) return '';
+    const solved = n => !!((JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null') || {}).solved);
+    const next = list.find(n => !solved(n));
+    const title = `${CAT[activeCat].name} · ${activeLevel}`;
+    if (next === undefined) {
+        return `<div class="nx glass rise">
+            <div class="nx-ico nx-done"><i class="fa-solid fa-trophy"></i></div>
+            <div class="nx-txt"><p class="nx-l">Раздел пройден</p><p class="nx-t">${title}: все тесты решены</p></div>
+            <button class="nx-btn" onclick="startTest(${list[0]})">Повторить <i class="fa-solid fa-rotate"></i></button>
+        </div>`;
+    }
+    return `<div class="nx glass rise">
+        <div class="nx-ico"><i class="fa-solid fa-play"></i></div>
+        <div class="nx-txt"><p class="nx-l">Продолжить</p><p class="nx-t">${title} · тест ${next}</p></div>
+        <button class="nx-btn" onclick="startTest(${next})">Начать <i class="fa-solid fa-arrow-right"></i></button>
+    </div>`;
+}
+function updateHeaderTools() {
+    const p = getProfile(), st = pfStats();
+    const av = document.getElementById('hdr-av'), nm = document.getElementById('hdr-name');
+    if (av) { av.textContent = p.avatar; av.className = 'hdr-av fr-' + p.frame; }
+    if (nm) nm.textContent = p.name;
+    const jn = document.getElementById('hdr-jr-n');
+    const cnt = allMistakes().length;
+    if (jn) { jn.textContent = cnt; jn.style.display = cnt ? '' : 'none'; }
+    const ex = document.querySelector('.hdr-ex');
+    if (ex) ex.classList.toggle('on', examOn());
+}
+{
+    const rl = renderList;
+    renderList = function () { rl(); updateHeaderTools(); };
+    const rfp = refreshProfileUI;
+    refreshProfileUI = function () { rfp(); updateHeaderTools(); };
+}
+function nextTestN() {
+    const key = sectionKey(activeLevel, activeCat);
+    for (let n = 1; n <= TESTS_PER_SECTION; n++) {
+        if (!hasContent(activeLevel, activeCat, n)) continue;
+        const st = JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null');
+        if (!(st && st.solved)) return n;
+    }
+    return undefined;
 }
 function renderList() {
     run = null;
@@ -2637,14 +3438,14 @@ function renderList() {
     syncChrome();
     const key = sectionKey(activeLevel, activeCat);
     const hasFree = !!BANK[key];
-    const banner = hasFree
+    const banner = false && hasFree
         ? `<div class="glass rounded-2xl px-5 py-4 mb-6 flex items-center gap-4 rise">
                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-600 flex items-center justify-center text-zen-900 shrink-0"><i class="fa-solid fa-gift"></i></div>
-               <p class="text-sm"><b>Попробуйте бесплатно:</b> тесты 1–2 открыты всем. Остальные тесты раздела — в полном доступе.</p>
+               <p class="text-sm"><b>Все тесты открыты.</b> Выбирайте раздел и уровень, решайте задания в любом порядке.</p>
            </div>`
         : '';
     const cards = [1, 2, 3, 4, 5, 6, 7].map(n => testCard(n)).join('');
-    view.innerHTML = `${streakHtml()}${progressHtml()}${retryHtml()}${toolsHtml()}${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
+    view.innerHTML = `${progressHtml()}${retryHtml()}${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
 }
 
 // ----- Прохождение теста: все вопросы сразу, ответ сразу проверяется -----
@@ -2681,7 +3482,7 @@ function startTest(n) {
     if (headTxt) document.getElementById('run-stream').insertAdjacentHTML('beforebegin', `<div class="jlpt-head">${headTxt}</div>`);
     updateProgress();
     renderEnd();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function tableHtml(t) {
     if (Array.isArray(t)) return `<div class="ctab-wrap"><table class="ctab">${t.map((r, i) => `<tr>${r.map(c => i === 0 ? `<th>${ruby(c)}</th>` : `<td>${ruby(c)}</td>`).join('')}</tr>`).join('')}</table></div>`;
@@ -3143,7 +3944,7 @@ function startMini(n, cfg) {
     else if (cfg.type === 'spot') renderSpot();
     else if (cfg.type === 'lock') renderLock();
     else renderBuild();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!window.__noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function miniProgress(frac) {
     const bar = document.getElementById('run-bar'); if (bar) bar.style.width = (frac * 100) + '%';

@@ -841,6 +841,7 @@
                             </div>
 <div class="p-4 px-6 border-t border-zen-100 dark:border-zen-700/60 bg-zen-50/50 dark:bg-zen-900/40 flex justify-center items-center gap-3">
                 <button id="quiz-next-btn" onclick="nextQuizCard()" class="px-4 py-2 text-sm rounded-xl border border-zen-300 dark:border-zen-600 text-zen-700 dark:text-zen-200 font-semibold hover:bg-zen-100 dark:hover:bg-zen-700 transition-all">Следующая карточка →</button>
+                <button id="quiz-notebook-btn" onclick="quizToggleNotebook()" class="px-4 py-2 text-sm rounded-xl border-2 border-matcha-500/60 text-matcha-700 dark:text-matcha-400 font-semibold hover:bg-matcha-50 dark:hover:bg-matcha-950/30 transition-all"></button>
                 <button id="quiz-check-btn" onclick="revealQuizAnswer()" class="hidden px-6 py-2.5 text-sm bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold rounded-xl transition-all shadow-md shadow-amber-600/30">Проверить</button>
                 <div id="quiz-rate" class="flex-1 gap-2" style="display:none; grid-template-columns: repeat(4, minmax(0,1fr));">
                     <button onclick="rateCard(0)" class="py-2 rounded-xl text-sm font-bold bg-zen-100 hover:bg-zen-200 text-zen-800 border border-zen-300 dark:bg-zen-700 dark:text-zen-100 dark:border-zen-600 transition-colors">Снова</button>
@@ -2867,6 +2868,24 @@
             m.classList.remove('flex');
         }
 
+        function renderQuizNotebookBtn() {
+            const b = document.getElementById('quiz-notebook-btn');
+            if (!b || !quizCard) return;
+            const on = isLearnedChar(quizCard.kanji);
+            b.innerHTML = on
+                ? '<i class="fa-solid fa-check mr-1.5"></i>В блокноте'
+                : '<i class="fa-solid fa-book-bookmark mr-1.5"></i>В блокнот';
+            b.classList.toggle('bg-matcha-500', on);
+            b.classList.toggle('border-matcha-500', on);
+            b.classList.toggle('text-white', on);
+            const showNow = !document.getElementById('quiz-answer').classList.contains('hidden');
+            b.style.display = showNow ? '' : 'none';
+        }
+        function quizToggleNotebook() {
+            if (!quizCard) return;
+            toggleLearned(quizCard.kanji);
+            renderQuizNotebookBtn();
+        }
         function nextQuizCard() {
             if (quizDeck.length === 0) return;
             if (quizIndex >= quizDeck.length) {
@@ -2882,6 +2901,7 @@
             document.getElementById('quiz-rate').style.display = 'none';
             document.getElementById('quiz-next-btn').style.display = quizIsReview ? 'none' : '';
             rollQuizCard(quizCard);
+            renderQuizNotebookBtn();
         }
 
         function setQuizAccent(review) { /* единая тёплая палитра для всех режимов */ }
@@ -2900,6 +2920,7 @@
                 el.classList.add('kanji-flip');
                 hint.innerText = 'Назовите оны, куны и перевод в голове, затем нажмите «Проверить»';
                 document.getElementById('quiz-check-btn').classList.remove('hidden');
+                renderQuizNotebookBtn();
                 return;
             }
             const steps = 18;
@@ -2916,6 +2937,7 @@
                     el.innerText = target.kanji;
                     hint.innerText = 'Назовите оны, куны и перевод в голове, затем нажмите «Проверить»';
                     document.getElementById('quiz-check-btn').classList.remove('hidden');
+                renderQuizNotebookBtn();
                 }
             })();
         }
@@ -2941,6 +2963,7 @@
             document.getElementById('quiz-rate').style.display = quizIsReview ? 'grid' : 'none';
             if (quizIsReview) ratePreview();
             document.getElementById('quiz-next-btn').style.display = quizIsReview ? 'none' : '';
+            renderQuizNotebookBtn();
         }
 
         function closeModal() {
