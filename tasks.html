@@ -435,7 +435,7 @@ html.dark, html[data-pal="classic"].dark { --zen-50: 246 245 251; --zen-100: 236
         .btile:disabled { opacity: .22; cursor: default; }
         .btile.bad { animation: mShake .4s ease; border-color: var(--cp-danger); box-shadow: 0 0 18px -4px var(--cp-danger); }
         @keyframes mShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-        .reveal-in { animation: slideIn .5s cubic-bezier(.2,.9,.3,1) both; }
+        .reveal-in { position: relative; margin-top: 1.4rem; padding: 1.3rem 1.5rem 1.4rem; border-radius: 18px; background: color-mix(in srgb, var(--cp-success) 12%, var(--cp-surface)); border: 1px solid color-mix(in srgb, var(--cp-success) 50%, transparent); box-shadow: 0 0 22px -12px var(--cp-success); animation: explIn .6s cubic-bezier(.2,.9,.3,1) both; }
 
         .passage-text { font-family: 'Noto Sans JP', sans-serif; font-size: 1.12rem; line-height: 2.25; color: var(--cp-text); margin-top: .75rem; }
         .passage-text ruby { color: var(--cp-primary); font-weight: 900; }
@@ -807,6 +807,380 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         /* ---- подчёркнутое слово и маркеры пропусков ---- */
         .kul { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: .28em; text-decoration-color: var(--cp-accent); font-weight: 900; }
         .mk { display: inline-flex; align-items: center; justify-content: center; min-width: 1.9em; height: 1.6em; padding: 0 .35em; margin: 0 .15em; border-radius: 9999px; border: 2px solid var(--cp-primary); color: var(--cp-primary); font-weight: 900; font-size: .85em; vertical-align: middle; }
+
+        .jlpt-head { position: sticky; top: 7.5rem; z-index: 25; }
+        .kul { background-image: linear-gradient(var(--cp-accent), var(--cp-accent)); background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 4px; padding-bottom: .15em; animation: ulGrow .9s ease .15s forwards; font-weight: 900; }
+        @keyframes ulGrow { to { background-size: 100% 4px; } }
+
+        /* ---- меню ресторана ---- */
+        .mnu { margin: 1.4rem 0 .4rem; padding: 1.2rem 1.4rem; border-radius: 6px; background: linear-gradient(180deg, var(--cp-surface2), var(--cp-surface)); border: 1px solid var(--cp-line); box-shadow: inset 0 0 0 4px var(--cp-surface), inset 0 0 0 5px var(--cp-line); }
+        .mnu-row { display: flex; align-items: baseline; gap: .6rem; padding: .55rem 0; flex-wrap: wrap; animation: slideIn .5s ease both; }
+        .mnu-name { font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--cp-text); }
+        .mnu-dots { flex: 1; min-width: 1rem; border-bottom: 2px dotted var(--cp-line); transform: translateY(-.3rem); }
+        .mnu-price { font-weight: 900; font-size: 1.3rem; color: var(--cp-accent); font-variant-numeric: tabular-nums; }
+        .mnu-note { width: 100%; font-size: 1rem; color: var(--cp-muted); font-family: 'Noto Sans JP', sans-serif; }
+        @media (min-width: 640px) { .mnu-note { width: auto; margin-left: .4rem; padding: .1rem .6rem; border-radius: 9999px; border: 1px solid var(--cp-line); } }
+        /* ---- неделя: сетка по дням ---- */
+        .wk { display: grid; grid-template-columns: repeat(5, 1fr); gap: .6rem; margin: 1.4rem 0 .4rem; }
+        @media (max-width: 640px) { .wk { grid-template-columns: repeat(2, 1fr); } }
+        .wk-cell { display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: .9rem .4rem; border-radius: 16px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: popIn .5s cubic-bezier(.2,1.4,.3,1) both; }
+        .wk-cell:hover { border-color: var(--cp-accent); transform: translateY(-3px); transition: transform .25s ease, border-color .25s ease; }
+        .wk-day { width: 2.2rem; height: 2.2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: var(--cp-primary); color: #140c02; font-weight: 900; }
+        .wk-act { font-family: 'Noto Sans JP', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--cp-text); text-align: center; }
+        .wk-time { font-size: .95rem; font-weight: 800; color: var(--cp-muted); font-variant-numeric: tabular-nums; }
+        @keyframes popIn { from { opacity: 0; transform: scale(.7) rotate(-4deg); } to { opacity: 1; transform: none; } }
+        /* ---- записка с печатью ---- */
+        .memo { position: relative; margin: 1.8rem .6rem .4rem; padding: 1.8rem 1.4rem 1.2rem; border-radius: 4px; background: linear-gradient(170deg, var(--cp-surface2), var(--cp-surface)); border: 1px solid var(--cp-line); transform: rotate(-.6deg); box-shadow: 0 18px 30px -18px var(--cp-primary); animation: memoDrop .7s cubic-bezier(.2,.9,.3,1) both; }
+        .memo-tape { position: absolute; top: -.8rem; left: 50%; width: 6rem; height: 1.4rem; margin-left: -3rem; background: color-mix(in srgb, var(--cp-accent) 45%, transparent); transform: rotate(2deg); }
+        .memo-stamp { position: absolute; top: .9rem; right: 1rem; padding: .25rem .7rem; border: 3px double var(--cp-danger); color: var(--cp-danger); font-family: 'Noto Sans JP', sans-serif; font-weight: 900; border-radius: 6px; transform: rotate(8deg); opacity: .9; }
+        .memo-line { display: flex; gap: 1rem; padding: .6rem 0; border-bottom: 1px dashed var(--cp-line); animation: slideIn .5s ease both; }
+        .memo-line:last-child { border-bottom: 0; }
+        .memo-k { min-width: 5.5rem; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; color: var(--cp-accent); }
+        .memo-v { font-family: 'Noto Sans JP', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--cp-text); }
+        @keyframes memoDrop { from { opacity: 0; transform: translateY(-24px) rotate(-3deg); } to { opacity: 1; transform: rotate(-.6deg); } }
+
+        /* ---- ポストカード ---- */
+        .pc { position: relative; margin: 1.4rem 0 .4rem; padding: 1.4rem 1.4rem 1.2rem 1.4rem; border-radius: 10px; background: linear-gradient(135deg, var(--cp-surface2), var(--cp-bg2)); border: 2px solid var(--cp-accent); animation: slideIn .6s ease both; }
+        .pc::before { content: ''; position: absolute; inset: 8px; border: 1px dashed var(--cp-line); border-radius: 6px; pointer-events: none; }
+        .pc-stamp { position: absolute; top: 1rem; right: 1rem; width: 4.6rem; padding: .5rem .3rem; text-align: center; font-size: 1.6rem; background: var(--cp-surface); border: 2px dashed var(--cp-primary); transform: rotate(4deg); }
+        .pc-stamp small { display: block; font-size: .55rem; letter-spacing: .15em; color: var(--cp-muted); font-family: ui-monospace, monospace; }
+        .pc-lines { padding-right: 6rem; }
+        .pc-line { display: flex; gap: .9rem; align-items: baseline; padding: .6rem 0; border-bottom: 1px solid var(--cp-line); animation: slideIn .5s ease both; }
+        .pc-k { min-width: 5.5rem; font-family: 'Noto Sans JP', sans-serif; font-size: .95rem; font-weight: 700; color: var(--cp-accent); }
+        .pc-v { font-family: 'Noto Sans JP', sans-serif; font-size: 1.25rem; font-weight: 700; font-style: italic; color: var(--cp-text); }
+        /* ----日記:罫線のノート ---- */
+        .dy { margin: 1.4rem 0 .4rem; padding: .6rem 0; border-radius: 14px; background: repeating-linear-gradient(180deg, transparent 0 2.6rem, var(--cp-line) 2.6rem 2.7rem), var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .dy-row { display: grid; grid-template-columns: 3.4rem 1fr; gap: .8rem; align-items: center; min-height: 2.7rem; padding: 0 1rem; animation: slideIn .5s ease both; }
+        .dy-day { font-family: ui-monospace, monospace; font-weight: 900; font-size: 1.2rem; color: var(--cp-primary); border-right: 2px solid var(--cp-primary); padding-right: .6rem; }
+        .dy-text { font-family: 'Noto Sans JP', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--cp-text); }
+        /* ---- ポスター: крупный заголовок и блоки ---- */
+        .po { margin: 1.4rem 0 .4rem; border-radius: 18px; overflow: hidden; border: 1px solid var(--cp-line); background: var(--cp-surface); }
+        .po-title { padding: 1.2rem; text-align: center; font-family: 'Noto Sans JP', sans-serif; font-size: 1.7rem; font-weight: 900; color: #140c02; background: linear-gradient(90deg, var(--cp-primary), var(--cp-accent)); letter-spacing: .04em; animation: popIn .6s cubic-bezier(.2,1.3,.3,1) both; }
+        .po-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0; }
+        .po-cell { padding: .9rem 1rem; border-top: 1px solid var(--cp-line); border-right: 1px solid var(--cp-line); display: flex; flex-direction: column; gap: .25rem; animation: slideIn .5s ease both; }
+        .po-k { font-size: .9rem; font-weight: 800; letter-spacing: .08em; color: var(--cp-accent); font-family: 'Noto Sans JP', sans-serif; }
+        .po-v { font-size: 1.25rem; font-weight: 900; color: var(--cp-text); font-family: 'Noto Sans JP', sans-serif; }
+        /* ---- чек ---- */
+        .rc { position: relative; margin: 1.4rem auto .4rem; max-width: 22rem; padding: 1.2rem 1.4rem 1.6rem; background: var(--cp-surface2); border: 1px solid var(--cp-line); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; box-shadow: 0 20px 30px -22px var(--cp-primary); animation: memoDrop .7s ease both; }
+        .rc::after { content: ''; position: absolute; left: 0; right: 0; bottom: -10px; height: 10px; background: linear-gradient(-45deg, transparent 6px, var(--cp-surface2) 6px) 0 0 / 12px 10px, linear-gradient(45deg, transparent 6px, var(--cp-surface2) 6px) 0 0 / 12px 10px; }
+        .rc-row, .rc-sum { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; border-bottom: 1px dashed var(--cp-line); animation: slideIn .5s ease both; }
+        .rc-k { font-family: 'Noto Sans JP', sans-serif; font-weight: 700; color: var(--cp-text); }
+        .rc-v { font-weight: 700; color: var(--cp-muted); font-family: 'Noto Sans JP', sans-serif; }
+        .rc-sum { border-bottom: 0; margin-top: .4rem; font-size: 1.35rem; font-weight: 900; color: var(--cp-accent); }
+        /* ---- шаги маршрута ---- */
+        .st { position: relative; margin: 1.4rem 0 .4rem; padding-left: 1rem; }
+        .st::before { content: ''; position: absolute; left: 2.1rem; top: 1rem; bottom: 1rem; width: 3px; background: repeating-linear-gradient(180deg, var(--cp-accent) 0 8px, transparent 8px 14px); animation: trackFlow 1.2s linear infinite; background-size: 3px 14px; }
+        .st-step { position: relative; display: grid; grid-template-columns: 2.4rem 2.6rem 1fr; align-items: center; gap: .8rem; padding: .7rem .8rem; margin-bottom: .7rem; border-radius: 16px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: slideIn .6s ease both; }
+        .st-n { width: 2.4rem; height: 2.4rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: var(--cp-accent); color: #140c02; font-weight: 900; }
+        .st-ico { font-size: 1.6rem; text-align: center; }
+        .st-t { font-family: 'Noto Sans JP', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--cp-text); }
+        /* ---- купон ---- */
+        .cp { display: grid; grid-template-columns: 1fr; margin: 1.4rem 0 .4rem; border-radius: 18px; overflow: hidden; background: linear-gradient(120deg, var(--cp-primary), var(--cp-accent)); color: #140c02; animation: entFlip .8s ease both; }
+        @media (min-width: 640px) { .cp { grid-template-columns: 1.3fr 1fr; } }
+        .cp-main { padding: 1.4rem 1.4rem; display: flex; flex-direction: column; justify-content: center; gap: .3rem; border-right: 3px dashed rgba(20,12,2,.35); position: relative; }
+        .cp-big { font-family: 'Noto Sans JP', sans-serif; font-size: 2.4rem; font-weight: 900; line-height: 1; }
+        .cp-shop { font-family: 'Noto Sans JP', sans-serif; font-weight: 800; font-size: 1.2rem; }
+        .cp-side { padding: 1.2rem 1.2rem; background: rgba(20,12,2,.12); display: flex; flex-direction: column; justify-content: center; gap: .5rem; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; }
+        .cp-note span { font-weight: 900; margin-right: .3rem; }
+
+        /* ---- порядок слов и поиск ошибки ---- */
+        .arr-slots { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; min-height: 4.6rem; margin: 1.2rem 0 .4rem; }
+        .arr-empty { width: 6.5rem; height: 3.2rem; border: 2px dashed var(--cp-line); border-radius: 14px; background: var(--cp-surface); }
+        .arr-word { height: 3.2rem; padding: 0 1.1rem; border-radius: 14px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; font-size: 1.3rem; font-family: 'Noto Sans JP', sans-serif; animation: slotDrop .5s cubic-bezier(.2,1.3,.3,1) both; }
+        .arr-tiles { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; margin-top: 1.2rem; }
+        .arr-tile { padding: .8rem 1.2rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); font-weight: 800; font-size: 1.25rem; font-family: 'Noto Sans JP', sans-serif; transition: transform .2s, box-shadow .2s, opacity .3s; }
+        .arr-tile:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 0 16px -4px var(--cp-primary); }
+        .arr-tile:disabled { opacity: .25; }
+        .arr-shake { animation: mShake .4s ease; }
+        .sp-line { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin: 1.4rem 0 .4rem; }
+        .sp-tok { padding: .8rem 1.1rem; border-radius: 16px; background: var(--cp-surface2); border: 1px solid var(--cp-line); color: var(--cp-text); font-weight: 800; font-size: 1.35rem; font-family: 'Noto Sans JP', sans-serif; transition: transform .2s, border-color .2s; }
+        .sp-tok:not(:disabled):hover { transform: translateY(-3px); border-color: var(--cp-accent); }
+        .sp-tok.ok { border-color: var(--cp-success); background: color-mix(in srgb, var(--cp-success) 22%, var(--cp-surface2)); animation: pop .5s ease; }
+        .sp-tok.bad { border-color: var(--cp-danger); animation: mShake .4s ease; opacity: .5; }
+
+        /* ---- карточки мини-заданий: свечение, орбы прогресса, вспышки ---- */
+        .fx-card { position: relative; overflow: hidden; background: var(--cp-surface); border: 1px solid var(--cp-line); box-shadow: 0 30px 60px -36px var(--cp-primary); animation: fxIn .7s cubic-bezier(.2,.9,.3,1) both; }
+        .fx-card::before { content: ''; position: absolute; left: -50%; top: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent 0deg, color-mix(in srgb, var(--cp-accent) 22%, transparent) 60deg, transparent 120deg); animation: fxSpin 14s linear infinite; pointer-events: none; opacity: .6; }
+        .fx-card > * { position: relative; }
+        @keyframes fxIn { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
+        @keyframes fxSpin { to { transform: rotate(360deg); } }
+        .fx-kicker { font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--cp-text); margin-top: .9rem; }
+        .fx-sub { font-family: ui-monospace, monospace; font-size: .9rem; letter-spacing: .25em; color: var(--cp-accent); margin-top: .2rem; }
+        .orbs { display: flex; justify-content: center; gap: .55rem; }
+        .orb { width: .75rem; height: .75rem; border-radius: 9999px; background: var(--cp-line); transition: transform .4s ease, background .4s ease; }
+        .orb.done { background: var(--cp-success); transform: scale(1.1); box-shadow: 0 0 10px var(--cp-success); }
+        .orb.cur { background: var(--cp-primary); box-shadow: 0 0 14px var(--cp-primary); animation: orbPulse 1.6s ease-in-out infinite; }
+        @keyframes orbPulse { 50% { transform: scale(1.4); } }
+        .burst-p { position: fixed; width: 9px; height: 9px; border-radius: 9999px; pointer-events: none; z-index: 9999; animation: burstOut .85s ease-out forwards; }
+        @keyframes burstOut { to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; } }
+        .arr-tile { animation: tokFloat 4.2s ease-in-out infinite; animation-delay: var(--d, 0s); }
+        .arr-tile:not(:disabled):hover { background: linear-gradient(135deg, color-mix(in srgb, var(--cp-primary) 30%, var(--cp-surface2)), var(--cp-surface2)); border-color: var(--cp-accent); }
+        .arr-word { box-shadow: 0 0 20px -4px var(--cp-primary); }
+        .sp-tok { animation: tokFloat 4.2s ease-in-out infinite; animation-delay: var(--d, 0s); }
+        .sp-tok:not(:disabled):hover { background: linear-gradient(135deg, color-mix(in srgb, var(--cp-accent) 25%, var(--cp-surface2)), var(--cp-surface2)); box-shadow: 0 0 18px -4px var(--cp-accent); }
+        .sp-tok.ok { box-shadow: 0 0 26px -2px var(--cp-success); }
+        @keyframes tokFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        /* ---- тест кандзи: вопрос в большой карточке ---- */
+        article:has(.kul) { position: relative; overflow: hidden; border-radius: 30px; padding: 2.2rem 1.6rem !important; background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--cp-primary) 16%, transparent), transparent 62%), var(--cp-surface) !important; border: 1px solid var(--cp-line) !important; box-shadow: 0 30px 60px -34px var(--cp-primary) !important; }
+        article:has(.kul)::before { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.06), transparent); animation: cardGlint 5s ease-in-out infinite; pointer-events: none; }
+        @keyframes cardGlint { 0%, 60% { left: -60%; } 100% { left: 120%; } }
+        article:has(.kul) .qtext { font-size: 2.1rem !important; line-height: 1.7 !important; text-align: center; font-weight: 800 !important; }
+        @media (min-width: 768px) { article:has(.kul) .qtext { font-size: 2.6rem !important; } }
+        article:has(.kul) .tile { min-height: 4.6rem; border-radius: 22px !important; font-size: 1.55rem !important; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        article:has(.kul) .tile:not(:disabled):hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 0 22px -4px var(--cp-accent); border-color: var(--cp-accent) !important; }
+        .kul { font-size: 1.12em; color: var(--cp-primary); background-size: 0% 5px !important; animation: ulGrow .9s cubic-bezier(.2,.9,.3,1) .2s forwards, kulGlow 2.8s ease-in-out 1.2s infinite; }
+        @keyframes kulGlow { 50% { text-shadow: 0 0 14px color-mix(in srgb, var(--cp-primary) 60%, transparent); } }
+        .jlpt-head { background-size: 200% 100%; animation: headPulse 2.6s ease-in-out infinite, headShine 4s linear infinite; }
+        @keyframes headShine { to { background-position: 200% 0; } }
+
+        /* ---- верный ответ — зелёный, неверный — красный ---- */
+        .sp-tok { opacity: 1 !important; }
+        .sp-tok.ok { border-color: #7ce07c !important; background: linear-gradient(135deg, rgba(124,224,124,.38), var(--cp-surface2)) !important; box-shadow: 0 0 30px -3px rgba(124,224,124,.9) !important; color: #eaffea !important; animation: okPop .6s ease both !important; }
+        .sp-tok.bad { border-color: #ff4d5e !important; background: linear-gradient(135deg, rgba(255,77,94,.38), var(--cp-surface2)) !important; box-shadow: 0 0 26px -3px rgba(255,77,94,.9) !important; color: #ffeaea !important; animation: badWobble .55s ease both !important; }
+        @keyframes okPop { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
+        @keyframes badWobble { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(4px); } }
+        .arr-slots.arr-blue .arr-word, .arr-slots.arr-blue .arr-empty { border-color: #ff4d5e !important; box-shadow: 0 0 22px -2px rgba(255,77,94,.9) !important; background: linear-gradient(135deg, rgba(255,77,94,.4), var(--cp-surface2)) !important; color: #ffeaea !important; }
+        .arr-slots.arr-blue { animation: badWobble .55s ease both; }
+        .fx-hint { font-weight: 800; color: #ff9aa3; }
+        /* ---- пояснение: появление по частям, цветные точки и полоса ---- */
+        .reveal-in { position: relative; overflow: hidden; margin-top: 1.4rem; padding: 1.5rem 1.6rem 1.7rem; border-radius: 26px; background: radial-gradient(circle at 0% 0%, rgba(124,224,124,.14), transparent 55%), radial-gradient(circle at 100% 100%, rgba(255,122,196,.12), transparent 55%), var(--cp-surface2); border: 1px solid var(--cp-line); box-shadow: 0 24px 46px -28px var(--cp-primary); animation: explIn .65s cubic-bezier(.2,.9,.3,1) both; }
+                .reveal-in > * { animation: explChild .55s cubic-bezier(.2,.9,.3,1) both; }
+        .reveal-in > *:nth-child(2) { animation-delay: .12s; }
+        .reveal-in > *:nth-child(3) { animation-delay: .24s; }
+        .reveal-in > *:nth-child(4) { animation-delay: .36s; }
+        .exp-head { font-family: 'Noto Sans JP', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--cp-text); line-height: 1.6; }
+        .exp-why { margin-top: .5rem; font-size: 1.08rem; line-height: 1.7; color: var(--cp-muted); }
+        .exp-dots { display: flex; gap: .45rem; margin: 1rem 0 .3rem; }
+        .exp-dots i { width: .55rem; height: .55rem; border-radius: 9999px; animation: dotBeat 1.8s ease-in-out infinite; }
+        .exp-dots { display: none !important; }
+        .reveal-in > p:first-child, .exp-head { color: var(--cp-success) !important; }
+        .exp-dots i:nth-child(1) { background: #7ce07c; }
+        .exp-dots i:nth-child(2) { background: #f5c04a; animation-delay: .2s; }
+        .exp-dots i:nth-child(3) { background: #ff7ac4; animation-delay: .4s; }
+        .exp-dots i:nth-child(4) { background: #ff4d5e; animation-delay: .6s; }
+        .exp-btn { margin-top: .8rem; padding: 0 1.8rem; height: 2.75rem; border-radius: 9999px; background: linear-gradient(135deg, #f5c04a, #d18a0c); color: #140c02; font-weight: 900; box-shadow: 0 10px 22px -10px #f5c04a; transition: transform .2s ease, box-shadow .2s ease; }
+        .exp-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 14px 26px -10px #f5c04a; }
+        @keyframes explIn { from { opacity: 0; transform: translateY(16px) scale(.98); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+        @keyframes explChild { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        @keyframes stripFlow { to { background-position: 300% 0; } }
+        @keyframes dotBeat { 0%, 100% { transform: scale(1); opacity: .6; } 50% { transform: scale(1.5); opacity: 1; } }
+        /* ---- обычное пояснение к вопросу ---- */
+        .expl { animation: explIn .65s cubic-bezier(.2,.9,.3,1) both; }
+
+        /* ---- строка объяснения: лампочка, рамка, появление ---- */
+        .reveal-in > p:nth-child(2) { position: relative; margin-top: .9rem !important; padding: 1rem 1.1rem 1rem 3.4rem; border-radius: 16px; background: linear-gradient(120deg, color-mix(in srgb, var(--cp-success) 16%, transparent), color-mix(in srgb, var(--cp-accent) 8%, transparent)); border: 1px dashed color-mix(in srgb, var(--cp-success) 60%, transparent); font-size: 1.12rem !important; line-height: 1.8 !important; color: var(--cp-text) !important; animation: whyIn .7s .2s cubic-bezier(.2,.9,.3,1) both !important; }
+        .reveal-in > p:nth-child(2)::before { content: '💡'; position: absolute; left: .95rem; top: 50%; font-size: 1.35rem; transform: translateY(-50%); animation: bulbGlow 2.2s ease-in-out infinite; }
+        @keyframes whyIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+        @keyframes bulbGlow { 0%, 100% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 9px #f5c04a); } }
+        /* ---- тест 7: замки ---- */
+        .lk-sentence { font-family: 'Noto Sans JP', sans-serif; font-size: 1.75rem; font-weight: 800; line-height: 2.6; color: var(--cp-text); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .15rem; }
+        @media (max-width: 640px) { .lk-sentence { font-size: 1.4rem; } }
+        .lk { display: inline-flex; align-items: center; justify-content: center; min-width: 4.6rem; height: 3.5rem; padding: 0 .9rem; margin: 0 .3rem; border-radius: 16px; border: 2px dashed var(--cp-primary); background: var(--cp-surface); color: var(--cp-primary); font-size: 1.3rem; font-weight: 900; }
+        .lk.cur { animation: lkPulse 1.4s ease-in-out infinite; box-shadow: 0 0 22px -4px var(--cp-primary); }
+        .lk.open { border-style: solid; border-color: var(--cp-success); color: var(--cp-success); background: color-mix(in srgb, var(--cp-success) 18%, var(--cp-surface)); box-shadow: 0 0 24px -4px var(--cp-success); animation: lkOpen .75s cubic-bezier(.2,1.4,.3,1) both; }
+        @keyframes lkPulse { 50% { transform: scale(1.06); box-shadow: 0 0 34px -2px var(--cp-primary); } }
+        @keyframes lkOpen { 0% { transform: rotate(-14deg) scale(.7); } 55% { transform: rotate(7deg) scale(1.12); } 100% { transform: none; } }
+        .lk-keys { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: 1.4rem; min-height: 4.2rem; }
+        .lk-key { padding: .75rem 1.3rem; border-radius: 16px; background: linear-gradient(135deg, rgba(245,192,74,.28), var(--cp-surface2)); border: 1px solid var(--cp-line); color: var(--cp-text); font-size: 1.35rem; font-weight: 900; font-family: 'Noto Sans JP', sans-serif; transition: transform .2s ease, box-shadow .2s ease; animation: keyIn .5s cubic-bezier(.2,1.3,.3,1) both; }
+        .lk-key:nth-child(2) { animation-delay: .08s; } .lk-key:nth-child(3) { animation-delay: .16s; } .lk-key:nth-child(4) { animation-delay: .24s; }
+        .lk-key:not(:disabled):hover { transform: translateY(-3px) rotate(-2deg); box-shadow: 0 0 18px -4px var(--cp-primary); }
+        .lk-key.bad { border-color: var(--cp-danger); background: color-mix(in srgb, var(--cp-danger) 25%, var(--cp-surface2)); animation: mShake .4s ease both; }
+        @keyframes keyIn { from { opacity: 0; transform: translateY(14px) scale(.9); } to { opacity: 1; transform: none; } }
+
+        .reveal-in > .exp-why { position: relative; margin-top: .9rem !important; padding: 1rem 1.1rem 1rem 3.4rem; border-radius: 16px; background: linear-gradient(120deg, color-mix(in srgb, var(--cp-success) 16%, transparent), color-mix(in srgb, var(--cp-accent) 8%, transparent)); border: 1px dashed color-mix(in srgb, var(--cp-success) 60%, transparent); font-size: 1.12rem !important; line-height: 1.8 !important; color: var(--cp-text) !important; animation: whyIn .7s .2s cubic-bezier(.2,.9,.3,1) both !important; }
+        .reveal-in > .exp-why::before { content: '💡'; position: absolute; left: .95rem; top: 50%; font-size: 1.35rem; transform: translateY(-50%); animation: bulbGlow 2.2s ease-in-out infinite; }
+        .reveal-in > .exp-tr { position: static !important; margin: .35rem 0 0 !important; padding: 0 !important; background: none !important; border: none !important; font-size: 1.1rem !important; font-style: italic; line-height: 1.6 !important; color: var(--cp-muted) !important; animation: explChild .55s cubic-bezier(.2,.9,.3,1) both !important; }
+        .reveal-in > .exp-tr::before { content: none !important; }
+        .reveal-in > .exp-sent { margin-top: .9rem; font-family: 'Noto Sans JP', sans-serif; font-size: 1.45rem; font-weight: 900; color: var(--cp-success); line-height: 1.8; animation: explChild .55s .15s cubic-bezier(.2,.9,.3,1) both; }
+
+        /* ---- задание дня, прогресс, повтор ошибок, подсказки ---- */
+        .daily { border: 1px solid var(--cp-line); background: linear-gradient(120deg, color-mix(in srgb, var(--cp-primary) 14%, var(--cp-surface)), var(--cp-surface)); box-shadow: 0 0 28px -14px var(--cp-primary); }
+        .daily-ico { width: 2.8rem; height: 2.8rem; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-size: 1.2rem; animation: dailyBob 3s ease-in-out infinite; }
+        @keyframes dailyBob { 50% { transform: translateY(-3px) rotate(-6deg); } }
+        .daily-btn { height: 2.6rem; padding: 0 1.2rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; white-space: nowrap; transition: transform .2s, box-shadow .2s; }
+        .daily-btn:hover { transform: translateY(-2px); box-shadow: 0 0 22px -4px var(--cp-primary); }
+        .pg-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .pg-ring { --p: 0; width: 4.6rem; height: 4.6rem; border-radius: 9999px; background: conic-gradient(var(--cp-success) calc(var(--p) * 1%), var(--cp-line) 0); display: flex; align-items: center; justify-content: center; position: relative; animation: ringIn 1s ease both; }
+        .pg-ring::before { content: ''; position: absolute; inset: 6px; border-radius: 9999px; background: var(--cp-surface2); }
+        .pg-ring span { position: relative; font-weight: 900; font-size: .95rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        @keyframes ringIn { from { transform: scale(.7) rotate(-90deg); opacity: 0; } to { transform: none; opacity: 1; } }
+        .pg-cats { display: grid; gap: .6rem; margin-top: 1rem; }
+        .pg-cat { display: grid; grid-template-columns: 6.5rem 1fr 3.2rem; align-items: center; gap: .7rem; font-size: .9rem; }
+        .pg-name { font-weight: 700; color: var(--cp-muted); }
+        .pg-bar { height: .55rem; border-radius: 9999px; background: var(--cp-line); overflow: hidden; }
+        .pg-bar i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, var(--cp-success), var(--cp-accent), var(--cp-primary)); background-size: 200% 100%; animation: barFlow 3s linear infinite, barGrow 1.2s cubic-bezier(.2,.9,.3,1) both; transition: width .6s ease; }
+        @keyframes barFlow { to { background-position: -200% 0; } }
+        @keyframes barGrow { from { width: 0; } }
+        .pg-num { text-align: right; font-variant-numeric: tabular-nums; color: var(--cp-text); }
+        .retry-btn { padding: .55rem 1.1rem; border-radius: 9999px; border: 1px solid #ff4d5e; color: #ffb3bb; background: color-mix(in srgb, #ff4d5e 14%, var(--cp-surface2)); font-weight: 800; transition: transform .2s, box-shadow .2s; }
+        .retry-btn span { display: inline-block; min-width: 1.4rem; margin-left: .3rem; padding: 0 .4rem; border-radius: 9999px; background: #ff4d5e; color: #140c02; font-weight: 900; }
+        .retry-btn:hover { transform: translateY(-2px); box-shadow: 0 0 18px -4px #ff4d5e; }
+        .hint-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .8rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: transparent; color: var(--cp-muted); font-weight: 700; font-size: .75rem; opacity: .7; transition: opacity .2s, color .2s, border-color .2s; }
+        .hint-btn:hover { opacity: 1; color: var(--cp-accent); border-color: var(--cp-accent); }
+        .hint-btn i { font-size: .8rem; }
+        .lk-key.hint, .arr-tile.hint, .sp-tok.hint { border-color: var(--cp-accent) !important; box-shadow: 0 0 26px -2px var(--cp-accent) !important; animation: hintPulse 1s ease-in-out infinite !important; }
+        @keyframes hintPulse { 50% { transform: scale(1.08); } }
+
+        article[id^="qb-"] { position: relative; }
+        .q-hint { position: absolute; top: .9rem; right: .9rem; width: 2rem; height: 2rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: transparent; color: var(--cp-muted); font-size: .75rem; opacity: .55; transition: opacity .2s, color .2s; }
+        .q-hint:hover { opacity: 1; color: var(--cp-accent); border-color: var(--cp-accent); }
+        button.crossed { opacity: .35 !important; text-decoration: line-through; }
+
+        .hdr-hint { width: 2.4rem; height: 2.4rem; flex-shrink: 0; margin-left: .5rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: transparent; color: var(--cp-muted); font-size: .85rem; opacity: .7; transition: opacity .2s, color .2s, border-color .2s; }
+        .hdr-hint:hover { opacity: 1; color: var(--cp-accent); border-color: var(--cp-accent); }
+        button.pg-cat { display: grid; grid-template-columns: 6.5rem 1fr 3.4rem; align-items: center; gap: .7rem; width: 100%; text-align: left; padding: .35rem .5rem; border-radius: 12px; background: transparent; border: 1px solid transparent; transition: background .25s, border-color .25s; }
+        button.pg-cat:hover { background: color-mix(in srgb, var(--cp-primary) 8%, transparent); }
+        button.pg-cat.active { background: color-mix(in srgb, var(--cp-primary) 14%, transparent); border-color: var(--cp-line); }
+        button.pg-cat.active .pg-name { color: var(--cp-text); }
+
+        /* ---- инструменты, журнал, карточка, экзамен, тарифы ---- */
+        .tools { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-bottom: 1.4rem; }
+        .tool-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1.1rem; border-radius: 9999px; border: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); font-weight: 800; font-size: .9rem; transition: transform .2s, box-shadow .2s, border-color .2s; }
+        .tool-btn:hover { transform: translateY(-2px); border-color: var(--cp-accent); box-shadow: 0 0 18px -6px var(--cp-accent); }
+        .tool-btn.on { border-color: var(--cp-success); color: var(--cp-success); }
+        .pro { margin-left: .25rem; padding: .05rem .45rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-size: .65rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+        .card-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; transition: transform .2s, box-shadow .2s; }
+        .card-btn:hover { transform: translateY(-2px); box-shadow: 0 0 24px -4px var(--cp-primary); }
+        .exam-timer { margin-left: .5rem; padding: .35rem .8rem; border-radius: 9999px; border: 1px solid var(--cp-primary); color: var(--cp-primary); font-weight: 900; font-variant-numeric: tabular-nums; font-size: .9rem; white-space: nowrap; }
+        .pw-ov { position: fixed; inset: 0; z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 1.2rem; background: rgba(0,0,0,.6); backdrop-filter: blur(6px); animation: fadeIn .3s ease both; }
+        .pw-card { max-width: 26rem; width: 100%; padding: 2rem 1.8rem; border-radius: 28px; text-align: center; border: 1px solid var(--cp-line); animation: explIn .5s cubic-bezier(.2,.9,.3,1) both; }
+        .pw-kicker { font-size: .75rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 900; color: var(--cp-accent); }
+        .pw-title { font-size: 1.5rem; font-weight: 900; margin: .4rem 0 .6rem; color: var(--cp-text); }
+        .pw-text { font-size: .95rem; line-height: 1.6; color: var(--cp-muted); margin-bottom: 1.2rem; }
+        .pw-btn { width: 100%; height: 3rem; border-radius: 9999px; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; opacity: .6; }
+        .pw-close { margin-top: .7rem; color: var(--cp-muted); font-weight: 700; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #splash { position: fixed; inset: 0; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 40%, #2a1d0c, #070504); transition: opacity .7s ease, transform .7s ease; }
+        #splash.out { opacity: 0; transform: scale(1.05); pointer-events: none; }
+        .sp-kanji { font-size: 7rem; font-weight: 900; color: #f5c04a; text-shadow: 0 0 40px rgba(245,192,74,.6); animation: spIn 1.1s cubic-bezier(.2,1.3,.3,1) both; }
+        .sp-name { margin-top: .4rem; font-weight: 900; letter-spacing: .4em; color: #c2b184; font-size: .85rem; animation: fadeIn 1s .4s both; }
+        @keyframes spIn { from { opacity: 0; transform: scale(.6) rotate(-8deg); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+        #glow { position: fixed; top: 0; left: 0; width: 440px; height: 440px; border-radius: 50%; pointer-events: none; z-index: 1; background: radial-gradient(circle, rgba(245,192,74,.12), transparent 60%); transition: transform .12s linear; }
+        .jr-head { display: flex; justify-content: space-between; align-items: center; gap: .8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .jr-actions { display: flex; gap: .5rem; }
+        .jr-title { font-size: 1.8rem; font-weight: 900; color: var(--cp-text); }
+        .jr-count { color: var(--cp-muted); margin-bottom: 1rem; }
+        .jr-list { display: grid; gap: .8rem; }
+        .jr-row { position: relative; padding: 1rem 1.2rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: explChild .5s cubic-bezier(.2,.9,.3,1) both; }
+        .jr-sec { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 900; color: var(--cp-accent); }
+        .jr-q { margin-top: .3rem; font-size: 1.05rem; font-weight: 700; color: var(--cp-text); padding-right: 2.5rem; }
+        .jr-a { margin-top: .3rem; color: var(--cp-success); font-weight: 700; }
+        .jr-e { margin-top: .3rem; color: var(--cp-muted); font-size: .92rem; line-height: 1.55; }
+        .jr-del { position: absolute; top: .8rem; right: .8rem; width: 2rem; height: 2rem; border-radius: 9999px; color: var(--cp-muted); border: 1px solid var(--cp-line); }
+        .jr-del:hover { color: var(--cp-danger); border-color: var(--cp-danger); }
+        .jr-empty { padding: 2rem; text-align: center; color: var(--cp-muted); }
+        @media print {
+            body * { visibility: hidden !important; }
+            #journal, #journal * { visibility: visible !important; }
+            #journal { position: absolute; top: 0; left: 0; width: 100%; }
+            .jr-head, .jr-del { display: none !important; }
+        }
+
+        .step-n { display: inline-flex; align-items: center; justify-content: center; width: 1.3rem; height: 1.3rem; border-radius: 9999px; background: var(--cp-primary); color: #140c02; font-size: .7rem; font-weight: 900; }
+        .jr-top { margin-bottom: .6rem; }
+        .jr-lead { color: var(--cp-muted); line-height: 1.65; font-size: 1rem; max-width: 40rem; }
+        .jr-steps { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.1rem 0 1.4rem; }
+        .jr-steps span { display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .9rem; border-radius: 9999px; background: var(--cp-surface2); border: 1px solid var(--cp-line); font-size: .9rem; font-weight: 700; color: var(--cp-text); }
+        .jr-steps b { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 9999px; background: var(--cp-primary); color: #140c02; font-size: .8rem; }
+        .jr-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; padding: .8rem 0 1.2rem; border-bottom: 1px solid var(--cp-line); margin-bottom: 1.2rem; }
+        .jr-count { color: var(--cp-muted); }
+        .jr-count b { color: var(--cp-text); font-size: 1.2rem; }
+        .jr-group { margin-bottom: 1.8rem; }
+        .jr-gtitle { display: flex; align-items: center; justify-content: space-between; font-size: 1rem; font-weight: 900; color: var(--cp-accent); margin-bottom: .7rem; letter-spacing: .02em; }
+        .jr-gtitle span { min-width: 2rem; text-align: center; padding: .15rem .6rem; border-radius: 9999px; background: var(--cp-surface2); border: 1px solid var(--cp-line); color: var(--cp-text); font-size: .85rem; }
+        .jr-card { display: grid; gap: .6rem; padding: 1.2rem 1.3rem; margin-bottom: .8rem; border-radius: 20px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: explChild .5s cubic-bezier(.2,.9,.3,1) both; }
+        .jr-card .jr-q { font-size: 1.1rem; font-weight: 800; color: var(--cp-text); line-height: 1.5; }
+        .jr-ans { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
+        .jr-ans span { font-size: .8rem; color: var(--cp-muted); }
+        .jr-ans b { font-size: 1.15rem; color: var(--cp-success); font-weight: 900; }
+        .jr-e { display: flex; gap: .6rem; align-items: flex-start; padding: .8rem 1rem; border-radius: 14px; background: color-mix(in srgb, var(--cp-success) 10%, transparent); border: 1px dashed color-mix(in srgb, var(--cp-success) 50%, transparent); color: var(--cp-text); font-size: .95rem; line-height: 1.6; }
+        .jr-e i { color: var(--cp-accent); margin-top: .2rem; }
+        .jr-done { justify-self: start; display: inline-flex; align-items: center; gap: .45rem; padding: .5rem 1rem; border-radius: 9999px; border: 1px solid var(--cp-success); color: var(--cp-success); font-weight: 800; font-size: .9rem; transition: background .2s, color .2s; }
+        .jr-done:hover { background: var(--cp-success); color: #0b1a06; }
+        .jr-empty { text-align: center; padding: 3rem 1.5rem; border-radius: 24px; border: 1px dashed var(--cp-line); background: var(--cp-surface); }
+        .jr-empty-ico { width: 4rem; height: 4rem; margin: 0 auto 1rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--cp-success) 18%, transparent); color: var(--cp-success); font-size: 1.8rem; animation: spIn .8s cubic-bezier(.2,1.3,.3,1) both; }
+        .jr-empty-t { font-size: 1.3rem; font-weight: 900; color: var(--cp-text); }
+        .jr-empty-s { margin-top: .4rem; color: var(--cp-muted); line-height: 1.6; max-width: 26rem; margin-left: auto; margin-right: auto; }
+
+        .jd-top { display: flex; align-items: center; gap: .6rem; margin-bottom: .2rem; }
+        .jd-num { width: 2rem; height: 2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; font-size: .9rem; }
+        .jd-kind { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; color: var(--cp-accent); }
+        .jd-q { font-size: 1.15rem; font-weight: 800; color: var(--cp-text); line-height: 1.6; }
+        .jd-sent { font-family: 'Noto Sans JP', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 2.2; color: var(--cp-text); }
+        @media (max-width: 640px) { .jd-sent { font-size: 1.3rem; } }
+        .jd-fill { display: inline-block; margin: 0 .15rem; padding: 0 .5rem; border-radius: 10px; color: var(--cp-success); background: color-mix(in srgb, var(--cp-success) 16%, transparent); border-bottom: 3px solid var(--cp-success); animation: fillGlow 2.4s ease-in-out infinite; }
+        @keyframes fillGlow { 50% { box-shadow: 0 0 18px -2px var(--cp-success); } }
+        .jd-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+        @media (max-width: 560px) { .jd-cmp { grid-template-columns: 1fr; } }
+        .jd-wrong, .jd-right { position: relative; padding: .8rem 1rem; border-radius: 16px; display: flex; flex-direction: column; gap: .2rem; }
+        .jd-wrong span, .jd-right span { font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
+        .jd-wrong b, .jd-right b { font-size: 1.2rem; font-weight: 900; font-family: 'Noto Sans JP', sans-serif; }
+        .jd-wrong { background: color-mix(in srgb, var(--cp-danger) 14%, transparent); border: 1px solid var(--cp-danger); color: var(--cp-danger); animation: cmpIn .6s .15s cubic-bezier(.2,.9,.3,1) both; }
+        .jd-right { background: color-mix(in srgb, var(--cp-success) 14%, transparent); border: 1px solid var(--cp-success); color: var(--cp-success); animation: cmpIn .6s .3s cubic-bezier(.2,.9,.3,1) both; }
+        .jd-wrong i, .jd-right i { position: absolute; top: .7rem; right: .8rem; font-size: 1.1rem; }
+        @keyframes cmpIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .jd-why { padding: 1rem 1.1rem; border-radius: 16px; background: color-mix(in srgb, var(--cp-accent) 10%, transparent); border: 1px dashed color-mix(in srgb, var(--cp-accent) 60%, transparent); animation: cmpIn .6s .45s both; }
+        .jd-why-h { display: flex; align-items: center; gap: .5rem; font-weight: 900; color: var(--cp-accent); margin-bottom: .4rem; }
+        .jd-why p { color: var(--cp-text); line-height: 1.7; font-size: 1rem; }
+        .jd-pass { border-radius: 14px; background: var(--cp-surface); border: 1px solid var(--cp-line); padding: .7rem 1rem; }
+        .jd-pass summary { cursor: pointer; font-weight: 800; color: var(--cp-accent); list-style: none; }
+        .jd-pass p { margin-top: .6rem; font-family: 'Noto Sans JP', sans-serif; line-height: 2; color: var(--cp-text); }
+        .jr-card .jr-done { justify-self: start; }
+
+        .streak { display: flex; align-items: center; gap: .9rem; padding: .9rem 1.1rem; margin-bottom: 1rem; border-radius: 18px; background: var(--cp-surface); border: 1px solid var(--cp-line); }
+        .streak-fire { width: 2.8rem; height: 2.8rem; flex-shrink: 0; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff7a3d, #f5c04a); color: #140c02; font-size: 1.1rem; animation: fireFlick 1.8s ease-in-out infinite; }
+        @keyframes fireFlick { 50% { transform: scale(1.08) rotate(-4deg); } }
+        .streak-n { font-size: 1.05rem; color: var(--cp-text); }
+        .streak-n b { font-weight: 900; font-size: 1.4rem; color: var(--cp-primary); margin-right: .2rem; }
+        .streak p:last-child { font-size: .9rem; color: var(--cp-muted); }
+        .jd-tr { font-size: 1.1rem; font-style: italic; color: var(--cp-muted); margin-top: -.4rem; line-height: 1.6; }
+        .fc-scene { perspective: 1200px; max-width: 36rem; height: 17rem; margin: 1.2rem auto; cursor: pointer; }
+        .fc { position: relative; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.2,.9,.3,1); transform-style: preserve-3d; }
+        .fc.flip { transform: rotateY(180deg); }
+        .fc-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 26px; padding: 1.6rem 1.8rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(160deg, var(--cp-surface2), var(--cp-surface)); border: 1px solid var(--cp-line); box-shadow: 0 24px 46px -30px var(--cp-primary); }
+        .fc-back { transform: rotateY(180deg); background: linear-gradient(160deg, color-mix(in srgb, var(--cp-success) 18%, var(--cp-surface2)), var(--cp-surface)); border-color: var(--cp-success); }
+        .fc-text { font-family: 'Noto Sans JP', sans-serif; font-size: 1.5rem; font-weight: 800; line-height: 2; color: var(--cp-text); }
+        .fc-gap { display: inline-block; min-width: 2.4em; margin: 0 .2em; padding: 0 .4em; border-bottom: 3px dashed var(--cp-primary); color: var(--cp-primary); animation: fillGlow 2.4s ease-in-out infinite; }
+        .fc-hint { position: absolute; bottom: .9rem; font-size: .75rem; color: var(--cp-muted); letter-spacing: .05em; }
+        .fc-kicker { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; color: var(--cp-success); }
+        .fc-ans { margin-top: .5rem; font-family: 'Noto Sans JP', sans-serif; font-size: 2rem; font-weight: 900; color: var(--cp-text); }
+        .fc-why { margin-top: .8rem; font-size: 1rem; line-height: 1.6; color: var(--cp-muted); max-width: 30rem; }
+        .fc-btns { display: flex; justify-content: center; gap: .8rem; margin-top: .4rem; }
+        .fc-btns button { display: inline-flex; align-items: center; gap: .5rem; height: 3rem; padding: 0 1.4rem; border-radius: 9999px; font-weight: 900; transition: transform .2s, box-shadow .2s; }
+        .fc-btns button:hover { transform: translateY(-2px); }
+        .fc-again { border: 1px solid var(--cp-line); background: var(--cp-surface2); color: var(--cp-text); }
+        .fc-know { background: linear-gradient(135deg, var(--cp-success), #6fd816); color: #0b1a06; }
+
+        .jn-group { margin-bottom: 2rem; }
+        .jn-gtitle { display: flex; align-items: center; justify-content: space-between; font-size: 1.05rem; font-weight: 900; color: var(--cp-accent); margin-bottom: .8rem; }
+        .jn-gtitle span { min-width: 2rem; text-align: center; padding: .15rem .6rem; border-radius: 9999px; background: var(--cp-surface2); border: 1px solid var(--cp-line); color: var(--cp-text); font-size: .85rem; }
+        .jn-card { display: grid; gap: .9rem; padding: 1.3rem 1.4rem; margin-bottom: 1rem; border-radius: 22px; background: var(--cp-surface2); border: 1px solid var(--cp-line); animation: explChild .55s cubic-bezier(.2,.9,.3,1) both; }
+        .jn-head { display: flex; align-items: center; gap: .6rem; }
+        .jn-num { width: 2rem; height: 2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); color: #140c02; font-weight: 900; font-size: .9rem; }
+        .jn-kind { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; color: var(--cp-muted); }
+        .jn-label { font-size: .78rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--cp-muted); margin-bottom: .3rem; }
+        .jn-label i { color: var(--cp-accent); margin-right: .3rem; }
+        .jn-pass { padding: 1rem 1.1rem; border-radius: 16px; background: var(--cp-surface); border: 1px solid var(--cp-line); }
+        .jn-jp { font-family: 'Noto Sans JP', sans-serif; font-size: 1.2rem; font-weight: 600; line-height: 2.1; color: var(--cp-text); }
+        .jn-big { font-size: 1.5rem; font-weight: 800; }
+        .jn-tbl { overflow-x: auto; }
+        .jn-q { font-family: 'Noto Sans JP', sans-serif; font-size: 1.35rem; font-weight: 800; line-height: 2; color: var(--cp-text); }
+        .jn-gap { display: inline-block; padding: 0 .4rem; border-bottom: 3px dashed var(--cp-primary); color: var(--cp-primary); }
+        .jn-answers { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+        @media (max-width: 560px) { .jn-answers { grid-template-columns: 1fr; } }
+        .jn-you, .jn-ok { display: flex; flex-direction: column; gap: .25rem; padding: .9rem 1rem; border-radius: 16px; }
+        .jn-you span, .jn-ok span { font-size: .75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+        .jn-you b, .jn-ok b { font-family: 'Noto Sans JP', sans-serif; font-size: 1.2rem; font-weight: 900; }
+        .jn-you { background: color-mix(in srgb, var(--cp-danger) 14%, transparent); border: 1px solid var(--cp-danger); color: var(--cp-danger); }
+        .jn-ok { background: color-mix(in srgb, var(--cp-success) 14%, transparent); border: 1px solid var(--cp-success); color: var(--cp-success); }
+        .jn-full { padding: 1rem 1.1rem; border-radius: 16px; background: var(--cp-surface); border: 1px solid var(--cp-line); }
+        .jn-tr { padding: .9rem 1.1rem; border-radius: 16px; background: color-mix(in srgb, var(--cp-accent) 8%, transparent); }
+        .jn-tr span { display: block; font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: .3rem; }
+        .jn-tr p { font-size: 1.05rem; line-height: 1.6; color: var(--cp-text); }
+        .jn-why { padding: 1rem 1.1rem; border-radius: 16px; background: color-mix(in srgb, var(--cp-success) 9%, transparent); border: 1px dashed color-mix(in srgb, var(--cp-success) 55%, transparent); }
+        .jn-why span { display: flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--cp-success); margin-bottom: .35rem; }
+        .jn-why p { font-size: 1rem; line-height: 1.7; color: var(--cp-text); }
+        .jn-card .jr-done { justify-self: start; }
     </style>
 <script>
 (function () {
@@ -846,11 +1220,11 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
     <section id="hero" class="pt-10 pb-6 text-center">
         <p class="text-[11px] uppercase tracking-[0.3em] font-black text-amber-700 dark:text-amber-400">Тренировка</p>
         <h1 class="text-4xl md:text-5xl font-black mt-2 leading-tight"><span class="gold-text">Тесты JLPT</span></h1>
-        <p class="text-zen-500 dark:text-zen-300 mt-3 max-w-xl mx-auto">Короткие тесты по 10 вопросов. Ответ сразу видно: звук, цвет и серия верных ответов.</p>
+        <p class="text-zen-500 dark:text-zen-300 mt-3 max-w-xl mx-auto">Выберите уровень и раздел, отвечайте на вопросы, а ошибки сохраним для повтора.</p>
         <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs font-bold text-zen-600 dark:text-zen-300">
-            <span class="feat-chip"><i class="fa-solid fa-clock"></i>около 5 минут</span>
-            <span class="feat-chip"><i class="fa-solid fa-bolt"></i>мгновенная проверка</span>
-            <span class="feat-chip"><i class="fa-solid fa-language"></i>фуригана у каждого слова</span>
+            <span class="feat-chip"><b class="step-n">1</b>выберите уровень</span>
+            <span class="feat-chip"><b class="step-n">2</b>решайте задания</span>
+            <span class="feat-chip"><b class="step-n">3</b>повторите ошибки</span>
         </div>
     </section>
 
@@ -901,6 +1275,33 @@ const upsell = document.getElementById('upsell');
 let activeLevel = 'N5', activeCat = 'kanji', owned = [], run = null;
 
 // ----- Банк тестов (бесплатные). Каждый тест — 10 вопросов. -----
+const QE = (q, o, a, e) => ({ q, o, a, e });
+const POOL7 = [
+    QE('ここに [[山]]があります。', ['かわ', 'やま', 'はし', 'みち'], 'やま', '山 читается やま — «гора».'),
+    QE('毎朝、[[水]]を飲みます。', ['みず', 'ひ', 'き', 'いぬ'], 'みず', '水 читается みず — «вода».'),
+    QE('[[火]]をつけます。', ['ひ', 'みず', 'き', 'つき'], 'ひ', '火 читается ひ — «огонь».'),
+    QE('わたしは[[犬]]が好きです。', ['いぬ', 'ねこ', 'とり', 'うま'], 'いぬ', '犬 читается いぬ — «собака».'),
+    QE('あした[[雨]]が降るでしょう。', ['あめ', 'ゆき', 'くも', 'そら'], 'あめ', '雨 читается あめ — «дождь».'),
+    QE('[[本]]を読みます。', ['ほん', 'もと', 'きも', 'ひも'], 'ほん', '本 читается ほん — «книга».'),
+    QE('[[日]]曜日は休みです。', ['にち', 'ひ', 'か', 'み'], 'にち', '日曜日 читается にちようび — здесь 日 читается にち.'),
+    QE('あの[[人]]は先生です。', ['ひと', 'じん', 'にん', 'いり'], 'ひと', '人 читается ひと — «человек».'),
+    QE('[[休]]みの日に出かけます。', ['やす', 'きゅう', 'やみ', 'きょう'], 'やす', '休 читается やす — «отдыхать» (休む, 休み).'),
+    QE('[[目]]がきれいです。', ['め', 'もく', 'ま', 'みみ'], 'め', '目 читается め — «глаз».'),
+    QE('[[口]]をあけてください。', ['くち', 'ぐち', 'こう', 'さか'], 'くち', '口 читается くち — «рот».'),
+    QE('[[手]]をあらいます。', ['て', 'しゅ', 'た', 'ず'], 'て', '手 читается て — «рука».'),
+    QE('[[はし]]を渡りました。', ['橋', '箸', '端', '走'], '橋', 'はし здесь «мост»: 橋を渡る — переходить мост.'),
+    QE('[[かいしゃ]]で働きます。', ['会社', '回社', '海社', '解社'], '会社', 'かいしゃ — «компания»: 会社で働く.'),
+    QE('[[でんしゃ]]に乗ります。', ['電車', '雷車', '電話', '電気'], '電車', 'でんしゃ — «поезд»: 電車に乗る.'),
+    QE('あした、[[てんき]]がいいです。', ['天気', '天汽', '天記', '点気'], '天気', 'てんき — «погода».'),
+    QE('[[がっこう]]で勉強します。', ['学校', '学交', '学高', '字校'], '学校', 'がっこう — «школа».'),
+    QE('[[いし]]があります。', ['石', '岩', '右', '名'], '石', 'いし — «камень».'),
+    QE('[[そら]]があおいです。', ['空', '字', '室', '穴'], '空', 'そら — «небо».'),
+    QE('[[あめ]]がふっています。', ['雨', '雲', '雪', '空'], '雨', 'あめ — «дождь».'),
+    QE('[[がくせい]]です。', ['学生', '学校', '楽々', '楽生'], '学生', 'がくせい — «студент».'),
+    QE('[[いぬ]]をかいます。', ['犬', '大', '太', '天'], '犬', 'いぬ — «собака».'),
+    QE('[[ねこ]]がねています。', ['猫', '描', '苗', '留'], '猫', 'ねこ — «кошка».'),
+    QE('[[みせ]]に行きます。', ['店', '広', '庫', '底'], '店', 'みせ — «магазин».')
+];
 const Q = (q, o, a) => ({ q, o, a });
 const Qp = (p, q, o, a) => ({ p, q, o, a });
 const QJ = (q, o, a, slots, star) => ({ q, o, a, slots, star });
@@ -928,40 +1329,30 @@ const BANK = {
         Q('Выберите иероглиф: 「毎朝、___を洗います。」', ['手', '足', '口', '目'], '手'),
         Q('Выберите иероглиф: 「きょうは___がきれいです。」', ['空', '雨', '山', '雲'], '空'),
         Q('Выберите иероглиф: 「あそこに___があります。」', ['川', '山', '三', '木'], '川')
-    ], undefined, undefined, undefined, undefined, [
-        Q('Прочитайте подчёркнутое слово: ここに [[山]]が あります。', ['かわ', 'やま', 'はし', 'みち'], 'やま'),
-        Q('Прочитайте подчёркнутое слово: 毎朝、[[水]]を のみます。', ['みず', 'ひ', 'き', 'いぬ'], 'みず'),
-        Q('Прочитайте подчёркнутое слово: [[火]]を つけます。', ['ひ', 'みず', 'き', 'つき'], 'ひ'),
-        Q('Прочитайте подчёркнутое слово: わたしは [[犬]]が すきです。', ['いぬ', 'ねこ', 'とり', 'うま'], 'いぬ'),
-        Q('Прочитайте подчёркнутое слово: あした [[雨]]が ふるでしょう。', ['あめ', 'ゆき', 'くも', 'そら'], 'あめ'),
-        Q('Выберите подходящее слово: [[はし]]を わたりました。', ['橋', '箸', '端', '走'], '橋'),
-        Q('Выберите подходящее слово: [[かいしゃ]]で はたらきます。', ['会社', '回社', '海社', '解社'], '会社'),
-        Q('Выберите подходящее слово: [[でんしゃ]]に のります。', ['電車', '雷車', '電話', '電気'], '電車'),
-        Q('Выберите подходящее слово: あした、[[てんき]]が いいです。', ['天気', '天汽', '天記', '点気'], '天気'),
-        Q('Выберите подходящее слово: [[がっこう]]で べんきょうします。', ['学校', '学交', '学高', '字校'], '学校')
-    ]],
+    ], undefined, undefined, undefined, undefined, POOL7.slice(0, 10)
+    ],
     'N5|grammar': [[
-        Q('Выберите частицу: 「図書館___本を借りました。」', ['で', 'に', 'を', 'へ'], 'で'),
-        Q('Выберите частицу: 「友達___一緒に映画を見ました。」', ['と', 'に', 'で', 'へ'], 'と'),
-        Q('Выберите частицу: 「わたしは日本語___少し話せます。」', ['が', 'を', 'に', 'で'], 'が'),
-        Q('Выберите частицу: 「このかばんは私___です。」', ['の', 'を', 'が', 'と'], 'の'),
-        Q('Выберите слово: 「明日は雨___しれません。」', ['かも', 'だから', 'でも', 'ですか'], 'かも'),
-        Q('Выберите форму: 「一緒に行き___？」', ['ませんか', 'ましょう', 'たいです', 'ました'], 'ませんか'),
-        Q('Выберите форму: 「ペンで名前を書いて___。」', ['ください', 'ます', 'ました', 'ましょう'], 'ください'),
-        Q('Выберите форму: 「今、テレビを見___。」', ['ています', 'ました', 'ます', 'たいです'], 'ています'),
-        Q('Выберите частицу: 「私は東京___住んでいます。」', ['に', 'で', 'を', 'へ'], 'に'),
-        Q('Выберите форму: 「ここで写真を撮って___。」', ['もいいです', 'はいけません', 'ください', 'ませんか'], 'もいいです')
+        Q('適切な助詞を選んでください： 「図書館___本を借りました。」', ['で', 'に', 'を', 'へ'], 'で'),
+        Q('適切な助詞を選んでください： 「友達___一緒に映画を見ました。」', ['と', 'に', 'で', 'へ'], 'と'),
+        Q('適切な助詞を選んでください： 「わたしは日本語___少し話せます。」', ['が', 'を', 'に', 'で'], 'が'),
+        Q('適切な助詞を選んでください： 「このかばんは私___です。」', ['の', 'を', 'が', 'と'], 'の'),
+        Q('適切な言葉を選んでください： 「明日は雨___しれません。」', ['かも', 'だから', 'でも', 'ですか'], 'かも'),
+        Q('適切な形を選んでください： 「一緒に行き___？」', ['ませんか', 'ましょう', 'たいです', 'ました'], 'ませんか'),
+        Q('適切な形を選んでください： 「ペンで名前を書いて___。」', ['ください', 'ます', 'ました', 'ましょう'], 'ください'),
+        Q('適切な形を選んでください： 「今、テレビを見___。」', ['ています', 'ました', 'ます', 'たいです'], 'ています'),
+        Q('適切な助詞を選んでください： 「私は東京___住んでいます。」', ['に', 'で', 'を', 'へ'], 'に'),
+        Q('適切な形を選んでください： 「ここで写真を撮って___。」', ['もいいです', 'はいけません', 'ください', 'ませんか'], 'もいいです')
     ], [
-        Q('Выберите слово: 「この店は、あの店___安いです。」', ['より', 'から', 'まで', 'ので'], 'より'),
-        Q('Выберите форму: 「日本へ行き___です。」', ['たい', 'ます', 'ませんか', 'ました'], 'たい'),
-        Q('Выберите форму: 「ドアを___ください。」', ['開けて', '開ける', '開け', '開けた'], '開けて'),
-        Q('Выберите форму: 「昨日、映画を___。」', ['見ました', '見ます', '見て', '見たい'], '見ました'),
-        Q('Выберите частицу: 「日曜日は何___しますか。」', ['を', 'が', 'に', 'で'], 'を'),
-        Q('Выберите форму: 「さっき、駅で先生に___。」', ['会いました', '会います', '会って', '会いたい'], '会いました'),
-        Q('Выберите форму: 「ここでたばこを吸っては___。」', ['いけません', 'ください', 'ましょう', 'ました'], 'いけません'),
-        Q('Выберите форму: 「写真を撮っても___か。」', ['いいですか', 'いいです', 'ですか', 'ください'], 'いいですか'),
-        Q('Выберите форму: 「来週、友達と映画を___と思います。」', ['見よう', '見る', '見て', '見た'], '見よう'),
-        Q('Выберите слово: 「パーティーに行けなくて、とても___。」', ['残念です', '残念でした', '残念な', '残念に'], '残念です')
+        Q('適切な言葉を選んでください： 「この店は、あの店___安いです。」', ['より', 'から', 'まで', 'ので'], 'より'),
+        Q('適切な形を選んでください： 「日本へ行き___です。」', ['たい', 'ます', 'ませんか', 'ました'], 'たい'),
+        Q('適切な形を選んでください： 「ドアを___ください。」', ['開けて', '開ける', '開け', '開けた'], '開けて'),
+        Q('適切な形を選んでください： 「昨日、映画を___。」', ['見ました', '見ます', '見て', '見たい'], '見ました'),
+        Q('適切な助詞を選んでください： 「日曜日は何___しますか。」', ['を', 'が', 'に', 'で'], 'を'),
+        Q('適切な形を選んでください： 「さっき、駅で先生に___。」', ['会いました', '会います', '会って', '会いたい'], '会いました'),
+        Q('適切な形を選んでください： 「ここでたばこを吸っては___。」', ['いけません', 'ください', 'ましょう', 'ました'], 'いけません'),
+        Q('適切な形を選んでください： 「写真を撮っても___か。」', ['いいですか', 'いいです', 'ですか', 'ください'], 'いいですか'),
+        Q('適切な形を選んでください： 「来週、友達と映画を___と思います。」', ['見よう', '見る', '見て', '見た'], '見よう'),
+        Q('適切な言葉を選んでください： 「パーティーに行けなくて、とても___。」', ['残念です', '残念でした', '残念な', '残念に'], '残念です')
 
     ], [
         QJ('わたし ___ ___ ★ ___ です。', ['すき', 'りょうり', 'は', 'が'], 'が', ['は', 'りょうり', 'が', 'すき'], 2),
@@ -987,69 +1378,127 @@ const BANK = {
         Q('「雨が降っていた___、学校に遅れました。」', ['ので', 'のに', 'けど', 'から'], 'ので')
     ]],
     'N5|reading': [[
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Какое слово вставить на место ［1］?', ['起きて', '寝て', '行って', '食べて'], '起きて'),
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Какое слово вставить на место ［2］?', ['働いて', '寝て', '食べて', '遊んで'], '働いて'),
-        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', 'Сколько человек в семье?', ['четыре', 'три', 'пять', 'два'], 'четыре'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Какое слово вставить на место ［3］?', ['勉強します', '食べます', '寝ます', '買います'], '勉強します'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Какое слово вставить на место ［4］?', ['食べます', '読みます', '寝ます', '見ます'], '食べます'),
-        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', 'Во сколько человек выходит из дома?', ['в 7:30', 'в 7:00', 'в 5:00', 'в 8:00'], 'в 7:30'),
-        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Какое слово вставить на место ［5］?', ['寒い', 'にぎやか', '静か', 'きれい'], '寒い'),
-        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Какое слово вставить на место ［6］?', ['やみました', '食べました', '読みました', '寝ました'], 'やみました'),
-        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', 'Как человек шёл до станции?', ['пешком с зонтом', 'на велосипеде', 'на машине', 'на автобусе'], 'пешком с зонтом')
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', '［1］に入る言葉はどれですか。', ['起きて', '寝て', '行って', '食べて'], '起きて'),
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', '［2］に入る言葉はどれですか。', ['働いて', '寝て', '食べて', '遊んで'], '働いて'),
+        Qp('わたしの家族は四人です。父と母と兄がいます。父は会社で［2］います。母は毎朝、早く［1］、朝ご飯を作ります。兄は大学の学生です。わたしは毎日、学校へ行きます。家族はみんな、週末に一緒に料理を食べます。とても楽しい家です。', '家族は何人ですか。', ['四人', '三人', '五人', '二人'], '四人'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', '［3］に入る言葉はどれですか。', ['勉強します', '食べます', '寝ます', '買います'], '勉強します'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', '［4］に入る言葉はどれですか。', ['食べます', '読みます', '寝ます', '見ます'], '食べます'),
+        Qp('わたしは毎朝七時に起きます。七時半に家を出て、電車で学校へ行きます。学校では日本語と数学を［3］。昼ご飯は友達と食堂で［4］。午後は図書館で本を読みます。五時に家に帰ります。毎日とても忙しいです。', '何時に家を出ますか。', ['7時半', '7時', '5時', '8時'], '7時半'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', '［5］に入る言葉はどれですか。', ['寒い', 'にぎやか', '静か', 'きれい'], '寒い'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', '［6］に入る言葉はどれですか。', ['やみました', '食べました', '読みました', '寝ました'], 'やみました'),
+        Qp('今日は朝から雨です。とても［5］です。わたしは傘を持って、駅まで歩きました。電車は少し遅かったです。学校に着いたら、先生が「おはようございます」と言いました。雨は昼ごろに［6］。午後は少し暖かくなりました。', '駅までどうやって行きましたか。', ['傘を持って歩いて', '自転車で', '車で', 'バスで'], '傘を持って歩いて')
     ], [
-        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус самый дешёвый?', ['3ごう', '1ごう', '2ごう', 'все одинаково'], '3ごう'),
-        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус едет дольше всех?', ['2ごう', '1ごう', '3ごう', 'все одинаково'], '2ごう'),
-        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, 'Какой автобус идёт без пересадок и остановок?', ['1ごう', '2ごう', '3ごう', 'никакой'], '1ごう'),
-        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд самый быстрый?', ['はやて', 'さくら', 'ふつう', 'все одинаково'], 'はやて'),
-        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд самый дешёвый?', ['ふつう', 'さくら', 'はやて', 'все одинаково'], 'ふつう'),
-        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, 'Какой поезд без пересадок и стоит меньше 5000 иен?', ['さくら', 'はやて', 'ふつう', 'никакой'], 'さくら'),
-        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм самый дешёвый?', ['さくら映画', 'はな映画', 'そら映画', 'все одинаково'], 'さくら映画'),
-        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм идёт дольше всех?', ['そら映画', 'はな映画', 'さくら映画', 'все одинаково'], 'そら映画'),
-        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, 'Какой фильм начинается после 12 часов и стоит меньше 1100 иен?', ['そら映画', 'はな映画', 'さくら映画', 'никакой'], 'そら映画')
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, '一番安いバスはどれですか。', ['3ごう', '1ごう', '2ごう', '全部同じ'], '3ごう'),
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, '一番長く乗るバスはどれですか。', ['2ごう', '1ごう', '3ごう', '全部同じ'], '2ごう'),
+        Qt('わたしのまちのバスの時間です。どのバスに乗りますか。', { kind: 'route', rows: [{ icon: '🚌', name: '1ごう', dep: '7:00', arr: '7:20', price: '200円', note: '直通' }, { icon: '🚌', name: '2ごう', dep: '7:10', arr: '7:35', price: '200円', note: '学校まで' }, { icon: '🚌', name: '3ごう', dep: '7:30', arr: '7:40', price: '150円', note: '速い' }] }, '止まらずに行くバスはどれですか。', ['1ごう', '2ごう', '3ごう', 'ない'], '1ごう'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, '一番速い電車はどれですか。', ['はやて', 'さくら', 'ふつう', '全部同じ'], 'はやて'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, '一番安い電車はどれですか。', ['ふつう', 'さくら', 'はやて', '全部同じ'], 'ふつう'),
+        Qt('東京から大阪まで行きます。電車の表を見て、いちばんいい電車を選びましょう。', { kind: 'trains', rows: [{ icon: '🚄', name: 'さくら', dep: '9:00', arr: '11:30', price: '4000円', note: '直通' }, { icon: '⚡', name: 'はやて', dep: '9:30', arr: '11:00', price: '5200円', note: '速い' }, { icon: '🚃', name: 'ふつう', dep: '8:30', arr: '12:10', price: '2500円', note: '乗りかえ一回' }] }, '乗りかえなしで5000円より安い電車はどれですか。', ['さくら', 'はやて', 'ふつう', 'ない'], 'さくら'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, '一番安い映画はどれですか。', ['さくら映画', 'はな映画', 'そら映画', '全部同じ'], 'さくら映画'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, '一番長い映画はどれですか。', ['そら映画', 'はな映画', 'さくら映画', '全部同じ'], 'そら映画'),
+        Qt('今週の映画の時間です。どの映画を見ますか。', { kind: 'cinema', rows: [{ icon: '🎬', name: 'さくら映画', dep: '10:00', arr: '11:40', price: '900円', note: '子ども向け' }, { icon: '🎬', name: 'はな映画', dep: '13:00', arr: '14:30', price: '1200円', note: '字幕あり' }, { icon: '🎬', name: 'そら映画', dep: '16:00', arr: '17:50', price: '1000円', note: '新しい' }] }, '12時より後に始まって1100円より安い映画はどれですか。', ['そら映画', 'はな映画', 'さくら映画', 'ない'], 'そら映画')
     ], [
-        Qp('わたしの町には大きい図書館があります。図書館は駅から近くて、とても便利です。毎週土曜日、わたしは図書館で本を借ります。子どもの本もあるので、弟も一緒に行きます。図書館の中は静かです。みんなが本を読んでいます。', 'Где находится библиотека?', ['рядом со станцией', 'далеко от города', 'в парке', 'у школы'], 'рядом со станцией'),
-        Qp('わたしの町には大きい図書館があります。図書館は駅から近くて、とても便利です。毎週土曜日、わたしは図書館で本を借ります。子どもの本もあるので、弟も一緒に行きます。図書館の中は静かです。みんなが本を読んでいます。', 'Когда человек ходит в библиотеку?', ['по субботам', 'по воскресеньям', 'каждый день', 'по понедельникам'], 'по субботам'),
-        Qp('わたしの町には大きい図書館があります。図書館は駅から近くて、とても便利です。毎週土曜日、わたしは図書館で本を借ります。子どもの本もあるので、弟も一緒に行きます。図書館の中は静かです。みんなが本を読んでいます。', 'Почему с ним идёт брат?', ['там есть детские книги', 'там бесплатный чай', 'там игры', 'там новый компьютер'], 'там есть детские книги'),
-        Qp('日本の料理の本を読むのが好きです。特に寿司の本がおもしろいです。写真がたくさんあるので、見ているだけで楽しいです。まだ作ることはできませんが、来年は母と一緒に作りたいと思っています。料理の本は家の本だなにたくさんあります。', 'Какие книги нравятся человеку?', ['о японской кухне', 'о спорте', 'о машинах', 'о животных'], 'о японской кухне'),
-        Qp('日本の料理の本を読むのが好きです。特に寿司の本がおもしろいです。写真がたくさんあるので、見ているだけで楽しいです。まだ作ることはできませんが、来年は母と一緒に作りたいと思っています。料理の本は家の本だなにたくさんあります。', 'Что особенно интересно в книге?', ['много фотографий', 'длинный текст', 'игры', 'задачи'], 'много фотографий'),
-        Qp('日本の料理の本を読むのが好きです。特に寿司の本がおもしろいです。写真がたくさんあるので、見ているだけで楽しいです。まだ作ることはできませんが、来年は母と一緒に作りたいと思っています。料理の本は家の本だなにたくさんあります。', 'Что человек хочет сделать в следующем году?', ['готовить вместе с мамой', 'поехать в Японию', 'купить машину', 'выучить английский'], 'готовить вместе с мамой'),
-        Qp('月曜日は図書館が休みです。ですから、わたしは火曜日に行きます。火曜日は人が少なくて、静かです。窓のそばの席に座ると、空が見えて気持ちがいいです。帰りに本屋へ寄って、新しい辞書を買いました。とても満足しています。', 'Почему человек ходит в библиотеку во вторник?', ['в понедельник библиотека закрыта', 'во вторник скидки', 'во вторник бесплатно', 'во вторник концерт'], 'в понедельник библиотека закрыта'),
-        Qp('月曜日は図書館が休みです。ですから、わたしは火曜日に行きます。火曜日は人が少なくて、静かです。窓のそばの席に座ると、空が見えて気持ちがいいです。帰りに本屋へ寄って、新しい辞書を買いました。とても満足しています。', 'Какое место он выбирает?', ['место у окна', 'место в углу', 'место у входа', 'место у двери'], 'место у окна'),
-        Qp('月曜日は図書館が休みです。ですから、わたしは火曜日に行きます。火曜日は人が少なくて、静かです。窓のそばの席に座ると、空が見えて気持ちがいいです。帰りに本屋へ寄って、新しい辞書を買いました。とても満足しています。', 'Что он купил в книжном магазине?', ['словарь', 'комикс', 'журнал', 'ручку'], 'словарь')
+        Qp('わたしの週末は楽しいです。土曜日は朝［7］、公園へ行きます。友達と［8］をします。昼ご飯は母が作ったおにぎりです。日曜日は家で本を読みます。夜は家族と一緒にテレビを見ます。とても楽しい週末です。', '［7］に入る言葉はどれですか。', ['早く', '重く', '軽く', '高く'], '早く'),
+        Qp('わたしの週末は楽しいです。土曜日は朝［7］、公園へ行きます。友達と［8］をします。昼ご飯は母が作ったおにぎりです。日曜日は家で本を読みます。夜は家族と一緒にテレビを見ます。とても楽しい週末です。', '［8］に入る言葉はどれですか。', ['サッカー', '泣き', '寝', '消し'], 'サッカー'),
+        Qp('わたしの週末は楽しいです。土曜日は朝［7］、公園へ行きます。友達と［8］をします。昼ご飯は母が作ったおにぎりです。日曜日は家で本を読みます。夜は家族と一緒にテレビを見ます。とても楽しい週末です。', '日曜日は何をしますか。', ['家で本を読む', '公園でサッカー', '海へ行く', '買い物をする'], '家で本を読む'),
+        Qp('今日は母と一緒に晩ご飯を作りました。まず野菜を［9］。次に肉を焼きます。とても［10］匂いがしました。ご飯と味噌汁も作りました。みんなで食べて、とても楽しかったです。', '［9］に入る言葉はどれですか。', ['切りました', '見ました', '読みました', '聞きました'], '切りました'),
+        Qp('今日は母と一緒に晩ご飯を作りました。まず野菜を［9］。次に肉を焼きます。とても［10］匂いがしました。ご飯と味噌汁も作りました。みんなで食べて、とても楽しかったです。', '［10］に入る言葉はどれですか。', ['いい', '重い', '遠い', '高い'], 'いい'),
+        Qp('今日は母と一緒に晩ご飯を作りました。まず野菜を［9］。次に肉を焼きます。とても［10］匂いがしました。ご飯と味噌汁も作りました。みんなで食べて、とても楽しかったです。', '誰と晩ご飯を作りましたか。', ['お母さん', 'お父さん', '友達', 'ひとり'], 'お母さん'),
+        Qp('先週、電車で京都へ行きました。駅には人がたくさんいました。電車の中で［11］を読みました。京都のお寺はとても大きかったです。写真をたくさん［12］。帰りは新幹線に乗りました。楽しい旅行でした。', '［11］に入る言葉はどれですか。', ['本', '犬', '車', '花'], '本'),
+        Qp('先週、電車で京都へ行きました。駅には人がたくさんいました。電車の中で［11］を読みました。京都のお寺はとても大きかったです。写真をたくさん［12］。帰りは新幹線に乗りました。楽しい旅行でした。', '［12］に入る言葉はどれですか。', ['撮りました', '書きました', '食べました', '飲みました'], '撮りました'),
+        Qp('先週、電車で京都へ行きました。駅には人がたくさんいました。電車の中で［11］を読みました。京都のお寺はとても大きかったです。写真をたくさん［12］。帰りは新幹線に乗りました。楽しい旅行でした。', '帰りは何に乗りましたか。', ['新幹線', 'バス', '自転車', '飛行機'], '新幹線')
     ], [
-        Qp('わたしは毎朝、バスで学校へ行きます。バス停は家から歩いて五分です。バスは七時十分に来ます。いつも混んでいますが、友達と話しながら行くので楽しいです。学校の前でおりて、門から入ります。雨の日も同じです。', 'Как человек едет в школу?', ['на автобусе', 'на электричке', 'пешком', 'на велосипеде'], 'на автобусе'),
-        Qp('わたしは毎朝、バスで学校へ行きます。バス停は家から歩いて五分です。バスは七時十分に来ます。いつも混んでいますが、友達と話しながら行くので楽しいです。学校の前でおりて、門から入ります。雨の日も同じです。', 'Сколько минут идти до остановки?', ['пять минут', 'десять минут', 'одну минуту', 'двадцать минут'], 'пять минут'),
-        Qp('わたしは毎朝、バスで学校へ行きます。バス停は家から歩いて五分です。バスは七時十分に来ます。いつも混んでいますが、友達と話しながら行くので楽しいです。学校の前でおりて、門から入ります。雨の日も同じです。', 'Что делает человек в автобусе?', ['разговаривает с другом', 'спит', 'читает газету', 'ест'], 'разговаривает с другом'),
-        Qp('日曜日、家族と電車で東京へ行きました。駅は人がたくさんいて、とてもにぎやかでした。東京の店で服を見ました。昼ご飯は駅の近くのラーメン屋で食べました。とてもおいしかったです。夕方、電車で家に帰りました。また行きたいです。', 'Как семья поехала в Токио?', ['на электричке', 'на машине', 'на автобусе', 'пешком'], 'на электричке'),
-        Qp('日曜日、家族と電車で東京へ行きました。駅は人がたくさんいて、とてもにぎやかでした。東京の店で服を見ました。昼ご飯は駅の近くのラーメン屋で食べました。とてもおいしかったです。夕方、電車で家に帰りました。また行きたいです。', 'Что делали в Токио?', ['смотрели одежду', 'купались в море', 'ходили в зоопарк', 'катались на лодке'], 'смотрели одежду'),
-        Qp('日曜日、家族と電車で東京へ行きました。駅は人がたくさんいて、とてもにぎやかでした。東京の店で服を見ました。昼ご飯は駅の近くのラーメン屋で食べました。とてもおいしかったです。夕方、電車で家に帰りました。また行きたいです。', 'Где обедали?', ['в рамен-баре возле станции', 'дома', 'в парке', 'в гостинице'], 'в рамен-баре возле станции'),
-        Qp('わたしの自転車は少し古いです。毎日、学校まで自転車で行きます。雨の日は電車を使います。先週、自転車がこわれたので、父が直してくれました。今は前より速く走れます。とても助かりました。来週は雨の日が多いそうです。そのときは、電車で行くつもりです。', 'Как человек обычно едет в школу?', ['на велосипеде', 'на электричке', 'пешком', 'на машине'], 'на велосипеде'),
-        Qp('わたしの自転車は少し古いです。毎日、学校まで自転車で行きます。雨の日は電車を使います。先週、自転車がこわれたので、父が直してくれました。今は前より速く走れます。とても助かりました。来週は雨の日が多いそうです。そのときは、電車で行くつもりです。', 'Что он делает в дождь?', ['едет на электричке', 'идёт пешком', 'остаётся дома', 'едет на машине'], 'едет на электричке'),
-        Qp('わたしの自転車は少し古いです。毎日、学校まで自転車で行きます。雨の日は電車を使います。先週、自転車がこわれたので、父が直してくれました。今は前より速く走れます。とても助かりました。来週は雨の日が多いそうです。そのときは、電車で行くつもりです。', 'Кто починил велосипед?', ['папа', 'мама', 'брат', 'друг'], 'папа')
+        Qt('レストランのメニューです。いくらか、どれが人気か、よく見てください。', { kind: 'menu', rows: [{ name: 'ラーメン', price: '700円', note: '人気' }, { name: 'カレーライス', price: '800円', note: '辛さ控えめ' }, { name: 'サラダ', price: '350円', note: '野菜たっぷり' }, { name: 'ジュース', price: '200円', note: 'りんご' }] }, '一番安いものはどれですか。', ['ジュース', 'サラダ', 'ラーメン', 'カレーライス'], 'ジュース'),
+        Qt('レストランのメニューです。いくらか、どれが人気か、よく見てください。', { kind: 'menu', rows: [{ name: 'ラーメン', price: '700円', note: '人気' }, { name: 'カレーライス', price: '800円', note: '辛さ控えめ' }, { name: 'サラダ', price: '350円', note: '野菜たっぷり' }, { name: 'ジュース', price: '200円', note: 'りんご' }] }, '人気があるものはどれですか。', ['ラーメン', 'カレーライス', 'サラダ', 'ジュース'], 'ラーメン'),
+        Qt('レストランのメニューです。いくらか、どれが人気か、よく見てください。', { kind: 'menu', rows: [{ name: 'ラーメン', price: '700円', note: '人気' }, { name: 'カレーライス', price: '800円', note: '辛さ控えめ' }, { name: 'サラダ', price: '350円', note: '野菜たっぷり' }, { name: 'ジュース', price: '200円', note: 'りんご' }] }, 'ラーメンとサラダを一つずつ頼むと、合計はいくらですか。', ['1050円', '1100円', '1000円', '1150円'], '1050円'),
+        Qt('わたしの一週間の予定です。どの日に何がありますか。', { kind: 'week', rows: [{ day: '月', act: 'ピアノ', time: '17時' }, { day: '火', act: '英語', time: '18時30分' }, { day: '水', act: '休み', time: '—' }, { day: '木', act: 'プール', time: '16時' }, { day: '金', act: '友だち', time: '19時' }] }, '水曜日は何をしますか。', ['休み', 'プール', 'ピアノ', '英語'], '休み'),
+        Qt('わたしの一週間の予定です。どの日に何がありますか。', { kind: 'week', rows: [{ day: '月', act: 'ピアノ', time: '17時' }, { day: '火', act: '英語', time: '18時30分' }, { day: '水', act: '休み', time: '—' }, { day: '木', act: 'プール', time: '16時' }, { day: '金', act: '友だち', time: '19時' }] }, 'プールは何曜日ですか。', ['木曜日', '金曜日', '火曜日', '月曜日'], '木曜日'),
+        Qt('わたしの一週間の予定です。どの日に何がありますか。', { kind: 'week', rows: [{ day: '月', act: 'ピアノ', time: '17時' }, { day: '火', act: '英語', time: '18時30分' }, { day: '水', act: '休み', time: '—' }, { day: '木', act: 'プール', time: '16時' }, { day: '金', act: '友だち', time: '19時' }] }, '一番遅い時間に予定がある日はどれですか。', ['金曜日', '火曜日', '月曜日', '木曜日'], '金曜日'),
+        Qt('学校からのお知らせです。よく読んでから、答えてください。', { kind: 'memo', rows: [{ k: '日にち', v: '十一月十日（月）' }, { k: '場所', v: '体育館' }, { k: '時間', v: '十時から十二時' }, { k: '持ち物', v: 'うわばき' }] }, 'どこに行きますか。', ['体育館', '教室', '図書室', '校庭'], '体育館'),
+        Qt('学校からのお知らせです。よく読んでから、答えてください。', { kind: 'memo', rows: [{ k: '日にち', v: '十一月十日（月）' }, { k: '場所', v: '体育館' }, { k: '時間', v: '十時から十二時' }, { k: '持ち物', v: 'うわばき' }] }, '何を持って行きますか。', ['うわばき', 'お弁当', '傘', 'ノート'], 'うわばき'),
+        Qt('学校からのお知らせです。よく読んでから、答えてください。', { kind: 'memo', rows: [{ k: '日にち', v: '十一月十日（月）' }, { k: '場所', v: '体育館' }, { k: '時間', v: '十時から十二時' }, { k: '持ち物', v: 'うわばき' }] }, '何時から何時までですか。', ['十時から十二時', '九時から十一時', '十時から十一時', '十二時から二時'], '十時から十二時')
     ], [
-        Qp('わたしの趣味は絵をかくことです。週末は公園で花や木の絵をかきます。色は青と緑がすきです。友達も一緒にかいています。かいた絵は部屋にかざります。毎週かくので、絵がたくさんあります。毎週日曜日の午後、公園で友達と一緒にかきます。上手になりたいです。', 'Какое хобби у человека?', ['рисовать', 'петь', 'играть в футбол', 'готовить'], 'рисовать'),
-        Qp('わたしの趣味は絵をかくことです。週末は公園で花や木の絵をかきます。色は青と緑がすきです。友達も一緒にかいています。かいた絵は部屋にかざります。毎週かくので、絵がたくさんあります。毎週日曜日の午後、公園で友達と一緒にかきます。上手になりたいです。', 'Где он рисует?', ['в парке', 'дома', 'в школе', 'в музее'], 'в парке'),
-        Qp('わたしの趣味は絵をかくことです。週末は公園で花や木の絵をかきます。色は青と緑がすきです。友達も一緒にかいています。かいた絵は部屋にかざります。毎週かくので、絵がたくさんあります。毎週日曜日の午後、公園で友達と一緒にかきます。上手になりたいです。', 'Какие цвета ему нравятся?', ['синий и зелёный', 'красный и жёлтый', 'чёрный и белый', 'розовый и фиолетовый'], 'синий и зелёный'),
-        Qp('来週はテストがあるので、今日は図書館で勉強しました。数学と漢字を練習しました。漢字は一日に十個覚えるつもりです。疲れたので、帰りに公園のベンチで少し休みました。明日も図書館へ行きます。勉強の時間を増やしたいです。', 'Почему человек занимался в библиотеке?', ['на следующей неделе будет тест', 'нужна новая книга', 'библиотека бесплатная', 'подруга попросила'], 'на следующей неделе будет тест'),
-        Qp('来週はテストがあるので、今日は図書館で勉強しました。数学と漢字を練習しました。漢字は一日に十個覚えるつもりです。疲れたので、帰りに公園のベンチで少し休みました。明日も図書館へ行きます。勉強の時間を増やしたいです。', 'Что он учил?', ['математику и кандзи', 'английский и музыку', 'историю и физику', 'японскую кухню'], 'математику и кандзи'),
-        Qp('来週はテストがあるので、今日は図書館で勉強しました。数学と漢字を練習しました。漢字は一日に十個覚えるつもりです。疲れたので、帰りに公園のベンチで少し休みました。明日も図書館へ行きます。勉強の時間を増やしたいです。', 'Сколько кандзи он хочет выучить за день?', ['десять', 'пять', 'двадцать', 'три'], 'десять'),
-        Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Какая погода будет завтра?', ['возможно, дождь', 'ясно и жарко', 'снег', 'сильный ветер'], 'возможно, дождь'),
-        Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Что советуют взять?', ['зонт', 'купальник', 'коньки', 'фотоаппарат'], 'зонт'),
-        Qp('明日は雨が降るかもしれません。ですから、傘を持って行ってください。週末の天気は晴れるそうです。山へ行くなら、朝早く出るといいです。帰りは海の近くを歩くのもおすすめです。夜は星がよく見えるでしょう。月曜日の夜は、家でゆっくり本を読みたいと思っています。', 'Какая погода ожидается на выходных?', ['солнечно', 'сильный дождь', 'снег', 'туман'], 'солнечно')
-
+        Qt('ともだちからはがきが届きました。', { kind: 'postcard', rows: [{ k: '差出人', v: 'ゆみ' }, { k: '場所', v: '京都' }, { k: '天気', v: '晴れ' }, { k: '気持ち', v: '楽しい' }, { k: 'ひとこと', v: 'また行きたいです' }] }, 'ゆみさんは今どこにいますか。', ['京都', '東京', '大阪', '札幌'], '京都'),
+        Qt('ともだちからはがきが届きました。', { kind: 'postcard', rows: [{ k: '差出人', v: 'ゆみ' }, { k: '場所', v: '京都' }, { k: '天気', v: '晴れ' }, { k: '気持ち', v: '楽しい' }, { k: 'ひとこと', v: 'また行きたいです' }] }, '天気はどうですか。', ['晴れ', '雨', '雪', 'くもり'], '晴れ'),
+        Qt('ともだちからはがきが届きました。', { kind: 'postcard', rows: [{ k: '差出人', v: 'ゆみ' }, { k: '場所', v: '京都' }, { k: '天気', v: '晴れ' }, { k: '気持ち', v: '楽しい' }, { k: 'ひとこと', v: 'また行きたいです' }] }, 'ゆみさんの気持ちはどうですか。', ['楽しい', 'さびしい', 'ねむい', 'こわい'], '楽しい'),
+        Qt('わたしの日記です。一週間の始めを書きました。', { kind: 'diary', rows: [{ day: '月', text: '雨が降りました。かさを忘れました。' }, { day: '火', text: '友だちと映画を見ました。' }, { day: '水', text: '本を三さつ借りました。' }, { day: '木', text: '天気がよかったので、公園を歩きました。' }] }, 'かさを忘れたのは何曜日ですか。', ['月曜日', '火曜日', '水曜日', '木曜日'], '月曜日'),
+        Qt('わたしの日記です。一週間の始めを書きました。', { kind: 'diary', rows: [{ day: '月', text: '雨が降りました。かさを忘れました。' }, { day: '火', text: '友だちと映画を見ました。' }, { day: '水', text: '本を三さつ借りました。' }, { day: '木', text: '天気がよかったので、公園を歩きました。' }] }, '本を何さつ借りましたか。', ['一さつ', '二さつ', '三さつ', '四さつ'], '三さつ'),
+        Qt('わたしの日記です。一週間の始めを書きました。', { kind: 'diary', rows: [{ day: '月', text: '雨が降りました。かさを忘れました。' }, { day: '火', text: '友だちと映画を見ました。' }, { day: '水', text: '本を三さつ借りました。' }, { day: '木', text: '天気がよかったので、公園を歩きました。' }] }, '公園を歩いたのは何曜日ですか。', ['木曜日', '金曜日', '水曜日', '火曜日'], '木曜日'),
+        Qt('まちのお祭りのポスターです。よく見てから答えてください。', { kind: 'poster', rows: [{ k: '秋のまちのお祭り', v: '' }, { k: '日にち', v: '十一月三日' }, { k: '場所', v: '駅前の公園' }, { k: '時間', v: '十時から十五時' }, { k: '入場', v: '無料' }] }, 'お祭りはどこでありますか。', ['駅前の公園', '学校', '図書館', '病院'], '駅前の公園'),
+        Qt('まちのお祭りのポスターです。よく見てから答えてください。', { kind: 'poster', rows: [{ k: '秋のまちのお祭り', v: '' }, { k: '日にち', v: '十一月三日' }, { k: '場所', v: '駅前の公園' }, { k: '時間', v: '十時から十五時' }, { k: '入場', v: '無料' }] }, '入るのにお金はいりますか。', ['いいえ、無料です', 'はい、百円です', 'はい、千円です', 'いいえ、有料です'], 'いいえ、無料です'),
+        Qt('まちのお祭りのポスターです。よく見てから答えてください。', { kind: 'poster', rows: [{ k: '秋のまちのお祭り', v: '' }, { k: '日にち', v: '十一月三日' }, { k: '場所', v: '駅前の公園' }, { k: '時間', v: '十時から十五時' }, { k: '入場', v: '無料' }] }, 'お祭りは何時に終わりますか。', ['十五時', '十時', '十二時', '十七時'], '十五時')
     ], [
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Что купили в магазине?', ['овощи, рыбу и мясо', 'только фрукты', 'молоко и хлеб', 'игрушки'], 'овощи, рыбу и мясо'),
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Сколько яблок купили?', ['три', 'два', 'пять', 'одно'], 'три'),
-        Qp('週末、わたしは母と一緒にスーパーへ行きました。野菜と魚と肉を買いました。りんごも三つ買いました。店はとても混んでいました。レジで少し待ちました。家に帰って、みんなで晩ご飯を作りました。とても楽しい買い物でした。', 'Почему пришлось ждать?', ['было много людей', 'магазин был закрыт', 'не хватило денег', 'потерялся ключ'], 'было много людей'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Кто готовит обед?', ['мама', 'сам человек', 'друг', 'папа'], 'мама'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Какая еда нравится человеку?', ['рыба', 'мясо', 'пицца', 'сладости'], 'рыба'),
-        Qp('わたしは毎日、お昼にお弁当を食べます。お弁当は母が作ります。ご飯と卵焼きと野菜が入っています。魚が好きなので、今日は魚の料理が入っていてうれしいです。友達はいつもパンを食べています。お弁当の時間が一番好きです。', 'Что обычно ест друг?', ['хлеб', 'рис', 'суп', 'лапшу'], 'хлеб'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Как семья добиралась до моря?', ['на машине', 'на поезде', 'пешком', 'на автобусе'], 'на машине'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Что делал младший брат?', ['собирал ракушки', 'плавал', 'спал', 'ел мороженое'], 'собирал ракушки'),
-        Qp('夏休みに、家族と海へ行きました。車で二時間かかりました。海はとてもきれいで、白い砂がありました。わたしは泳ぎました。弟は貝を集めました。夜はホテルに泊まりました。とても楽しい一日でした。次も行きたいです。', 'Где семья провела ночь?', ['в гостинице', 'в палатке', 'у бабушки', 'в машине'], 'в гостинице')
+        Qt('スーパーのレシートです。買ったものと値段を見てください。', { kind: 'receipt', rows: [{ k: 'りんご', v: '三つ　300円' }, { k: '牛乳', v: '一本　200円' }, { k: 'パン', v: '二こ　400円' }, { k: '合計', v: '900円' }] }, 'パンはいくらですか。', ['400円', '200円', '300円', '900円'], '400円'),
+        Qt('スーパーのレシートです。買ったものと値段を見てください。', { kind: 'receipt', rows: [{ k: 'りんご', v: '三つ　300円' }, { k: '牛乳', v: '一本　200円' }, { k: 'パン', v: '二こ　400円' }, { k: '合計', v: '900円' }] }, 'りんごは何こ買いましたか。', ['三つ', '二つ', '一つ', '五つ'], '三つ'),
+        Qt('スーパーのレシートです。買ったものと値段を見てください。', { kind: 'receipt', rows: [{ k: 'りんご', v: '三つ　300円' }, { k: '牛乳', v: '一本　200円' }, { k: 'パン', v: '二こ　400円' }, { k: '合計', v: '900円' }] }, '合計はいくらですか。', ['900円', '800円', '1000円', '700円'], '900円'),
+        Qt('学校までの道を説明します。順番に読んでください。', { kind: 'steps', rows: [{ n: '1', icon: '⬆', t: 'まっすぐ行く' }, { n: '2', icon: '➡', t: '右に曲がる' }, { n: '3', icon: '🏫', t: 'すぐ左に学校がある' }] }, '最初に何をしますか。', ['まっすぐ行く', '右に曲がる', '左に曲がる', '止まる'], 'まっすぐ行く'),
+        Qt('学校までの道を説明します。順番に読んでください。', { kind: 'steps', rows: [{ n: '1', icon: '⬆', t: 'まっすぐ行く' }, { n: '2', icon: '➡', t: '右に曲がる' }, { n: '3', icon: '🏫', t: 'すぐ左に学校がある' }] }, '二番目はどちらに曲がりますか。', ['右', '左', '後ろ', 'まっすぐ'], '右'),
+        Qt('学校までの道を説明します。順番に読んでください。', { kind: 'steps', rows: [{ n: '1', icon: '⬆', t: 'まっすぐ行く' }, { n: '2', icon: '➡', t: '右に曲がる' }, { n: '3', icon: '🏫', t: 'すぐ左に学校がある' }] }, '学校はどこにありますか。', ['すぐ左', 'すぐ右', '駅の前', '公園の中'], 'すぐ左'),
+        Qt('パン屋のクーポンです。使い方を読んでください。', { kind: 'coupon', rows: [{ k: 'お店', v: 'パン屋' }, { k: '割引', v: '百円引き' }, { k: '期限', v: '十一月三十日まで' }, { k: '注意', v: '一人一枚' }] }, 'どのお店のクーポンですか。', ['パン屋', '本屋', '花屋', 'くだものの店'], 'パン屋'),
+        Qt('パン屋のクーポンです。使い方を読んでください。', { kind: 'coupon', rows: [{ k: 'お店', v: 'パン屋' }, { k: '割引', v: '百円引き' }, { k: '期限', v: '十一月三十日まで' }, { k: '注意', v: '一人一枚' }] }, 'いくら安くなりますか。', ['百円', '五十円', '千円', '二百円'], '百円'),
+        Qt('パン屋のクーポンです。使い方を読んでください。', { kind: 'coupon', rows: [{ k: 'お店', v: 'パン屋' }, { k: '割引', v: '百円引き' }, { k: '期限', v: '十一月三十日まで' }, { k: '注意', v: '一人一枚' }] }, '何枚使えますか。', ['一枚', '二枚', '三枚', '何枚でも'], '一枚')
     ]]
 };
 
+const TRQ = {
+ "「図書館___本を借りました。」": "В библиотеке я взял книгу.",
+ "「友達___一緒に映画を見ました。」": "Я вместе с другом посмотрел фильм.",
+ "「わたしは日本語___少し話せます。」": "Я немного могу говорить по-японски.",
+ "「このかばんは私___です。」": "Эта сумка — моя.",
+ "「明日は雨___しれません。」": "Завтра, возможно, будет дождь.",
+ "「一緒に行き___？」": "Не хотите пойти вместе?",
+ "「ペンで名前を書いて___。」": "Напишите, пожалуйста, своё имя ручкой.",
+ "「今、テレビを見___。」": "Сейчас я смотрю телевизор.",
+ "「私は東京___住んでいます。」": "Я живу в Токио.",
+ "「ここで写真を撮って___。」": "Здесь можно фотографировать.",
+ "「この店は、あの店___安いです。」": "Этот магазин дешевле того.",
+ "「日本へ行き___です。」": "Я хочу поехать в Японию.",
+ "「ドアを___ください。」": "Откройте, пожалуйста, дверь.",
+ "「昨日、映画を___。」": "Вчера я посмотрел фильм.",
+ "「日曜日は何___しますか。」": "Что вы делаете в воскресенье?",
+ "「さっき、駅で先生に___。」": "Недавно на станции я встретил учителя.",
+ "「ここでたばこを吸っては___。」": "Здесь нельзя курить.",
+ "「写真を撮っても___か。」": "Можно фотографировать?",
+ "「来週、友達と映画を___と思います。」": "Я думаю, на следующей неделе посмотрю фильм с другом.",
+ "「パーティーに行けなくて、とても___。」": "Мне очень жаль, что я не смог пойти на вечеринку.",
+ "「ここで写真を撮っては___。」": "Здесь нельзя фотографировать.",
+ "「あの人は田中さん___。」": "Тот человек — господин Танака.",
+ "「きのうは雨___降りました。」": "Вчера шёл дождь.",
+ "「この漢字の読み方を教えて___。」": "Расскажите, пожалуйста, как читается этот иероглиф.",
+ "「ご飯を___前に、手を洗います。」": "Перед тем как поесть, я мою руки.",
+ "「友達と、映画を見___行きました。」": "Я пошёл с другом смотреть фильм.",
+ "「わたしの部屋は、兄の部屋___広いです。」": "Моя комната больше комнаты брата.",
+ "「本を読み___、ねます。」": "Я читаю книгу и ложусь спать.",
+ "「日本へ行った___があります。」": "Я был в Японии.",
+ "「雨が降っていた___、学校に遅れました。」": "Шёл дождь, поэтому я опоздал в школу.",
+ "わたし ___ ___ ★ ___ です。|が": "Я люблю готовить.",
+ "ぎんこうは ★ ___ ___ ___ あります。|スーパー": "Банк находится рядом с супермаркетом.",
+ "この道を ★ ___ ___ ___ ありますよ。|まっすぐ": "Идите по этой дороге прямо, потом налево — там будет.",
+ "わたしは ___ ★ ___ ___ 。|七時": "Я встаю каждое утро в семь часов.",
+ "わたしは ___ ___ ★ ___ 。|勉強": "Я изучаю японский язык.",
+ "友達と ★ ___ ___ ___ 。|映画": "Я смотрел фильм с другом.",
+ "わたしは ___ ★ ___ ___ 。|京都": "На прошлой неделе я ездил в Киото.",
+ "明日は ___ ___ ★ ___ 。|いい": "Завтра, наверное, будет хорошая погода.",
+ "この ___ ___ ★ ___ 。|広い": "Эта комната просторная.",
+ "先生は ___ ★ ___ ___ 。|教室": "Учитель сейчас в классе."
+};
+
+(function () {
+    for (const key in BANK) {
+        (BANK[key] || []).forEach(t => (t || []).forEach(q => {
+            if (!q || !q.o || !q.a || q.o.indexOf(q.a) < 0) return;
+            let h = 7;
+            for (const ch of String(q.q)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+            const pos = h % q.o.length;
+            const cur = q.o.indexOf(q.a);
+            if (cur === pos) return;
+            const o = q.o.slice();
+            o.splice(cur, 1);
+            o.splice(pos, 0, q.a);
+            q.o = o;
+        }));
+    }
+})();
 const FREE_TESTS = 7;        // сколько тестов открыто всем в каждом разделе
 const TESTS_PER_SECTION = 7; // всего тестов в разделе
 
@@ -1170,48 +1619,48 @@ const EXPL = {
    "そら映画 начинается в 16:00 и стоит 1000円. はな映画 стоит 1200円, это дороже 1100 иен."
   ],
   [
-   "図書館は駅から近くて — библиотека находится близко от станции.",
-   "毎週土曜日、わたしは図書館で本を借ります — ходит по субботам.",
-   "子どもの本もあるので — там есть детские книги, поэтому идёт и брат.",
-   "日本の料理の本を読むのが好きです — нравятся книги о японской кухне.",
-   "写真がたくさんあるので — в книге много фотографий.",
-   "来年は母と一緒に作りたい — в следующем году хочет готовить вместе с мамой.",
-   "月曜日は図書館が休みです — в понедельник библиотека закрыта.",
-   "窓のそばの席に座ると — выбирает место у окна.",
-   "新しい辞書を買いました — купил новый словарь."
+   "朝早く — «рано утром»: 早く значит «рано».",
+   "友達とサッカーをします — играем в футбол с друзьями.",
+   "日曜日は家で本を読みます — в воскресенье читает книги дома.",
+   "野菜を切りました — «порезали овощи».",
+   "とても いい匂い — «очень приятный запах».",
+   "母と一緒に作りました — готовили вместе с мамой.",
+   "電車の中で本を読みました — читала книгу в поезде.",
+   "写真をたくさん撮りました — сделали много фотографий.",
+   "帰りは新幹線に乗りました — на обратном пути ехали на синкансэне."
   ],
   [
-   "わたしは毎朝、バスで学校へ行きます — едет в школу на автобусе.",
-   "バス停は家から歩いて五分です — до остановки пять минут пешком.",
-   "友達と話しながら行くので楽しいです — в автобусе разговаривает с другом.",
-   "家族と電車で東京へ行きました — ехали в Токио на электричке.",
-   "東京の店で服を見ました — смотрели одежду в магазинах.",
-   "駅の近くのラーメン屋で食べました — обедали в рамен-баре возле станции.",
-   "毎日、学校まで自転車で行きます — обычно едет на велосипеде.",
-   "雨の日は電車を使います — в дождь едет на электричке.",
-   "父が直してくれました — велосипед починил папа."
+   "ジュースは200円で、メニューの中で一番安いです.",
+   "メモ欄に人気と書いてあるのはラーメンです.",
+   "700円 + 350円 = 1050円.",
+   "水の欄には「休み」と書いてあります.",
+   "プールは木の欄で、木曜日です.",
+   "金曜日は19時で、ほかの日より遅い時間です.",
+   "お知らせの場所は体育館です.",
+   "持ち物の欄にはうわばきと書いてあります.",
+   "お知らせの時間は十時から十二時です."
   ],
   [
-   "わたしの趣味は絵をかくことです — хобби: рисовать.",
-   "週末は公園で花や木の絵をかきます — рисует в парке по выходным.",
-   "色は青と緑がすきです — нравятся синий и зелёный.",
-   "来週はテストがあるので — на следующей неделе тест.",
-   "数学と漢字を練習しました — занимался математикой и кандзи.",
-   "漢字は一日に十個覚えるつもりです — хочет выучить десять кандзи в день.",
-   "明日は雨が降るかもしれません — завтра, возможно, пойдёт дождь.",
-   "傘を持って行ってください — советуют взять зонт.",
-   "週末の天気は晴れるそうです — на выходных ожидается солнечная погода."
+   "はがきの場所の欄に「京都」と書いてあります.",
+   "天気の欄は「晴れ」です.",
+   "気持ちの欄は「楽しい」です.",
+   "月曜日の日記に「かさを忘れました」と書いてあります.",
+   "水曜日の日記に「本を三さつ借りました」とあります.",
+   "木曜日に公園を歩きました.",
+   "ポスターの場所の欄は「駅前の公園」です.",
+   "入場の欄は「無料」です.",
+   "時間は十時から十五時までです."
   ],
   [
-   "野菜と魚と肉を買いました — купили овощи, рыбу и мясо.",
-   "りんごも三つ買いました — купили три яблока.",
-   "店はとても混んでいました — в магазине было много людей, поэтому ждали.",
-   "お弁当は母が作ります — обед готовит мама.",
-   "魚が好きなので — человеку нравится рыба.",
-   "友達はいつもパンを食べています — друг обычно ест хлеб.",
-   "車で二時間かかりました — ехали на машине два часа.",
-   "弟は貝を集めました — младший брат собирал ракушки.",
-   "夜はホテルに泊まりました — ночевали в гостинице."
+   "パンは二こで400円です.",
+   "りんごは三つで300円です.",
+   "300円 + 200円 + 400円 = 900円.",
+   "1番目はまっすぐ行くことです.",
+   "2番目は右に曲がります.",
+   "3番目に「すぐ左に学校がある」と書いてあります.",
+   "お店の欄は「パン屋」です.",
+   "割引の欄は「百円引き」です.",
+   "注意の欄に「一人一枚」と書いてあります."
   ]
  ]
 };
@@ -1282,7 +1731,7 @@ const FURI = {
     '経済':'けいざい','練習':'れんしゅう','行':'い','見':'み','角':'かど','言':'い',
     '話':'はな','読':'よ','買':'か','迎':'むか','近':'ちか','道':'みち',
     '郵便局':'ゆうびんきょく','銀行':'ぎんこう','開':'あ','降':'ふ','隣':'となり','難':'むずか',
-    '雨':'あめ','電車':'でんしゃ','食':'た','飯':'はん','駅':'えき','駅前':'えきまえ','思':'おも','遊':'あそ','今週':'いましゅう','向':'む','字幕':'じまく','一日十円':'いちにちじゅうえん','円':'えん','手順':'てじゅん','三分':'さんぷん','二分':'にふん','焼':'や','表':'ひょう','選':'えら','質問':'しつもん','答':'こた','内容':'ないよう','開館時間':'かいかんじかん','九時':'くじ','十七時':'じゅうしちじ','休館日':'きゅうかんび','期間':'きかん','二週間':'にしゅうかん','延滞料金':'えんたいりょうきん','十円':'じゅうえん','飲食':'いんしょく','禁止':'きんし','出発':'しゅっぱつ','到着':'とうちゃく','料金':'りょうきん','特徴':'とくちょう','直通':'ちょくつう','一回':'いっかい','三日':'みっか','七時':'しちじ','場所':'ばしょ','乗':'の','毎日六時':'まいにちろくじ','教室':'きょうしつ','大阪':'おおさか','新幹線':'しんかんせん','一度':'いちど','方':'かた','教':'おし','上手':'じょうず','増':'ふ','一日':'いちにち','一番好':'いちばんす','七時十分':'しちじじゅっぷん','五分':'ごふん','五時':'ごじ','使':'つか','便利':'べんり','停':'てい','傘':'かさ','入':'はい','助':'たす','十個覚':'じゅうこおぼ','卵焼':'たまごや','古':'ふる','同':'おな','夏休':'なつやす','寄':'よ','寒':'さむ','寿司':'すし','屋':'や','座':'すわ','待':'ま','持':'も','数学':'すうがく','新':'あたら','星':'ほし','時間':'じかん','暖':'あたた','服':'ふく','本屋':'ほんや','次':'つぎ','毎週':'まいしゅう','泊':'と','泳':'およ','混':'こ','満足':'まんぞく','漢字':'かんじ','特':'とく','疲':'つか','直':'なお','着':'つ','絵':'え','緑':'みどり','肉':'にく','自転車':'じてんしゃ','色':'いろ','花':'はな','貝':'かい','走':'はし','趣味':'しゅみ','辞書':'じしょ','速':'はや','週末':'しゅうまつ','遅':'おそ','部屋':'へや','野菜':'やさい','門':'もん','集':'あつ','元気':'げんき','電気':'でんき','七時半':'しちじはん','中':'なか','二時間':'にじかん','仕事':'しごと','作':'つく','出':'で','夕方':'ゆうがた','子':'こ','席':'せき','帰':'かえ','弁当':'べんとう','弟':'おとうと','早':'はや','晩':'ばん','朝早':'あさはや','毎朝七時':'まいあさしちじ','町':'まち','砂':'すな','窓':'まど','終':'お','起':'お','金曜日':'きんようび','静':'しず','食堂':'しょくどう','魚':'さかな','七':'なな','時':'じ','先':'さき','学':'がく','夜明':'よあ','鳥':'とり','赤':'あか','青':'あお','白':'しろ','東':'ひがし','夏':'なつ','春':'はる','秋':'あき','上':'うえ','海':'うみ','昼':'ひる','夜':'よる','火曜日':'かようび','木曜日':'もくようび','電':'でん','車':'くるま','紙':'かみ','港':'みなと','病':'やまい','院':'いん','気':'き','分':'ぶん','天':'てん','才':'さい','生':'せい','活':'かつ','明':'あ','景':'けい','面':'めん','長':'ちょう','先輩':'せんぱい','火山':'かざん','車道':'しゃどう','電話':'でんわ','生先':'せいさき','生活':'せいかつ','気天':'きてん','天才':'てんさい','気分':'きぶん','大人':'おとな','学生':'がくせい','学大':'がくだい','手紙':'てがみ','紙手':'かみて','手足':'てあし','紙面':'しめん','港空':'みなとそら','空手':'からて','港口':'みなとぐち','院病':'いんびょう','病気':'びょうき','院長':'いんちょう','人気':'にんき','気人':'きじん','人生':'じんせい','夜空':'よぞら','空夜':'そらよ','夜景':'やけい','夜明け':'よあけ','火水':'ひみず','水山':'みずやま','車電':'くるまでん','山火':'やまび','水':'みず','火':'ひ','木':'き','山':'やま','人':'ひと','空':'そら','歩':'あるく','飲':'の','燃':'も','庭':'にわ','高':'たか','口':'くち','手':'て','足':'あし','耳':'みみ','雲':'くも','川':'かわ','三':'さん','洗':'あら','雪':'ゆき','霜':'しも'
+    '雨':'あめ','電車':'でんしゃ','食':'た','飯':'はん','駅':'えき','駅前':'えきまえ','思':'おも','二冊':'にさつ','二台':'にだい','二本':'にほん','二つ':'ふたつ','一時間':'いちじかん','偶然':'ぐうぜん','六時':'ろくじ','十分':'じゅっぷん','映画館':'えいがかん','歯':'は','冊':'さつ','三冊':'さんさつ','彼':'かれ','六時に':'ろくじに','主語':'しゅご','体':'からだ','八':'はち','力':'ちから','名':'な','女':'おんな','男':'おとこ','林':'はやし','田':'た','石':'いし','右手':'みぎて','日本人':'にほんじん','差出人':'さしだしにん','札幌':'さっぽろ','忘':'わす','何曜日':'なんようび','水曜日':'すいようび','四':'よん','祭':'まつ','十一月三日':'じゅういちがつみっか','十五時':'じゅうごじ','入場':'にゅうじょう','無料':'むりょう','百円':'ひゃくえん','千円':'せんえん','有料':'ゆうりょう','一本':'いっぽん','五':'ご','最初':'さいしょ','止':'と','二番目':'にばんめ','割引':'わりびき','百円引':'ひゃくえんびき','期限':'きげん','十一月三十日':'じゅういちがつさんじゅうにち','注意':'ちゅうい','一人一枚':'ひとりいちまい','花屋':'はなや','五十円':'ごじゅうえん','二百円':'にひゃくえん','何枚':'なんまい','一枚':'いちまい','二枚':'にまい','三枚':'さんまい','友':'とも','月':'げつ','一':'いち','控':'ひか','辛':'から','頼':'たの','合計':'ごうけい','予定':'よてい','一週間':'いっしゅうかん','英語':'えいご','体育館':'たいいくかん','図書室':'としょしつ','校庭':'こうてい','十一月十日':'じゅういちがつとおか','十二時':'じゅうにじ','二時':'にじ','一番遅':'いちばんおそ','金':'きん','一番安':'いちばんやす','一番速':'いちばんはや','一番長':'いちばんなが','全部同':'ぜんぶおな','円以下':'えんいか','後':'あと','地下鉄':'ちかてつ','味噌汁':'みそしる','言葉':'ことば','誰':'だれ','飛行機':'ひこうき','線':'せん','聞':'き','切':'き','匂':'におい','泣':'な','消':'け','軽':'かる','遠':'とお','重':'おも','遊':'あそ','今週':'いましゅう','向':'む','字幕':'じまく','一日十円':'いちにちじゅうえん','円':'えん','手順':'てじゅん','三分':'さんぷん','二分':'にふん','焼':'や','表':'ひょう','選':'えら','質問':'しつもん','答':'こた','内容':'ないよう','開館時間':'かいかんじかん','九時':'くじ','十七時':'じゅうしちじ','休館日':'きゅうかんび','期間':'きかん','二週間':'にしゅうかん','延滞料金':'えんたいりょうきん','十円':'じゅうえん','飲食':'いんしょく','禁止':'きんし','出発':'しゅっぱつ','到着':'とうちゃく','料金':'りょうきん','特徴':'とくちょう','直通':'ちょくつう','一回':'いっかい','三日':'みっか','七時':'しちじ','場所':'ばしょ','乗':'の','毎日六時':'まいにちろくじ','教室':'きょうしつ','大阪':'おおさか','新幹線':'しんかんせん','一度':'いちど','方':'かた','教':'おし','上手':'じょうず','増':'ふ','一日':'いちにち','一番好':'いちばんす','七時十分':'しちじじゅっぷん','五分':'ごふん','五時':'ごじ','使':'つか','便利':'べんり','停':'てい','傘':'かさ','入':'はい','助':'たす','十個覚':'じゅうこおぼ','卵焼':'たまごや','古':'ふる','同':'おな','夏休':'なつやす','寄':'よ','寒':'さむ','寿司':'すし','屋':'や','座':'すわ','待':'ま','持':'も','数学':'すうがく','新':'あたら','星':'ほし','時間':'じかん','暖':'あたた','服':'ふく','本屋':'ほんや','次':'つぎ','毎週':'まいしゅう','泊':'と','泳':'およ','混':'こ','満足':'まんぞく','漢字':'かんじ','特':'とく','疲':'つか','直':'なお','着':'つ','絵':'え','緑':'みどり','肉':'にく','自転車':'じてんしゃ','色':'いろ','花':'はな','貝':'かい','走':'はし','趣味':'しゅみ','辞書':'じしょ','速':'はや','週末':'しゅうまつ','遅':'おそ','部屋':'へや','野菜':'やさい','門':'もん','集':'あつ','元気':'げんき','電気':'でんき','七時半':'しちじはん','中':'なか','二時間':'にじかん','仕事':'しごと','作':'つく','出':'で','夕方':'ゆうがた','子':'こ','席':'せき','帰':'かえ','弁当':'べんとう','弟':'おとうと','早':'はや','晩':'ばん','朝早':'あさはや','毎朝七時':'まいあさしちじ','町':'まち','砂':'すな','窓':'まど','終':'お','起':'お','金曜日':'きんようび','静':'しず','食堂':'しょくどう','魚':'さかな','七':'なな','時':'じ','先':'さき','学':'がく','夜明':'よあ','鳥':'とり','赤':'あか','青':'あお','白':'しろ','東':'ひがし','夏':'なつ','春':'はる','秋':'あき','上':'うえ','海':'うみ','昼':'ひる','夜':'よる','火曜日':'かようび','木曜日':'もくようび','電':'でん','車':'くるま','紙':'かみ','港':'みなと','病':'やまい','院':'いん','気':'き','分':'ぶん','天':'てん','才':'さい','生':'せい','活':'かつ','明':'あ','景':'けい','面':'めん','長':'ちょう','先輩':'せんぱい','火山':'かざん','車道':'しゃどう','電話':'でんわ','生先':'せいさき','生活':'せいかつ','気天':'きてん','天才':'てんさい','気分':'きぶん','大人':'おとな','学生':'がくせい','学大':'がくだい','手紙':'てがみ','紙手':'かみて','手足':'てあし','紙面':'しめん','港空':'みなとそら','空手':'からて','港口':'みなとぐち','院病':'いんびょう','病気':'びょうき','院長':'いんちょう','人気':'にんき','気人':'きじん','人生':'じんせい','夜空':'よぞら','空夜':'そらよ','夜景':'やけい','夜明け':'よあけ','火水':'ひみず','水山':'みずやま','車電':'くるまでん','山火':'やまび','水':'みず','火':'ひ','木':'き','山':'やま','人':'ひと','空':'そら','歩':'あるく','飲':'の','燃':'も','庭':'にわ','高':'たか','口':'くち','手':'て','足':'あし','耳':'みみ','雲':'くも','川':'かわ','三':'さん','洗':'あら','雪':'ゆき','霜':'しも'
 };
 
 const esc = x => String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1471,6 +1920,716 @@ function testCard(n) {
         </div>
     </div>`;
 }
+function allSlots() {
+    const out = [];
+    LEVELS.forEach(l => ['kanji', 'grammar', 'reading'].forEach(c => {
+        const key = sectionKey(l, c);
+        for (let n = 1; n <= TESTS_PER_SECTION; n++) {
+            if ((BANK[key] && BANK[key][n - 1]) || miniOf(key, n)) out.push({ lvl: l, cat: c, n });
+        }
+    }));
+    return out;
+}
+function isSolvedSlot(x) {
+    const st = JSON.parse(localStorage.getItem(`kz_test_${sectionKey(x.lvl, x.cat)}_${x.n}`) || 'null');
+    return !!(st && st.solved);
+}
+function dailyTest() {
+    const list = allSlots();
+    const day = Math.floor(Date.now() / 86400000);
+    return list[day % list.length];
+}
+function startDaily() {
+    const d = dailyTest();
+    activeLevel = d.lvl; activeCat = d.cat;
+    syncChrome();
+    startTest(d.n);
+}
+function dailyHtml() {
+    const d = dailyTest();
+    if (!d) return '';
+    return `<div class="daily glass rounded-2xl px-5 py-4 mb-6 flex items-center gap-4 rise">
+        <div class="daily-ico"><i class="fa-solid fa-calendar-day"></i></div>
+        <div class="min-w-0 flex-1">
+            <p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400">Задание дня</p>
+            <p class="font-black text-lg">${CAT[d.cat].name} · ${d.lvl} · тест ${d.n}</p>
+        </div>
+        <button onclick="startDaily()" class="daily-btn">Начать <i class="fa-solid fa-arrow-right"></i></button>
+    </div>`;
+}
+function progressHtml() {
+    const list = allSlots();
+    const solved = list.filter(isSolvedSlot).length;
+    let stars = 0;
+    list.forEach(x => { const st = JSON.parse(localStorage.getItem(`kz_test_${sectionKey(x.lvl, x.cat)}_${x.n}`) || 'null'); if (st && st.stars) stars += st.stars; });
+    const mistakes = Object.values(mistakeStore()).reduce((a, b) => a + b.length, 0);
+    const pct = list.length ? Math.round(solved / list.length * 100) : 0;
+    const cats = ['kanji', 'grammar', 'reading'].map(c => {
+        const items = list.filter(x => x.cat === c);
+        const s2 = items.filter(isSolvedSlot).length;
+        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
+        return `<div class="pg-cat"><span class="pg-name">${CAT[c].name}</span><div class="pg-bar"><i style="width:${p}%"></i></div><b class="pg-num">${s2}/${items.length}</b></div>`;
+    }).join('');
+    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
+        <div class="pg-top">
+            <div><p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400">Ваш прогресс</p>
+            <p class="font-black text-2xl mt-1">${solved} <span class="text-base text-zen-500 dark:text-zen-300">из ${list.length} тестов</span></p></div>
+            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
+        </div>
+        <div class="pg-cats">${cats}</div>
+        <p class="text-xs text-zen-500 dark:text-zen-300 mt-3">Звёзд: <b>${stars}</b> · Ошибок в копилке: <b>${mistakes}</b></p>
+    </div>`;
+}
+function retryHtml() {
+    const sk = sectionKey(activeLevel, activeCat);
+    const st = mistakeStore();
+    const keys = Object.keys(st).filter(k => k.startsWith(sk + '|') && st[k].length);
+    if (!keys.length) return '';
+    return `<div class="glass rounded-2xl p-5 mb-6 rise">
+        <p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400 mb-3">Повторить ошибки</p>
+        <div class="flex flex-wrap gap-2">${keys.map(k => `<button onclick="startRetry('${k}')" class="retry-btn">Тест ${k.split('|')[2]} <span>${st[k].length}</span></button>`).join('')}</div>
+    </div>`;
+}
+
+function starsOfSlot(x) {
+    const st = JSON.parse(localStorage.getItem(`kz_test_${sectionKey(x.lvl, x.cat)}_${x.n}`) || 'null');
+    return st && st.stars ? st.stars : 0;
+}
+function useHint() {
+    if (!run || run.finished) return;
+    if (run.cfg) {
+        if (run.cfg.type === 'lock') lockHint();
+        else if (run.cfg.type === 'spot') spotHint();
+        else if (run.cfg.type === 'arrange') arrangeHint();
+        return;
+    }
+    const k = run.qs.findIndex((q, i) => run.sel[i] === undefined);
+    if (k >= 0) qHint(k);
+}
+function injectHeaderHint() {
+    const bar = document.querySelector('.sticky .glass');
+    if (!bar || !run || run.finished || bar.querySelector('.hdr-hint')) return;
+    const b = document.createElement('button');
+    b.className = 'hdr-hint';
+    b.title = 'Подсказка';
+    b.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+    b.onclick = useHint;
+    bar.appendChild(b);
+}
+{
+    const _sm = startMini;
+    startMini = function (n, cfg) { _sm(n, cfg); injectHeaderHint(); };
+    const _st = startTest;
+    startTest = function (n) { _st(n); injectHeaderHint(); };
+}
+function addQHints() { /* подсказка теперь в верхней панели */ }
+function setCatFromProgress(c) { activeCat = c; syncChrome(); renderList(); }
+function progressHtml() {
+    const lvl = activeLevel;
+    const inLvl = allSlots().filter(x => x.lvl === lvl);
+    const sec = inLvl.filter(x => x.cat === activeCat);
+    const secSolved = sec.filter(isSolvedSlot).length;
+    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
+    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
+    const bars = ['kanji', 'grammar', 'reading'].map(c => {
+        const items = inLvl.filter(x => x.cat === c);
+        const s2 = items.filter(isSolvedSlot).length;
+        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
+        return `<button class="pg-cat ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
+            <span class="pg-name">${CAT[c].name}</span>
+            <div class="pg-bar"><i style="width:${p}%"></i></div>
+            <b class="pg-num">${items.length ? s2 + '/' + items.length : 'скоро'}</b></button>`;
+    }).join('');
+    const head = sec.length
+        ? `<p class="font-black text-2xl mt-1">${secSolved} <span class="text-base text-zen-500 dark:text-zen-300">из ${sec.length} · ${CAT[activeCat].name} · ${lvl}</span></p>`
+        : `<p class="font-black text-xl mt-1 text-zen-500 dark:text-zen-300">Тесты ${lvl} · ${CAT[activeCat].name} пока не добавлены</p>`;
+    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
+        <div class="pg-top">
+            <div><p class="text-[11px] uppercase tracking-[0.25em] font-black text-amber-700 dark:text-amber-400">Прогресс · ${lvl}</p>${head}</div>
+            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
+        </div>
+        <div class="pg-cats">${bars}</div>
+        <p class="text-xs text-zen-500 dark:text-zen-300 mt-3">Звёзд в разделе: <b>${secStars}</b></p>
+    </div>`;
+}
+
+function isPremium() { return localStorage.getItem('kz_plan') === 'premium'; }
+function examOn() { return localStorage.getItem('kz_exam') === '1' && isPremium(); }
+function showPaywall(feature) {
+    const d = document.createElement('div');
+    d.className = 'pw-ov';
+    d.innerHTML = `<div class="pw-card glass">
+        <p class="pw-kicker">Premium</p>
+        <p class="pw-title">${feature}</p>
+        <p class="pw-text">Эта функция доступна в подписке Premium. Бесплатно остаются все тесты N5, задание дня, прогресс и карточка результата.</p>
+        <button class="pw-btn" disabled>Оформить · скоро</button>
+        <button class="pw-close">Закрыть</button></div>`;
+    d.querySelector('.pw-close').onclick = () => d.remove();
+    d.onclick = e => { if (e.target === d) d.remove(); };
+    document.body.appendChild(d);
+}
+{
+    const _uh = useHint;
+    useHint = function () {
+        if (!isPremium()) {
+            const key = 'kz_hints_' + new Date().toISOString().slice(0, 10);
+            const used = +(localStorage.getItem(key) || 0);
+            if (used >= 3) { showPaywall('Больше 3 подсказок в день'); return; }
+            localStorage.setItem(key, used + 1);
+        }
+        _uh();
+    };
+}
+
+function drawStar(g, cx, cy, r, color) {
+    g.beginPath();
+    for (let i = 0; i < 10; i++) {
+        const rad = i % 2 === 0 ? r : r * 0.45;
+        const a = -Math.PI / 2 + i * Math.PI / 5;
+        g.lineTo(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad);
+    }
+    g.closePath();
+    g.fillStyle = color;
+    g.fill();
+}
+function downloadCard(o) {
+    const c = document.createElement('canvas');
+    c.width = 1080; c.height = 1350;
+    const g = c.getContext('2d');
+    const bg = g.createLinearGradient(0, 0, 1080, 1350);
+    bg.addColorStop(0, '#1d150a'); bg.addColorStop(1, '#070504');
+    g.fillStyle = bg; g.fillRect(0, 0, 1080, 1350);
+    const glow = g.createRadialGradient(540, 430, 40, 540, 430, 560);
+    glow.addColorStop(0, 'rgba(245,192,74,.38)'); glow.addColorStop(1, 'rgba(245,192,74,0)');
+    g.fillStyle = glow; g.fillRect(0, 0, 1080, 1350);
+    g.textAlign = 'center';
+    g.fillStyle = '#f5c04a'; g.font = 'bold 72px sans-serif'; g.fillText('KanjiZen', 540, 150);
+    g.fillStyle = '#c2b184'; g.font = '38px sans-serif'; g.fillText(o.section, 540, 215);
+    g.fillStyle = '#fdf6e3'; g.font = 'bold 240px sans-serif'; g.fillText(o.pct + '%', 540, 600);
+    for (let i = 0; i < 3; i++) drawStar(g, 300 + i * 240, 740, 82, i < o.stars ? '#f5c04a' : '#4a3d22');
+    g.fillStyle = '#fdf6e3'; g.font = '44px sans-serif';
+    g.fillText(o.line1, 540, 930);
+    g.fillStyle = '#c2b184'; g.font = '36px sans-serif';
+    g.fillText(o.line2, 540, 1000);
+    g.fillStyle = '#8a7a55'; g.font = '30px sans-serif';
+    g.fillText(new Date().toLocaleDateString('ru-RU'), 540, 1260);
+    c.toBlob(b => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = 'kanjizen-result.png';
+        a.click();
+    });
+}
+function addCardBtn(o) {
+    const end = document.getElementById('run-end');
+    if (!end || end.querySelector('.card-btn')) return;
+    const d = document.createElement('div');
+    d.className = 'mt-4 flex justify-center';
+    d.innerHTML = '<button class="card-btn"><i class="fa-solid fa-image"></i> Сохранить карточку результата</button>';
+    d.querySelector('button').onclick = () => downloadCard(o);
+    end.appendChild(d);
+}
+let _examIv = null;
+function startExamTimer() {
+    clearInterval(_examIv);
+    const bar = document.querySelector('.sticky .glass');
+    if (!bar) return;
+    const t = document.createElement('span');
+    t.id = 'exam-timer';
+    t.className = 'exam-timer';
+    bar.appendChild(t);
+    let left = 15 * 60;
+    const tick = () => {
+        t.textContent = left > 0 ? `⏱ ${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : 'Время вышло';
+        if (left <= 0) clearInterval(_examIv);
+        left--;
+    };
+    tick();
+    _examIv = setInterval(tick, 1000);
+}
+{
+    const _st2 = startTest;
+    startTest = function (n) {
+        _st2(n);
+        if (run && run.qs && !run.cfg) {
+            if (examOn()) {
+                run.expl = run.qs.map(() => '');
+                run.trans = [];
+                startExamTimer();
+            }
+        }
+    };
+    const _fr = finishRun;
+    finishRun = function () {
+        const r = run;
+        const pct = r && r.qs ? Math.round(r.score / r.qs.length * 100) : 0;
+        const exam = examOn();
+        clearInterval(_examIv);
+        _fr();
+        if (r && r.qs) {
+            const stars = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 40 ? 1 : 0;
+            setTimeout(() => addCardBtn({
+                section: `${CAT[activeCat].name} · ${activeLevel} · тест ${r.n}`,
+                pct, stars,
+                line1: exam ? 'Режим экзамена' : `Верно ${r.score} из ${r.qs.length}`,
+                line2: exam ? `Примерный балл JLPT: ${Math.round(pct * 1.8)} / 180` : 'Kanji · Grammar · Reading'
+            }), 2600);
+        }
+    };
+    const _fm = finishMini;
+    finishMini = function () {
+        const r = run;
+        if (!r || r.finished) return;
+        const mis = r.mistakes;
+        const stars = mis === 0 ? 3 : mis <= 2 ? 2 : 1;
+        _fm();
+        setTimeout(() => addCardBtn({
+            section: `${r.cfg.title} · ${activeLevel} · тест ${r.n}`,
+            pct: Math.max(0, 100 - mis * 10), stars,
+            line1: mis === 0 ? 'Без единой ошибки' : `Ошибок: ${mis}`,
+            line2: 'Kanji · Grammar · Reading'
+        }), 2600);
+    };
+}
+
+function allMistakes() {
+    const st = mistakeStore();
+    const out = [];
+    Object.keys(st).forEach(mk => {
+        st[mk].forEach(x => out.push({ mk, ...x }));
+    });
+    return out;
+}
+function sectionLabelOf(mk) {
+    const [l, c, n] = mk.split('|');
+    return `${CAT[c] ? CAT[c].name : c} · ${l} · тест ${n}`;
+}
+function exportAnki() {
+    if (!isPremium()) { showPaywall('Экспорт в Anki'); return; }
+    const lines = allMistakes().filter(x => !x.__mini).map(x =>
+        [x.q, x.a, (x.e || '')].map(v => String(v).replace(/[\t\n]/g, ' ')).join('\t'));
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'kanjizen-anki.txt';
+    a.click();
+}
+function printJournal() {
+    if (!isPremium()) { showPaywall('Печать журнала в PDF'); return; }
+    window.print();
+}
+function clearMistakeIdx(i) {
+    const x = allMistakes()[i];
+    if (!x) return;
+    if (x.__mini) removeMiniRound(x.mk, x.rk); else removeMistake(x.mk, x.q);
+    renderJournal();
+}
+function renderJournal() {
+    run = null;
+    clearInterval(_examIv);
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    const items = allMistakes();
+    const rows = items.length ? items.map((x, i) => `
+        <div class="jr-row">
+            <p class="jr-sec">${sectionLabelOf(x.mk)}</p>
+            ${x.__mini
+                ? `<p class="jr-q">Мини-задание: ${esc(x.title || '')}</p>`
+                : `<p class="jr-q">${esc(x.q)}</p>
+                   <p class="jr-a">Правильно: <b>${esc(x.a)}</b></p>
+                   ${x.e ? `<p class="jr-e">${esc(x.e)}</p>` : ''}`}
+            <button class="jr-del" onclick="clearMistakeIdx(${i})" title="Убрать"><i class="fa-solid fa-xmark"></i></button>
+        </div>`).join('')
+        : '<p class="jr-empty">Ошибок пока нет. Так держать!</p>';
+    view.innerHTML = `
+        <div id="journal" class="rise">
+            <div class="jr-head">
+                <button class="tool-btn" onclick="renderList()"><i class="fa-solid fa-arrow-left"></i> К тестам</button>
+                <div class="jr-actions">
+                    <button class="tool-btn" onclick="exportAnki()"><i class="fa-solid fa-file-export"></i> Anki ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                    <button class="tool-btn" onclick="printJournal()"><i class="fa-solid fa-print"></i> PDF ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                </div>
+            </div>
+            <h2 class="jr-title">Журнал ошибок</h2>
+            <p class="jr-count">${items.length} в копилке</p>
+            <div class="jr-list">${rows}</div>
+        </div>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggleExam() {
+    if (!isPremium()) { showPaywall('Режим экзамена'); return; }
+    localStorage.setItem('kz_exam', examOn() ? '0' : '1');
+    renderList();
+}
+function toolsHtml() {
+    return `<div class="tools rise">
+        <button class="tool-btn" onclick="renderJournal()"><i class="fa-solid fa-book"></i> Мои ошибки</button>
+        <button class="tool-btn ${examOn() ? 'on' : ''}" onclick="toggleExam()"><i class="fa-solid fa-stopwatch"></i> Режим экзамена ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+    </div>`;
+}
+
+
+function plural(n) { const m = n % 10, h = n % 100; if (h >= 11 && h <= 14) return 'ошибок'; if (m === 1) return 'ошибка'; if (m >= 2 && m <= 4) return 'ошибки'; return 'ошибок'; }
+function jrQuestion(x, i) {
+    return `<article class="jr-card">
+        <p class="jr-q">${esc(x.q)}</p>
+        <p class="jr-ans"><span>Правильный ответ</span><b>${esc(x.a)}</b></p>
+        ${x.e ? `<p class="jr-e"><i class="fa-solid fa-lightbulb"></i>${esc(x.e)}</p>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял</button>
+    </article>`;
+}
+function jrMini(x, i) {
+    return `<article class="jr-card">
+        <p class="jr-q">Задание: ${esc(x.title || '')}</p>
+        <p class="jr-e"><i class="fa-solid fa-rotate"></i>Пройдите это задание ещё раз в разделе «Повторить ошибки».</p>
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял</button>
+    </article>`;
+}
+function renderJournal() {
+    run = null;
+    clearInterval(_examIv);
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    const items = allMistakes();
+    const groups = {};
+    items.forEach((x, i) => { (groups[x.mk] = groups[x.mk] || []).push({ x, i }); });
+    const body = items.length
+        ? Object.keys(groups).map(mk => `
+            <section class="jr-group">
+                <h3 class="jr-gtitle">${sectionLabelOf(mk)}<span>${groups[mk].length}</span></h3>
+                ${groups[mk].map(({ x, i }) => x.__mini ? jrMini(x, i) : jrQuestion(x, i)).join('')}
+            </section>`).join('')
+        : `<div class="jr-empty">
+                <div class="jr-empty-ico"><i class="fa-solid fa-circle-check"></i></div>
+                <p class="jr-empty-t">Ошибок пока нет</p>
+                <p class="jr-empty-s">Отвечайте на вопросы в тестах. Всё, что не получилось, появится здесь, чтобы вы могли вернуться к этому.</p>
+           </div>`;
+    view.innerHTML = `
+        <div id="journal" class="rise">
+            <div class="jr-top">
+                <button class="tool-btn" onclick="renderList()"><i class="fa-solid fa-arrow-left"></i> К тестам</button>
+            </div>
+            <h2 class="jr-title">Мои ошибки</h2>
+            <p class="jr-lead">Здесь вопросы, на которые вы ответили неверно. Прочитайте правильный ответ и пояснение, затем повторите тест. Когда поняли вопрос, нажмите «Я понял» — он уйдёт из списка.</p>
+            <div class="jr-steps">
+                <span><b>1</b> Разберите ошибку</span>
+                <span><b>2</b> Повторите тест</span>
+                <span><b>3</b> Нажмите «Я понял»</span>
+            </div>
+            <div class="jr-bar">
+                <p class="jr-count"><b>${items.length}</b> ${plural(items.length)} в списке</p>
+                <div class="jr-actions">
+                    <button class="tool-btn" onclick="exportAnki()" title="Карточки для приложения Anki"><i class="fa-solid fa-file-export"></i> Скачать для Anki ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                    <button class="tool-btn" onclick="printJournal()" title="Сохранить список в PDF"><i class="fa-solid fa-print"></i> Сохранить в PDF ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                </div>
+            </div>
+            ${body}
+        </div>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveMistake(k) {
+    const st = mistakeStore();
+    const mk = `${sectionKey(activeLevel, activeCat)}|${run.n}`;
+    const list = st[mk] || [];
+    const q = run.qs[k];
+    if (!list.some(x => x.q === q.q)) list.push({ ...q, e: (run.expl || [])[k] || '', chosen: run.sel[k] });
+    st[mk] = list;
+    localStorage.setItem('kz_mistakes', JSON.stringify(st));
+}
+const INSTR_RE = /^(適切な[^：:]*選んでください[：:]|下線の言葉の読み方を選んでください[：:]|文に合う言葉を選んでください[：:]|Выберите [^：:]*[：:])\s*/;
+function cleanQ(t) { return String(t || '').replace(INSTR_RE, ''); }
+function jrSentence(x) {
+    const t = cleanQ(x.q);
+    if (t.includes('___')) {
+        const i = t.indexOf('___');
+        const before = t.slice(0, i), after = t.slice(i + 3);
+        return `<p class="jd-sent">${ruby(before)}<b class="jd-fill">${ruby(x.a)}</b>${ruby(after)}</p>`;
+    }
+    return `<p class="jd-sent">${ruby(t)}</p>`;
+}
+function jrQuestion(x, i, pos) {
+    const blank = cleanQ(x.q).includes('___');
+    const pass = x.p ? `<details class="jd-pass"><summary><i class="fa-solid fa-book-open"></i> Показать текст, к которому относится вопрос</summary><p>${ruby(x.p)}</p></details>` : '';
+    return `<article class="jr-card" style="animation-delay:${pos * 0.08}s">
+        <div class="jd-top"><span class="jd-num">${pos}</span><span class="jd-kind">${blank ? 'Заполните пропуск' : 'Вопрос'}</span></div>
+        ${blank ? jrSentence(x) : `<p class="jd-q">${ruby(cleanQ(x.q))}</p>`}
+        ${pass}
+        <div class="jd-cmp">
+            <div class="jd-wrong"><span>Вы выбрали</span><b>${ruby(x.chosen || '—')}</b><i class="fa-solid fa-xmark"></i></div>
+            <div class="jd-right"><span>Правильно</span><b>${ruby(x.a)}</b><i class="fa-solid fa-check"></i></div>
+        </div>
+        ${x.e ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(x.e)}</p></div>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+    </article>`;
+}
+function jrMiniFull(r, type) {
+    if (r.parts) return r.parts.map(p => typeof p === 'string' ? p : p.a).join('');
+    if (r.tokens) return r.tokens.map((t, i) => i === r.wrong ? r.fix : t).join('');
+    if (r.words) return r.words.join('');
+    return '';
+}
+function jrMini(x, i, pos) {
+    let r = {};
+    try { r = JSON.parse(x.rk); } catch (e) {}
+    const full = jrMiniFull(r, x.type);
+    const kind = { lock: 'Замки', spot: 'Найди ошибку', arrange: 'Порядок слов' }[x.type] || 'Задание';
+    return `<article class="jr-card" style="animation-delay:${pos * 0.08}s">
+        <div class="jd-top"><span class="jd-num">${pos}</span><span class="jd-kind">${kind}</span></div>
+        <p class="jd-q">Правильная фраза:</p>
+        <p class="jd-sent">${ruby(full)}</p>
+        ${r.why ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(r.why)}</p></div>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+    </article>`;
+}
+function renderJournal() {
+    run = null;
+    clearInterval(_examIv);
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    const items = allMistakes();
+    const groups = {};
+    items.forEach((x, i) => { (groups[x.mk] = groups[x.mk] || []).push({ x, i }); });
+    let pos = 0;
+    const body = items.length
+        ? Object.keys(groups).map(mk => `
+            <section class="jr-group">
+                <h3 class="jr-gtitle">${sectionLabelOf(mk)}<span>${groups[mk].length}</span></h3>
+                ${groups[mk].map(({ x, i }) => { pos++; return x.__mini ? jrMini(x, i, pos) : jrQuestion(x, i, pos); }).join('')}
+            </section>`).join('')
+        : `<div class="jr-empty">
+                <div class="jr-empty-ico"><i class="fa-solid fa-circle-check"></i></div>
+                <p class="jr-empty-t">Ошибок пока нет</p>
+                <p class="jr-empty-s">Отвечайте на вопросы в тестах. Всё, что не получилось, появится здесь с подробным разбором.</p>
+           </div>`;
+    view.innerHTML = `
+        <div id="journal" class="rise">
+            <div class="jr-top"><button class="tool-btn" onclick="renderList()"><i class="fa-solid fa-arrow-left"></i> К тестам</button></div>
+            <h2 class="jr-title">Мои ошибки</h2>
+            <p class="jr-lead">Для каждой ошибки есть разбор: правильное слово в предложении, что вы выбрали и почему ответ именно такой. Прочитайте, поймите, затем нажмите «Я понял».</p>
+            <div class="jr-steps">
+                <span><b>1</b> Прочитайте разбор</span>
+                <span><b>2</b> Повторите тест</span>
+                <span><b>3</b> Нажмите «Я понял»</span>
+            </div>
+            <div class="jr-bar">
+                <p class="jr-count"><b>${items.length}</b> ${plural(items.length)} в списке</p>
+                <div class="jr-actions">
+                    <button class="tool-btn" onclick="exportAnki()" title="Карточки для приложения Anki"><i class="fa-solid fa-file-export"></i> Скачать для Anki ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                    <button class="tool-btn" onclick="printJournal()" title="Сохранить список в PDF"><i class="fa-solid fa-print"></i> Сохранить в PDF ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                </div>
+            </div>
+            ${body}
+        </div>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function jrMini(x, i, pos) {
+    let r = {};
+    try { r = JSON.parse(x.rk); } catch (e) {}
+    const full = jrMiniFull(r, x.type);
+    const kind = { lock: 'Замки', spot: 'Найди ошибку', arrange: 'Порядок слов' }[x.type] || 'Задание';
+    const parts = x.mk.split('|');
+    const rounds = ((MINI[parts[0] + '|' + parts[1]] || {})[+parts[2]] || {}).rounds || [];
+    const idx = rounds.findIndex(rd => JSON.stringify(rd) === x.rk);
+    const tr = (MINI_TR[x.type] || [])[idx];
+    return `<article class="jr-card" style="animation-delay:${pos * 0.08}s">
+        <div class="jd-top"><span class="jd-num">${pos}</span><span class="jd-kind">${kind}</span></div>
+        <p class="jd-q">Правильная фраза:</p>
+        <p class="jd-sent">${ruby(full)}</p>
+        ${tr ? `<p class="jd-tr">${esc(tr)}</p>` : ''}
+        ${r.why ? `<div class="jd-why"><div class="jd-why-h"><i class="fa-solid fa-lightbulb"></i> Почему так</div><p>${esc(r.why)}</p></div>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+    </article>`;
+}
+
+let CARDS = [];
+function drawCards() {
+    if (!CARDS.length) {
+        view.innerHTML = `<div id="journal" class="rise">
+            <div class="jr-top"><button class="tool-btn" onclick="renderJournal()"><i class="fa-solid fa-arrow-left"></i> К ошибкам</button></div>
+            <div class="jr-empty"><div class="jr-empty-ico"><i class="fa-solid fa-trophy"></i></div>
+            <p class="jr-empty-t">Все карточки пройдены!</p>
+            <p class="jr-empty-s">Вы разобрали все ошибки. Можно вернуться к тестам.</p></div></div>`;
+        return;
+    }
+    const x = CARDS[0];
+    const t = cleanQ(x.q);
+    const blank = t.includes('___');
+    const front = blank
+        ? `<p class="fc-text">${ruby(t.slice(0, t.indexOf('___')))}<span class="fc-gap">?</span>${ruby(t.slice(t.indexOf('___') + 3))}</p>`
+        : `<p class="fc-text">${ruby(t)}</p>`;
+    view.innerHTML = `<div id="journal" class="rise">
+        <div class="jr-top"><button class="tool-btn" onclick="renderJournal()"><i class="fa-solid fa-arrow-left"></i> К ошибкам</button>
+            <span class="jr-count" style="margin-left:.8rem"><b>${CARDS.length}</b> осталось</span></div>
+        <h2 class="jr-title">Карточки</h2>
+        <p class="jr-lead">Нажмите на карточку, чтобы перевернуть. Если ответ знаете — «Знаю», карточка уйдёт. Если нет — «Ещё раз», она вернётся позже.</p>
+        <div class="fc-scene" onclick="this.querySelector('.fc').classList.toggle('flip')">
+            <div class="fc">
+                <div class="fc-face fc-front">${front}<span class="fc-hint">нажмите, чтобы открыть</span></div>
+                <div class="fc-face fc-back">
+                    <p class="fc-kicker">Правильный ответ</p>
+                    <p class="fc-ans">${ruby(x.a)}</p>
+                    ${x.e ? `<p class="fc-why">${esc(x.e)}</p>` : ''}
+                </div>
+            </div>
+        </div>
+        <div class="fc-btns">
+            <button class="fc-again" onclick="fcAgain()"><i class="fa-solid fa-rotate"></i> Ещё раз</button>
+            <button class="fc-know" onclick="fcKnow()"><i class="fa-solid fa-check"></i> Знаю</button>
+        </div>
+    </div>`;
+}
+function renderCards() {
+    run = null;
+    clearInterval(_examIv);
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    CARDS = allMistakes().filter(x => !x.__mini);
+    drawCards();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function fcKnow() { const x = CARDS.shift(); if (x) removeMistake(x.mk, x.q); drawCards(); }
+function fcAgain() { CARDS.push(CARDS.shift()); drawCards(); }
+{
+    const rj = renderJournal;
+    renderJournal = function () {
+        rj();
+        const a = document.querySelector('.jr-actions');
+        if (a && !a.querySelector('.cards-btn')) {
+            const b = document.createElement('button');
+            b.className = 'tool-btn cards-btn';
+            b.innerHTML = '<i class="fa-solid fa-layer-group"></i> Карточки';
+            b.onclick = renderCards;
+            a.prepend(b);
+        }
+    };
+}
+
+function recordDay() {
+    const d = new Date().toISOString().slice(0, 10);
+    const days = JSON.parse(localStorage.getItem('kz_days') || '[]');
+    if (!days.includes(d)) { days.push(d); localStorage.setItem('kz_days', JSON.stringify(days)); }
+}
+function streakCount() {
+    const days = new Set(JSON.parse(localStorage.getItem('kz_days') || '[]'));
+    const d = new Date();
+    if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+    let n = 0;
+    while (days.has(d.toISOString().slice(0, 10))) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+}
+function dayWord(n) {
+    const m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return 'день';
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'дня';
+    return 'дней';
+}
+function streakHtml() {
+    const n = streakCount();
+    return `<div class="streak rise">
+        <div class="streak-fire"><i class="fa-solid fa-fire"></i></div>
+        <div>
+            <p class="streak-n"><b>${n}</b> ${dayWord(n)} подряд</p>
+            <p>${n ? 'Так держать! Решите хотя бы один тест сегодня, чтобы серия продолжилась.' : 'Решите сегодня хотя бы один тест, и серия начнётся.'}</p>
+        </div>
+    </div>`;
+}
+{
+    const a = startTest;
+    startTest = function (n) { recordDay(); a(n); };
+    const b = startMini;
+    startMini = function (n, c) { recordDay(); b(n, c); };
+}
+
+function jnPassage(x) {
+    if (!x.p) return '';
+    return `<div class="jn-pass"><p class="jn-label"><i class="fa-solid fa-book-open"></i> Текст, к которому относится вопрос</p><div class="jn-jp">${ruby(x.p)}</div></div>`;
+}
+function jnTable(x) { return x.tbl ? `<div class="jn-tbl">${tableHtml(x.tbl)}</div>` : ''; }
+function jnQuestion(x) {
+    const t = cleanQ(x.q);
+    return `<p class="jn-q">${ruby(t).replace(/___/g, '<span class="jn-gap">＿＿＿</span>')}</p>`;
+}
+function jnFull(x) {
+    const t = cleanQ(x.q);
+    if (t.split('___').length !== 2) return '';
+    const i = t.indexOf('___');
+    return `<div class="jn-full"><p class="jn-label">Фраза с правильным словом</p><p class="jn-jp">${ruby(t.slice(0, i))}<b class="jd-fill">${ruby(x.a)}</b>${ruby(t.slice(i + 3))}</p></div>`;
+}
+function jnCard(x, i, pos) {
+    const tr = TRQ[cleanQ(x.q) + '|' + x.a] || TRQ[cleanQ(x.q)] || '';
+    return `<article class="jn-card" style="animation-delay:${pos * 0.07}s">
+        <header class="jn-head"><span class="jn-num">${pos}</span><span class="jn-kind">Вопрос</span></header>
+        ${jnPassage(x)}
+        ${jnTable(x)}
+        <p class="jn-label">Вопрос</p>
+        ${jnQuestion(x)}
+        <div class="jn-answers">
+            <div class="jn-you"><span>Вы ответили</span><b>${x.chosen ? ruby(x.chosen) : 'ответ не сохранён'}</b></div>
+            <div class="jn-ok"><span>Правильный ответ</span><b>${ruby(x.a)}</b></div>
+        </div>
+        ${jnFull(x)}
+        ${tr ? `<div class="jn-tr"><span>Перевод</span><p>${esc(tr)}</p></div>` : ''}
+        ${x.e ? `<div class="jn-why"><span><i class="fa-solid fa-lightbulb"></i> Почему ответ такой</span><p>${esc(x.e)}</p></div>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+    </article>`;
+}
+function jnMini(x, i, pos) {
+    let r = {};
+    try { r = JSON.parse(x.rk); } catch (e) {}
+    const full = jrMiniFull(r, x.type);
+    const kind = { lock: 'Замки', spot: 'Найди ошибку', arrange: 'Порядок слов' }[x.type] || 'Задание';
+    const parts = x.mk.split('|');
+    const rounds = ((MINI[parts[0] + '|' + parts[1]] || {})[+parts[2]] || {}).rounds || [];
+    const idx = rounds.findIndex(rd => JSON.stringify(rd) === x.rk);
+    const tr = (MINI_TR[x.type] || [])[idx] || '';
+    return `<article class="jn-card" style="animation-delay:${pos * 0.07}s">
+        <header class="jn-head"><span class="jn-num">${pos}</span><span class="jn-kind">${kind}</span></header>
+        <p class="jn-label">Правильная фраза</p>
+        <p class="jn-jp jn-big">${ruby(full)}</p>
+        ${tr ? `<div class="jn-tr"><span>Перевод</span><p>${esc(tr)}</p></div>` : ''}
+        ${r.why ? `<div class="jn-why"><span><i class="fa-solid fa-lightbulb"></i> Почему так</span><p>${esc(r.why)}</p></div>` : ''}
+        <button class="jr-done" onclick="clearMistakeIdx(${i})"><i class="fa-solid fa-check"></i> Я понял, убрать из списка</button>
+    </article>`;
+}
+function renderJournal() {
+    run = null;
+    clearInterval(_examIv);
+    controls.classList.remove('hidden');
+    upsell.classList.remove('hidden');
+    const items = allMistakes();
+    const groups = {};
+    items.forEach((x, i) => { (groups[x.mk] = groups[x.mk] || []).push({ x, i }); });
+    let pos = 0;
+    const body = items.length
+        ? Object.keys(groups).map(mk => `
+            <section class="jn-group">
+                <h3 class="jn-gtitle">${sectionLabelOf(mk)}<span>${groups[mk].length}</span></h3>
+                ${groups[mk].map(({ x, i }) => { pos++; return x.__mini ? jnMini(x, i, pos) : jnCard(x, i, pos); }).join('')}
+            </section>`).join('')
+        : `<div class="jr-empty">
+                <div class="jr-empty-ico"><i class="fa-solid fa-circle-check"></i></div>
+                <p class="jr-empty-t">Ошибок пока нет</p>
+                <p class="jr-empty-s">Когда ответите неверно в тесте, здесь появится вопрос, правильный ответ и объяснение.</p>
+           </div>`;
+    view.innerHTML = `
+        <div id="journal" class="rise">
+            <div class="jr-top"><button class="tool-btn" onclick="renderList()"><i class="fa-solid fa-arrow-left"></i> К тестам</button></div>
+            <h2 class="jr-title">Мои ошибки</h2>
+            <p class="jr-lead">Здесь вопросы, в которых вы ошиблись. У каждого: сам вопрос (с текстом, если он нужен), что вы ответили, правильный ответ, перевод и объяснение.</p>
+            <div class="jr-bar">
+                <p class="jr-count"><b>${items.length}</b> ${plural(items.length)} в списке</p>
+                <div class="jr-actions">
+                    <button class="tool-btn cards-btn" onclick="renderCards()"><i class="fa-solid fa-layer-group"></i> Карточки</button>
+                    <button class="tool-btn" onclick="exportAnki()" title="Карточки для приложения Anki"><i class="fa-solid fa-file-export"></i> Для Anki ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                    <button class="tool-btn" onclick="printJournal()" title="Сохранить список в PDF"><i class="fa-solid fa-print"></i> PDF ${isPremium() ? '' : '<span class="pro">Premium</span>'}</button>
+                </div>
+            </div>
+            ${body}
+        </div>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function renderList() {
     run = null;
     controls.classList.remove('hidden');
@@ -1485,14 +2644,14 @@ function renderList() {
            </div>`
         : '';
     const cards = [1, 2, 3, 4, 5, 6, 7].map(n => testCard(n)).join('');
-    view.innerHTML = `${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
+    view.innerHTML = `${streakHtml()}${progressHtml()}${retryHtml()}${toolsHtml()}${banner}<div class="grid sm:grid-cols-2 gap-5">${cards}</div>`;
 }
 
 // ----- Прохождение теста: все вопросы сразу, ответ сразу проверяется -----
 function startTest(n) {
     const mini = miniOf(sectionKey(activeLevel, activeCat), n);
     if (mini) { startMini(n, mini); return; }
-    const qs = BANK[sectionKey(activeLevel, activeCat)][n - 1];
+    let qs = RETRY ? RETRY.qs : BANK[sectionKey(activeLevel, activeCat)][n - 1];
     run = { n, qs, expl: (EXPL[sectionKey(activeLevel, activeCat)] || [])[n - 1] || [], trans: (TRANS[sectionKey(activeLevel, activeCat)] || [])[n - 1] || [], sel: new Array(qs.length).fill(undefined), ok: [], comboAt: [], combo: 0, maxCombo: 0, score: 0, finished: false };
     controls.classList.add('hidden');
     upsell.classList.add('hidden');
@@ -1517,8 +2676,9 @@ function startTest(n) {
         </div>`;
     document.getElementById('run-stream').innerHTML = qs.map((_, k) => blockHtml(k)).join('');
     document.querySelectorAll('#run-stream > article').forEach((el, i) => el.classList.add('ent-' + (i % 5)));
-    if (qs.some(q => q.slots)) document.getElementById('run-stream').insertAdjacentHTML('beforebegin',
-        '<div class="jlpt-head">Поставьте слово на место ★ · выберите правильный вариант</div>');
+    addQHints();
+    const headTxt = qs.some(q => q.slots) ? '★に入る言葉を選んでください' : (n === 7 && activeCat === 'kanji' ? '下線の言葉の読み方、または文に合う言葉を選んでください' : '');
+    if (headTxt) document.getElementById('run-stream').insertAdjacentHTML('beforebegin', `<div class="jlpt-head">${headTxt}</div>`);
     updateProgress();
     renderEnd();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1527,6 +2687,15 @@ function tableHtml(t) {
     if (Array.isArray(t)) return `<div class="ctab-wrap"><table class="ctab">${t.map((r, i) => `<tr>${r.map(c => i === 0 ? `<th>${ruby(c)}</th>` : `<td>${ruby(c)}</td>`).join('')}</tr>`).join('')}</table></div>`;
     if (t.kind === 'recipe') return `<div class="rcp">${t.rows.map((r, i) => `<div class="rcp-step" style="animation-delay:${i * 0.12}s"><span class="rcp-n">${i + 1}</span><span class="rcp-ico">${r.icon}</span><span class="rcp-txt">${ruby(r.a)}</span><span class="rcp-time">${ruby(r.b)}</span></div>`).join('')}</div>`;
     if (t.kind === 'trains') return `<div class="trn">${t.rows.map((r, i) => `<div class="trn-card" style="animation-delay:${i * 0.12}s"><div class="trn-head"><span class="trn-ico">${r.icon}</span><b class="trn-name">${esc(r.name)}</b></div><div class="trn-times">${esc(r.dep)} <span class="trn-arrow">→</span> ${esc(r.arr)}</div><div class="trn-meta"><span>${ruby(r.price)}</span><span>${ruby(r.note)}</span></div></div>`).join('')}</div>`;
+    if (t.kind === 'postcard') return `<div class="pc"><div class="pc-stamp">🎌<small>JAPAN</small></div><div class="pc-lines">${t.rows.map((r, i) => `<div class="pc-line" style="animation-delay:${i * 0.12}s"><span class="pc-k">${ruby(r.k)}</span><span class="pc-v">${ruby(r.v)}</span></div>`).join('')}</div></div>`;
+    if (t.kind === 'diary') return `<div class="dy">${t.rows.map((r, i) => `<div class="dy-row" style="animation-delay:${i * 0.12}s"><span class="dy-day">${r.day}</span><span class="dy-text">${ruby(r.text)}</span></div>`).join('')}</div>`;
+    if (t.kind === 'poster') return `<div class="po"><div class="po-title">${ruby(t.rows[0].k)}</div><div class="po-grid">${t.rows.slice(1).map((r, i) => `<div class="po-cell" style="animation-delay:${i * 0.12}s"><span class="po-k">${ruby(r.k)}</span><span class="po-v">${ruby(r.v)}</span></div>`).join('')}</div></div>`;
+    if (t.kind === 'receipt') return `<div class="rc">${t.rows.slice(0, -1).map((r, i) => `<div class="rc-row" style="animation-delay:${i * 0.1}s"><span class="rc-k">${ruby(r.k)}</span><span class="rc-v">${ruby(r.v)}</span></div>`).join('')}<div class="rc-sum"><span>${ruby(t.rows[t.rows.length - 1].k)}</span><span>${ruby(t.rows[t.rows.length - 1].v)}</span></div></div>`;
+    if (t.kind === 'steps') return `<div class="st">${t.rows.map((r, i) => `<div class="st-step" style="animation-delay:${i * 0.15}s"><span class="st-n">${r.n}</span><span class="st-ico">${r.icon}</span><span class="st-t">${ruby(r.t)}</span></div>`).join('')}</div>`;
+    if (t.kind === 'coupon') return `<div class="cp"><div class="cp-main"><span class="cp-big">${ruby(t.rows[1].v)}</span><span class="cp-shop">${ruby(t.rows[0].v)}</span></div><div class="cp-side">${t.rows.slice(2).map(r => `<div class="cp-note"><span>${ruby(r.k)}</span> ${ruby(r.v)}</div>`).join('')}</div></div>`;
+    if (t.kind === 'menu') return `<div class="mnu">${t.rows.map((r, i) => `<div class="mnu-row" style="animation-delay:${i * 0.12}s"><span class="mnu-name">${ruby(r.name)}</span><span class="mnu-dots"></span><span class="mnu-price">${ruby(r.price)}</span><span class="mnu-note">${ruby(r.note)}</span></div>`).join('')}</div>`;
+    if (t.kind === 'week') return `<div class="wk">${t.rows.map((r, i) => `<div class="wk-cell" style="animation-delay:${i * 0.1}s"><span class="wk-day">${r.day}</span><span class="wk-act">${ruby(r.act)}</span><span class="wk-time">${esc(r.time)}</span></div>`).join('')}</div>`;
+    if (t.kind === 'memo') return `<div class="memo"><span class="memo-tape"></span><span class="memo-stamp">お知らせ</span>${t.rows.map((r, i) => `<div class="memo-line" style="animation-delay:${i * 0.12}s"><span class="memo-k">${ruby(r.k)}</span><span class="memo-v">${ruby(r.v)}</span></div>`).join('')}</div>`;
     if (t.kind === 'route') return `<div class="rt">${t.rows.map((r, i) => `<div class="rt-row" style="animation-delay:${i * 0.15}s"><div class="rt-name"><span class="rt-badge">${ruby(r.name)}</span></div><div class="rt-track"><span class="rt-st">${esc(r.dep)}</span><span class="rt-line"><i class="rt-bus">${r.icon}</i></span><span class="rt-st">${esc(r.arr)}</span></div><div class="rt-meta"><span class="rt-price">${ruby(r.price)}</span><span class="rt-note">${ruby(r.note)}</span></div></div>`).join('')}</div>`;
     if (t.kind === 'cinema') return `<div class="cn">${t.rows.map((r, i) => `<div class="cn-card" style="animation-delay:${i * 0.18}s"><div class="cn-strip"></div><div class="cn-body"><div class="cn-top"><span class="cn-ico">${r.icon}</span><b class="cn-title">${ruby(r.name)}</b></div><div class="cn-show">${esc(r.dep)}<span class="cn-dash"> — </span>${esc(r.arr)}</div><div class="cn-foot"><span class="cn-price">${ruby(r.price)}</span><span class="cn-tag">${ruby(r.note)}</span></div></div></div>`).join('')}</div>`;
     return `<div class="ntc">${t.rows.map((r, i) => `<div class="ntc-box" style="animation-delay:${i * 0.1}s"><span class="ntc-ico">${r.icon}</span><span class="ntc-k">${ruby(r.k)}</span><span class="ntc-v">${ruby(r.v)}</span></div>`).join('')}</div>`;
@@ -1536,7 +2705,7 @@ function blockHtml(k) {
     const sel = run.sel[k];
     const answered = sel !== undefined;
     const isRead = /^(Как читается|Что означает)/.test(q.q);
-    const withRuby = !isRead && !/^(Прочитайте подчёркнутое слово|Выберите подходящее слово)/.test(q.q);
+    const withRuby = !isRead && !/\[\[/.test(q.q);
     const isGrammar = q.q.includes('___');
     const kt = q.o.every(o => /^[\u4e00-\u9faf]$/.test(o)) ? ' kanji-tile' : '';
     const tiles = q.o.map((o, j) => {
@@ -1592,7 +2761,14 @@ function blockHtml(k) {
         ${expl}
     </article>`;
 }
-function rerenderQ(k) { const el = document.getElementById(`qb-${k}`); if (el) el.outerHTML = blockHtml(k); }
+function rerenderQ(k) {
+    const el = document.getElementById(`qb-${k}`);
+    if (!el) return;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = blockHtml(k);
+    const art = tmp.querySelector(`#qb-${k}`);
+    if (art) el.replaceWith(art);
+}
 function updateProgress() {
     const total = run.qs.length;
     const done = run.sel.filter(v => v !== undefined).length;
@@ -1608,6 +2784,123 @@ function updateProgress() {
         cb.className = 'hidden';
         cb.innerHTML = '';
     }
+}
+let RETRY = null;
+function mistakeStore() { return JSON.parse(localStorage.getItem('kz_mistakes') || '{}'); }
+function saveMistake(k) {
+    const st = mistakeStore();
+    const mk = `${sectionKey(activeLevel, activeCat)}|${run.n}`;
+    const list = st[mk] || [];
+    const q = run.qs[k];
+    if (!list.some(x => x.q === q.q)) list.push({ ...q, e: (run.expl || [])[k] || '' });
+    st[mk] = list;
+    localStorage.setItem('kz_mistakes', JSON.stringify(st));
+}
+function removeMistake(mk, qtext) {
+    const st = mistakeStore();
+    if (!st[mk]) return;
+    st[mk] = st[mk].filter(x => x.q !== qtext);
+    if (!st[mk].length) delete st[mk];
+    localStorage.setItem('kz_mistakes', JSON.stringify(st));
+}
+function saveMiniMistake() {
+    const st = mistakeStore();
+    const mk = `${sectionKey(activeLevel, activeCat)}|${run.n}`;
+    const round = run.cfg.rounds[run.idx];
+    const rk = JSON.stringify(round);
+    const list = st[mk] || [];
+    if (!list.some(x => x.rk === rk)) list.push({ __mini: true, type: run.cfg.type, title: run.cfg.title, rk, round });
+    st[mk] = list;
+    localStorage.setItem('kz_mistakes', JSON.stringify(st));
+}
+function removeMiniRound(mk, rk) {
+    const st = mistakeStore();
+    if (!st[mk]) return;
+    st[mk] = st[mk].filter(x => x.rk !== rk);
+    if (!st[mk].length) delete st[mk];
+    localStorage.setItem('kz_mistakes', JSON.stringify(st));
+}
+function addQHints() {
+    run.qs.forEach((q, k) => {
+        const art = document.getElementById(`qb-${k}`);
+        if (!art || run.sel[k] !== undefined || art.querySelector('.q-hint')) return;
+        const b = document.createElement('button');
+        b.className = 'q-hint';
+        b.title = 'Подсказка: убрать один неверный вариант';
+        b.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        b.onclick = () => qHint(k);
+        art.appendChild(b);
+    });
+}
+function qHint(k) {
+    if (!run || run.sel[k] !== undefined) return;
+    const q = run.qs[k];
+    const art = document.getElementById(`qb-${k}`);
+    if (!art) return;
+    const opts = [...art.querySelectorAll('button[onclick^="pickOpt"]')];
+    const wrong = q.o.map((o, j) => j).filter(j => q.o[j] !== q.a && opts[j] && !opts[j].disabled);
+    if (!wrong.length) return;
+    const j = wrong[Math.floor(wrong.length / 2)];
+    opts[j].classList.add('crossed');
+    opts[j].disabled = true;
+    const hb = art.querySelector('.q-hint');
+    if (hb) hb.remove();
+}
+{
+    const _pickOpt = pickOpt;
+    pickOpt = function (k, j) { const before = run ? run.mistakes : 0; _pickOpt(k, j); };
+}
+(function () {
+    const wrap = (name, typeName) => {
+        const orig = window[name];
+        window[name] = function (...args) {
+            const before = run ? run.mistakes : 0;
+            orig.apply(this, args);
+            if (run && run.cfg && run.cfg.type === typeName && run.mistakes > before) saveMiniMistake();
+        };
+    };
+    wrap('lockPick', 'lock');
+    wrap('spotPick', 'spot');
+    wrap('arrangeCheck', 'arrange');
+    const wrapNext = (name) => {
+        const orig = window[name];
+        window[name] = function (...args) {
+            if (run && run.retry && run.mkey && run.cfg && run.cfg.rounds) removeMiniRound(run.mkey, JSON.stringify(run.cfg.rounds[run.idx]));
+            orig.apply(this, args);
+        };
+    };
+    wrapNext('lockNext');
+    wrapNext('nextSpot');
+    wrapNext('nextArrange');
+})();
+function startRetry(mk) {
+    const [lvl, cat, n] = mk.split('|');
+    const items = mistakeStore()[mk] || [];
+    if (!items.length) return;
+    activeLevel = lvl; activeCat = cat;
+    syncChrome();
+    if (items[0].__mini) {
+        startMini(+n, { type: items[0].type, title: items[0].title, rounds: items.map(x => x.round) });
+        if (run) { run.retry = true; run.mkey = mk; }
+        return;
+    }
+    RETRY = { qs: items.map(x => ({ ...x })) };
+    const ex = items.map(x => x.e || '');
+    startTest(+n);
+    RETRY = null;
+    if (run) { run.expl = ex; run.trans = []; run.retry = true; run.mkey = mk; }
+}
+function startRetryUnused(mk) {
+    const [lvl, cat, n] = mk.split('|');
+    const items = mistakeStore()[mk] || [];
+    if (!items.length) return;
+    activeLevel = lvl; activeCat = cat;
+    syncChrome();
+    RETRY = { qs: items.map(x => ({ ...x })) };
+    const ex = items.map(x => x.e || '');
+    startTest(+n);
+    RETRY = null;
+    if (run) { run.expl = ex; run.trans = []; run.retry = true; run.mkey = mk; }
 }
 function renderEnd() {
     const end = document.getElementById('run-end');
@@ -1627,6 +2920,7 @@ function pickOpt(k, j) {
     const ok = val === q.a;
     run.sel[k] = val;
     run.ok[k] = ok;
+    if (run.retry && ok) removeMistake(run.mkey, q.q);
     if (ok) {
         run.score++;
         run.combo++;
@@ -1637,6 +2931,7 @@ function pickOpt(k, j) {
     } else {
         run.combo = 0;
         sfxWrong();
+        if (!run.retry) saveMistake(k);
     }
     rerenderQ(k);
     const crystal = document.getElementById(`crystal-${k}`);
@@ -1725,13 +3020,63 @@ function finishRun() {
 const PTITLE = {
     1: ['Моя семья', 'Мой день', 'Дождливое утро'],
     2: ['Автобусы в городе', 'Какой поезд выбрать', 'Сеансы в кино'],
-    3: ['Библиотека', 'Японская кухня', 'Вторник в библиотеке'],
-    4: ['Автобус до школы', 'Поездка в Токио', 'Старый велосипед'],
-    5: ['Хобби', 'Подготовка к тесту', 'Погода на неделе'],
-    6: ['Покупки', 'Обед с мамой', 'Летняя поездка']
+    3: ['週末の一日', '晩ご飯', '先週の旅行'],
+    4: ['レストランのメニュー', 'わたしの一週間', '学校のお知らせ'],
+    5: ['はがき', '日記', 'まつりのポスター'],
+    6: ['スーパーのレシート', '学校までの道', 'パン屋のクーポン']
 };
 // ----- Мини-игры: «Пары» и «Сборка». Тесты 3 и 4 в кандзи. -----
+const MINI_TR = {
+    arrange: [
+        'Вчера я посмотрел новый фильм с друзьями в кинотеатре.',
+        'Если идти пешком до станции, это займёт около десяти минут.',
+        'Даже несмотря на дождь, он пошёл в парк бегать.',
+        'Перед экзаменом я собираюсь заниматься по часу каждый день.',
+        'Возле станции открылся новый магазин.',
+        'Если будет время, не хочешь вместе посмотреть фильм?'
+    ],
+    spot: [
+        'Вчера на станции я случайно встретил друга.',
+        'Хочу хорошо овладеть японским.',
+        'Я взял в библиотеке три книги.',
+        'Каждое утро в семь часов я чищу зубы.',
+        'До станции пешком около десяти минут.',
+        'Можно задать вопрос учителю?'
+    ],
+    lock: [
+        'Я встаю каждое утро в семь часов.',
+        'До станции пешком около десяти минут.',
+        'Хочу хорошо овладеть японским.',
+        'Я купил два торта.',
+        'Можно задать вопрос учителю?'
+    ]
+};
 const MINI = {
+    'N5|grammar': {
+        5: { type: 'arrange', title: 'Порядок слов', rounds: [
+            { words: ['わたしは', '昨日', '友だちと', '映画館で', '新しい映画を', '見ました'], scr: ['新しい映画を', '見ました', '映画館で', 'わたしは', '昨日', '友だちと'], why: '主語 → время → спутник → место → объект → глагол в конце.' },
+            { words: ['駅まで', '歩くと', '十分', 'かかります'], scr: ['かかります', '十分', '歩くと', '駅まで'], why: 'Путь 駅まで и условие 歩くと — в начале; длительность 十分 — перед かかります.' },
+            { words: ['雨が降っても', '彼は', '公園へ', '走りに', '行きました'], scr: ['行きました', '公園へ', '雨が降っても', '走りに', '彼は'], why: 'Уступка 雨が降っても — в начале; цель 走りに行きます: 走り + に + 行きました.' },
+            { words: ['テストの前に', '毎日', '一時間', '勉強する', 'つもりです'], scr: ['勉強する', 'つもりです', '一時間', 'テストの前に', '毎日'], why: 'Время テストの前に — в начале; 勉強する + つもりです — в конце.' },
+            { words: ['駅の近くに', '新しい', '店が', 'できました'], scr: ['店が', 'できました', '新しい', '駅の近くに'], why: 'Место 駅の近くに — в начале, прилагательное 新しい — перед существительным 店が.' },
+            { words: ['もし時間があれば', '一緒に', '映画を', '見ませんか'], scr: ['見ませんか', '映画を', 'もし時間があれば', '一緒に'], why: 'Условие もし時間があれば — в начале, 一緒に — перед глаголом, 見ませんか — в конце.' }
+        ]},
+        6: { type: 'spot', title: 'Найди ошибку', rounds: [
+            { tokens: ['昨日は', '駅で', '友だち', 'を', '偶然', '会いました'], wrong: 3, fix: 'に', why: 'Глагол 会う (встретиться) требует частицу に: 友だちに会いました.' },
+            { tokens: ['日本語', 'を', '上手', 'に', 'なりたい'], wrong: 1, fix: 'が', why: '上手 (хороший в чём-то) требует частицу が: 日本語が上手になりたい.' },
+            { tokens: ['本', 'を', '三', '本', '借りました'], wrong: 3, fix: '冊', why: 'Счётный суффикс для книг — 冊 (三冊), а не 本.' },
+            { tokens: ['毎朝', '六時に', '起きて', '歯を', 'みがきました'], wrong: 4, fix: 'みがきます', why: 'Привычное действие («毎朝») — в настоящем времени: みがきます, а не みがきました.' },
+            { tokens: ['駅まで', '歩いて', '十分', 'で', 'かかります'], wrong: 3, fix: 'ぐらい', why: 'Примерная длительность выражается через ぐらい: 十分ぐらいかかります.' },
+            { tokens: ['先生に', '質問を', 'する', 'てもいい', 'ですか'], wrong: 2, fix: 'して', why: 'Форма 〜てもいいですか требует て-форму глагола: して, а не する.' }
+        ]},
+        7: { type: 'lock', title: 'Замки', rounds: [
+            { parts: ['わたし', { o: ['は', 'を', 'へ', 'で'], a: 'は' }, '毎朝', { o: ['七時に', '七時を', '七時へ', '七時で'], a: '七時に' }, '起きます'], why: 'Тема предложения — частица は; время 七時に ставим перед глаголом 起きます.' },
+            { parts: ['駅', { o: ['まで', 'を', 'で', 'の'], a: 'まで' }, '歩いて', '十分', { o: ['ぐらい', 'で', 'を', 'に'], a: 'ぐらい' }, 'かかります'], why: 'Путь до места — частица まで; примерная длительность — 十分ぐらい.' },
+            { parts: ['日本語', { o: ['を', 'が', 'で', 'へ'], a: 'が' }, '上手', { o: ['に', 'を', 'へ', 'で'], a: 'に' }, 'なりたい'], why: '上手 требует частицу が (日本語が上手); стать кем-то/чем-то — 上手に なる.' },
+            { parts: ['ケーキ', { o: ['を', 'が', 'に', 'と'], a: 'を' }, { o: ['二つ', '二本', '二冊', '二台'], a: '二つ' }, '買いました'], why: 'ケーキを — объект покупки; счётный суффикс для предметов без особой формы — 二つ.' },
+            { parts: ['先生に', '質問を', { o: ['して', 'する', 'した', 'し'], a: 'して' }, { o: ['もいい', 'でもいい', 'はいけない', 'だけいい'], a: 'もいい' }, 'ですか'], why: 'Вопрос о разрешении: 〜てもいいですか — て-форма して + もいい.' }
+        ]}
+    },
     'N5|kanji': {
         3: { type: 'match', title: 'Пары', pairs: [
             { k: '学校', r: 'がっこう', m: 'школа' },
@@ -1794,6 +3139,9 @@ function startMini(n, cfg) {
     if (cfg.type === 'match') renderMatch();
     else if (cfg.type === 'chain') renderChain();
     else if (cfg.type === 'guess') renderGuess();
+    else if (cfg.type === 'arrange') renderArrange();
+    else if (cfg.type === 'spot') renderSpot();
+    else if (cfg.type === 'lock') renderLock();
     else renderBuild();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1999,6 +3347,423 @@ function pickGuess(j) {
     }
 }
 function nextGuess() { run.idx++; if (run.idx >= run.cfg.rounds.length) finishMini(); else guessRound(); }
+
+
+// --- Порядок слов (грамматика, тест 5) ---
+function renderArrange() { run.idx = 0; run.mistakes = 0; arrangeRound(); }
+function arrangeRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.placed = []; run.solved = false;
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="glass rounded-[28px] p-6 md:p-9 border border-amber-900/10 dark:border-zen-700/60 text-center">
+            <p class="jlpt-head" style="position:relative;top:0">Расставьте слова в правильном порядке · ${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div id="arr-slots" class="arr-slots"></div>
+            <div id="arr-tiles" class="arr-tiles"></div>
+            <div id="arr-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    arrangeDraw();
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function arrangeDraw() {
+    const r = run.cfg.rounds[run.idx];
+    document.getElementById('arr-slots').innerHTML = r.words.map((_, j) => run.placed[j] !== undefined
+        ? `<button class="arr-word" onclick="arrangeRemove(${j})">${ruby(r.scr[run.placed[j]])}</button>`
+        : `<span class="arr-empty"></span>`).join('');
+    const used = new Set(run.placed);
+    document.getElementById('arr-tiles').innerHTML = r.scr.map((w, i) =>
+        `<button class="arr-tile" ${used.has(i) || run.solved ? 'disabled' : ''} onclick="arrangePlace(${i})">${ruby(w)}</button>`).join('');
+}
+function arrangePlace(i) {
+    const r = run.cfg.rounds[run.idx];
+    if (run.solved || run.placed.includes(i) || run.placed.length >= r.words.length) return;
+    run.placed.push(i);
+    arrangeDraw();
+    if (run.placed.length === r.words.length) arrangeCheck();
+}
+function arrangeRemove(j) { if (run.solved) return; run.placed.splice(j, 1); arrangeDraw(); }
+function arrangeCheck() {
+    const r = run.cfg.rounds[run.idx];
+    const seq = run.placed.map(i => r.scr[i]).join('');
+    if (seq === r.words.join('')) {
+        run.solved = true;
+        sfxRight();
+        arrangeDraw();
+        document.getElementById('arr-msg').innerHTML = `
+            <div class="reveal-in">
+                <p class="text-2xl font-black font-jp">${ruby(r.words.join(''))}</p>
+                <p class="mt-2 text-zen-600 dark:text-zen-200">${esc(r.why)}</p>
+                <button onclick="nextArrange()" class="mt-4 px-7 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold">${run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог'}</button>
+            </div>`;
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        sfxWrong();
+        miniProgress(run.idx / run.cfg.rounds.length);
+        const sl = document.getElementById('arr-slots'); sl.classList.add('arr-shake');
+        document.getElementById('arr-msg').innerHTML = `<p class="font-bold text-zen-500 dark:text-zen-300">Порядок не тот — попробуйте ещё раз</p>`;
+        setTimeout(() => { sl.classList.remove('arr-shake'); run.placed = []; arrangeDraw(); }, 900);
+    }
+}
+
+// ---- звуки и вспышки для заданий порядка слов и поиска ошибки ----
+let fxAC = null;
+function fxCtx() { if (!fxAC) { try { fxAC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } return fxAC; }
+function fxTone(f, d, type, v, when) {
+    const a = fxCtx(); if (!a) return;
+    try {
+        const o = a.createOscillator(), g = a.createGain();
+        const t = a.currentTime + (when || 0);
+        o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(v || 0.1, t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        o.connect(g); g.connect(a.destination);
+        o.start(t); o.stop(t + d + 0.05);
+    } catch (e) {}
+}
+function fxPlace() { fxTone(698, 0.09, 'triangle', 0.09); fxTone(1046, 0.06, 'sine', 0.04, 0.03); }
+function fxSnap() { [523, 659, 784, 1046].forEach((f, i) => fxTone(f, 0.32, 'sine', 0.09, i * 0.075)); fxTone(2093, 0.4, 'sine', 0.03, 0.3); }
+function fxThud() { fxTone(170, 0.25, 'sine', 0.16); fxTone(130, 0.22, 'triangle', 0.07, 0.04); }
+function fxBurst(el, colors) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for (let i = 0; i < 18; i++) {
+        const p = document.createElement('span');
+        const ang = (i / 18) * Math.PI * 2, dist = 50 + Math.random() * 70;
+        p.className = 'burst-p';
+        p.style.left = cx + 'px'; p.style.top = cy + 'px';
+        p.style.background = colors[i % colors.length];
+        p.style.setProperty('--dx', (Math.cos(ang) * dist) + 'px');
+        p.style.setProperty('--dy', (Math.sin(ang) * dist) + 'px');
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 900);
+    }
+}
+const FX_COLORS = ['#f5c04a', '#9cb884', '#ff7ac4', '#ffe14d'];
+function fxOrbs() {
+    return `<div class="orbs">${run.cfg.rounds.map((_, i) => `<span class="orb ${i < run.idx ? 'done' : i === run.idx ? 'cur' : ''}"></span>`).join('')}</div>`;
+}
+function arrangeRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.placed = []; run.solved = false;
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="fx-card glass rounded-[32px] p-6 md:p-10 text-center">
+            ${fxOrbs()}
+            <p class="fx-kicker">Расставьте слова в правильном порядке</p>
+            <p class="fx-sub">${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div id="arr-slots" class="arr-slots"></div>
+            <div id="arr-tiles" class="arr-tiles"></div>
+            <div id="arr-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    arrangeDraw();
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function arrangePlace(i) {
+    const r = run.cfg.rounds[run.idx];
+    if (run.solved || run.placed.includes(i) || run.placed.length >= r.words.length) return;
+    run.placed.push(i);
+    fxPlace();
+    arrangeDraw();
+    if (run.placed.length === r.words.length) arrangeCheck();
+}
+function arrangeCheck() {
+    const r = run.cfg.rounds[run.idx];
+    const seq = run.placed.map(i => r.scr[i]).join('');
+    const sl = document.getElementById('arr-slots');
+    if (seq === r.words.join('')) {
+        run.solved = true;
+        fxSnap();
+        fxBurst(sl, FX_COLORS);
+        arrangeDraw();
+        document.getElementById('arr-msg').innerHTML = `
+            <div class="reveal-in">
+                <p class="text-2xl font-black font-jp">${ruby(r.words.join(''))}</p>
+                <p class="mt-2 text-zen-600 dark:text-zen-200">${esc(r.why)}</p>
+                <button onclick="nextArrange()" class="mt-4 px-7 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold">${run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог'}</button>
+            </div>`;
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        fxThud();
+        miniProgress(run.idx / run.cfg.rounds.length);
+        sl.classList.add('arr-shake');
+        document.getElementById('arr-msg').innerHTML = `<p class="font-bold text-zen-500 dark:text-zen-300">Порядок не тот — попробуйте ещё раз</p>`;
+        setTimeout(() => { sl.classList.remove('arr-shake'); run.placed = []; arrangeDraw(); }, 900);
+    }
+}
+function spotRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.solved = false;
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="fx-card glass rounded-[32px] p-6 md:p-10 text-center">
+            ${fxOrbs()}
+            <p class="fx-kicker">間違っている助詞や形を探してください</p>
+            <p class="fx-sub">${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div class="sp-line">${r.tokens.map((t, i) => `<button class="sp-tok" style="--d:${i * 0.15}s;animation-delay:${i * 0.12}s" onclick="spotPick(${i})">${ruby(t)}</button>`).join('')}</div>
+            <div id="sp-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function spotPick(i) {
+    if (!run || run.finished || run.solved) return;
+    const r = run.cfg.rounds[run.idx];
+    const btn = document.querySelectorAll('.sp-tok')[i];
+    if (!btn) return;
+    if (i === r.wrong) {
+        run.solved = true;
+        btn.classList.add('ok');
+        document.querySelectorAll('.sp-tok').forEach(b => b.disabled = true);
+        fxSnap();
+        fxBurst(btn, FX_COLORS);
+        document.getElementById('sp-msg').innerHTML = `
+            <div class="reveal-in">
+                <p class="text-lg font-bold">Исправление: <span class="font-black text-2xl font-jp">${ruby(r.fix)}</span> вместо «${esc(r.tokens[i])}»</p>
+                <p class="mt-2 text-zen-600 dark:text-zen-200">${esc(r.why)}</p>
+                <button onclick="nextSpot()" class="mt-4 px-7 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold">${run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог'}</button>
+            </div>`;
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        btn.classList.add('bad');
+        fxThud();
+        miniProgress(run.idx / run.cfg.rounds.length);
+    }
+}
+
+function arrangeCheck() {
+    const r = run.cfg.rounds[run.idx];
+    const seq = run.placed.map(i => r.scr[i]).join('');
+    const sl = document.getElementById('arr-slots');
+    if (seq === r.words.join('')) {
+        run.solved = true;
+        fxSnap();
+        fxBurst(sl, FX_COLORS);
+        arrangeDraw();
+        document.getElementById('arr-msg').innerHTML = expHtml(ruby(r.words.join('')), esc(r.why), run.idx + 1 < run.cfg.rounds.length ? 'nextArrange()' : 'nextArrange()', run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог');
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        fxThud();
+        miniProgress(run.idx / run.cfg.rounds.length);
+        sl.classList.add('arr-blue');
+        document.getElementById('arr-msg').innerHTML = `<p class="fx-hint">Порядок не тот — попробуйте ещё раз</p>`;
+        setTimeout(() => { sl.classList.remove('arr-blue'); run.placed = []; arrangeDraw(); }, 1000);
+    }
+}
+function expHtml(head, why, fn, btn) {
+    return `<div class="reveal-in">
+        <p class="exp-head">${head}</p>
+        <p class="exp-why">${why}</p>
+        <div class="exp-dots"><i></i><i></i><i></i><i></i></div>
+        <button onclick="${fn}" class="exp-btn">${btn}</button>
+    </div>`;
+}
+
+// --- Замки (грамматика, тест 7) ---
+function renderLock() { run.idx = 0; run.mistakes = 0; lockRound(); }
+function lockRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.locks = []; r.parts.forEach((p, i) => { if (typeof p !== 'string') run.locks.push(i); });
+    run.cur = 0; run.done = false; run.opened = [];
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="fx-card glass rounded-[32px] p-6 md:p-10 text-center">
+            ${fxOrbs()}
+            <p class="fx-kicker">Откройте все замки, подбирая правильные слова</p>
+            <p class="fx-sub">${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div id="lk-sentence" class="lk-sentence mt-4"></div>
+            <div id="lk-keys" class="lk-keys"></div>
+            <div id="lk-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    lockDraw();
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function lockDraw() {
+    const r = run.cfg.rounds[run.idx];
+    let li = 0;
+    document.getElementById('lk-sentence').innerHTML = r.parts.map(p => {
+        if (typeof p === 'string') return `<span>${ruby(p)}</span>`;
+        const k = li++;
+        const cls = run.opened[k] ? 'open' : (k === run.cur && !run.done ? 'cur' : '');
+        return `<span class="lk ${cls}">${run.opened[k] ? ruby(p.a) : '🔒'}</span>`;
+    }).join('');
+    if (run.done) { document.getElementById('lk-keys').innerHTML = ''; return; }
+    const cp = r.parts[run.locks[run.cur]];
+    document.getElementById('lk-keys').innerHTML = cp.o.map((o, j) => `<button class="lk-key" onclick="lockPick(${j})">${ruby(o)}</button>`).join('');
+}
+function lockPick(j) {
+    if (!run || run.finished || run.done) return;
+    const r = run.cfg.rounds[run.idx];
+    const cp = r.parts[run.locks[run.cur]];
+    const btn = document.querySelectorAll('.lk-key')[j];
+    if (cp.o[j] === cp.a) {
+        run.opened[run.cur] = true;
+        run.cur++;
+        fxSnap();
+        fxBurst(document.getElementById('lk-sentence'), FX_COLORS);
+        if (run.cur >= run.locks.length) {
+            run.done = true;
+            lockDraw();
+            const full = r.parts.map(p => typeof p === 'string' ? p : p.a).join('');
+            document.getElementById('lk-msg').innerHTML = expHtml(ruby(full), esc(r.why), 'lockNext()', run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог');
+            miniProgress((run.idx + 1) / run.cfg.rounds.length);
+        } else {
+            lockDraw();
+            miniProgress(run.idx / run.cfg.rounds.length);
+        }
+    } else {
+        run.mistakes++;
+        fxThud();
+        if (btn) btn.classList.add('bad');
+        miniProgress(run.idx / run.cfg.rounds.length);
+    }
+}
+function lockNext() { run.idx++; if (run.idx >= run.cfg.rounds.length) finishMini(); else lockRound(); }
+
+function expHtml(head, why, fn, btn) {
+    const tr = (MINI_TR[run.cfg.type] || [])[run.idx] || '';
+    return `<div class="reveal-in">
+        <p class="exp-head">${head}</p>
+        ${tr ? `<p class="exp-tr">${esc(tr)}</p>` : ''}
+        <p class="exp-why">${why}</p>
+        <button onclick="${fn}" class="exp-btn">${btn}</button>
+    </div>`;
+}
+function spotPick(i) {
+    if (!run || run.finished || run.solved) return;
+    const r = run.cfg.rounds[run.idx];
+    const btn = document.querySelectorAll('.sp-tok')[i];
+    if (!btn) return;
+    if (i === r.wrong) {
+        run.solved = true;
+        btn.classList.add('ok');
+        document.querySelectorAll('.sp-tok').forEach(b => b.disabled = true);
+        fxSnap();
+        fxBurst(btn, FX_COLORS);
+        const corrected = r.tokens.map((t, k) => k === i ? r.fix : t).join('');
+        const tr = (MINI_TR.spot || [])[run.idx] || '';
+        document.getElementById('sp-msg').innerHTML = `
+            <div class="reveal-in">
+                <p class="exp-head">Исправление: <span class="font-black text-2xl font-jp">${ruby(r.fix)}</span> вместо «${esc(r.tokens[i])}»</p>
+                <p class="exp-why">${esc(r.why)}</p>
+                <p class="exp-sent">${ruby(corrected)}</p>
+                <p class="exp-tr">${esc(tr)}</p>
+                <button onclick="nextSpot()" class="exp-btn">${run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог'}</button>
+            </div>`;
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        btn.classList.add('bad');
+        fxThud();
+        miniProgress(run.idx / run.cfg.rounds.length);
+    }
+}
+function lockDraw() {
+    const r = run.cfg.rounds[run.idx];
+    let li = 0;
+    document.getElementById('lk-sentence').innerHTML = r.parts.map(p => {
+        if (typeof p === 'string') return `<span>${ruby(p)}</span>`;
+        const k = li++;
+        const cls = run.opened[k] ? 'open' : (k === run.cur && !run.done ? 'cur' : '');
+        return `<span class="lk ${cls}">${run.opened[k] ? ruby(p.a) : '🔒'}</span>`;
+    }).join('');
+    if (run.done) { document.getElementById('lk-keys').innerHTML = ''; return; }
+    const cp = r.parts[run.locks[run.cur]];
+    document.getElementById('lk-keys').innerHTML = cp.o.map((o, j) => `<button class="lk-key" onclick="lockPick(${j})">${ruby(o)}</button>`).join('')
+        + ``;
+}
+function lockHint() {
+    if (!run || run.finished || run.done) return;
+    const cp = run.cfg.rounds[run.idx].parts[run.locks[run.cur]];
+    const j = cp.o.indexOf(cp.a);
+    const btn = document.querySelectorAll('.lk-key')[j];
+    run.mistakes++;
+    if (btn) btn.classList.add('hint');
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function arrangeDraw() {
+    const r = run.cfg.rounds[run.idx];
+    document.getElementById('arr-slots').innerHTML = r.words.map((_, j) => run.placed[j] !== undefined
+        ? `<button class="arr-word" onclick="arrangeRemove(${j})">${ruby(r.scr[run.placed[j]])}</button>`
+        : `<span class="arr-empty"></span>`).join('');
+    const used = new Set(run.placed);
+    document.getElementById('arr-tiles').innerHTML = r.scr.map((w, i) =>
+        `<button class="arr-tile" ${used.has(i) || run.solved ? 'disabled' : ''} onclick="arrangePlace(${i})">${ruby(w)}</button>`).join('')
+        + (run.solved ? '' : ``);
+}
+function arrangeHint() {
+    if (!run || run.finished || run.solved) return;
+    const r = run.cfg.rounds[run.idx];
+    const want = r.words[run.placed.length];
+    const i = r.scr.findIndex((w, k) => w === want && !run.placed.includes(k));
+    if (i < 0) return;
+    run.mistakes++;
+    miniProgress(run.idx / run.cfg.rounds.length);
+    document.querySelectorAll('.arr-tile')[i] && document.querySelectorAll('.arr-tile')[i].classList.add('hint');
+    setTimeout(() => arrangePlace(i), 350);
+}
+function spotRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.solved = false;
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="fx-card glass rounded-[32px] p-6 md:p-10 text-center">
+            ${fxOrbs()}
+            <p class="fx-kicker">間違っている助詞や形を探してください</p>
+            <p class="fx-sub">${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div class="sp-line">${r.tokens.map((t, i) => `<button class="sp-tok" style="--d:${i * 0.15}s;animation-delay:${i * 0.12}s" onclick="spotPick(${i})">${ruby(t)}</button>`).join('')}</div>
+            
+            <div id="sp-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function spotHint() {
+    if (!run || run.finished || run.solved) return;
+    const r = run.cfg.rounds[run.idx];
+    run.mistakes++;
+    const btn = document.querySelectorAll('.sp-tok')[r.wrong];
+    if (btn) btn.classList.add('hint');
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function nextArrange() { run.idx++; if (run.idx >= run.cfg.rounds.length) finishMini(); else arrangeRound(); }
+
+// --- Найди ошибку (грамматика, тест 6) ---
+function renderSpot() { run.idx = 0; run.mistakes = 0; spotRound(); }
+function spotRound() {
+    const r = run.cfg.rounds[run.idx];
+    run.solved = false;
+    document.getElementById('mini-stage').innerHTML = `
+        <div class="glass rounded-[28px] p-6 md:p-9 border border-amber-900/10 dark:border-zen-700/60 text-center">
+            <p class="jlpt-head" style="position:relative;top:0">間違っている助詞や形を探してください · ${run.idx + 1} / ${run.cfg.rounds.length}</p>
+            <div class="sp-line">${r.tokens.map((t, i) => `<button class="sp-tok" onclick="spotPick(${i})">${ruby(t)}</button>`).join('')}</div>
+            <div id="sp-msg" class="mt-6 min-h-[56px]"></div>
+        </div>`;
+    miniProgress(run.idx / run.cfg.rounds.length);
+}
+function spotPick(i) {
+    if (!run || run.finished || run.solved) return;
+    const r = run.cfg.rounds[run.idx];
+    const btn = document.querySelectorAll('.sp-tok')[i];
+    if (!btn) return;
+    if (i === r.wrong) {
+        run.solved = true;
+        btn.classList.add('ok');
+        document.querySelectorAll('.sp-tok').forEach(b => b.disabled = true);
+        sfxRight();
+        document.getElementById('sp-msg').innerHTML = `
+            <div class="reveal-in">
+                <p class="text-lg font-bold">Исправление: <span class="font-black text-2xl font-jp">${ruby(r.fix)}</span> вместо «${esc(r.tokens[i])}»</p>
+                <p class="mt-2 text-zen-600 dark:text-zen-200">${esc(r.why)}</p>
+                <button onclick="nextSpot()" class="mt-4 px-7 h-11 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold">${run.idx + 1 < run.cfg.rounds.length ? 'Дальше →' : 'Итог'}</button>
+            </div>`;
+        miniProgress((run.idx + 1) / run.cfg.rounds.length);
+    } else {
+        run.mistakes++;
+        btn.classList.add('bad');
+        sfxWrong();
+        miniProgress(run.idx / run.cfg.rounds.length);
+    }
+}
+function nextSpot() { run.idx++; if (run.idx >= run.cfg.rounds.length) finishMini(); else spotRound(); }
 
 // --- Итог ---
 function finishMini() {
