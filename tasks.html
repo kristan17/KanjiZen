@@ -1387,6 +1387,335 @@ html.dark[data-pal="cyber"] { --zen-50: 252 248 251; --zen-100: 244 237 243; --z
         @keyframes skFlick { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.06, 1.12) rotate(3deg); } }
         .sk-n { font-weight: 900; font-size: .9rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
         .sk-l { font-weight: 600; }
+
+        /* ================= Страница тестов: премиальное оформление ================= */
+        #hero { position: relative; }
+        #hero::before { content: '漢'; position: absolute; right: -0.5rem; top: -2.5rem; font-family: 'Noto Sans JP', sans-serif; font-size: 16rem; font-weight: 900; line-height: 1; color: color-mix(in srgb, var(--cp-primary) 6%, transparent); pointer-events: none; z-index: 0; }
+        #hero > * { position: relative; z-index: 1; }
+        #hero .gold-text { letter-spacing: -.02em; text-shadow: 0 0 40px color-mix(in srgb, var(--cp-primary) 30%, transparent); }
+
+        /* карточки тестов: стеклянный корпус с золотой обводкой и бликом */
+        .tcard {
+            position: relative; overflow: hidden;
+            border-radius: 28px !important;
+            border: 1px solid transparent !important;
+            background:
+                linear-gradient(165deg, var(--cp-surface2), var(--cp-surface)) padding-box,
+                linear-gradient(150deg, color-mix(in srgb, var(--cp-primary) 60%, transparent), var(--cp-line) 45%, transparent 75%) border-box !important;
+            box-shadow: 0 28px 52px -36px rgba(0,0,0,.8) !important;
+            transition: transform .4s cubic-bezier(.2,.9,.3,1), box-shadow .4s ease !important;
+        }
+        .tcard::after {
+            content: ''; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.08), transparent);
+            transform: skewX(-18deg); transition: left .9s cubic-bezier(.2,.9,.3,1); pointer-events: none;
+        }
+        .tcard:hover { transform: translateY(-6px) !important; box-shadow: 0 40px 64px -30px color-mix(in srgb, var(--cp-primary) 42%, transparent) !important; }
+        .tcard:hover::after { left: 130%; }
+        .tcard .tnum {
+            font-size: 2.7rem !important; font-weight: 900 !important; letter-spacing: -.03em; line-height: 1;
+            background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent));
+            -webkit-background-clip: text; background-clip: text; color: transparent !important;
+            font-variant-numeric: tabular-nums;
+        }
+        .tcard p.text-2xl { letter-spacing: -.02em; }
+        .tcard .solved-badge {
+            display: inline-flex; align-items: center; gap: .35rem;
+            padding: .28rem .75rem; border-radius: 9999px; font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+            background: color-mix(in srgb, #7cc878 14%, transparent); color: #7cc878;
+            border: 1px solid color-mix(in srgb, #7cc878 40%, transparent);
+        }
+        .tcard.solved { box-shadow: inset 0 0 0 1px color-mix(in srgb, #7cc878 22%, transparent), 0 28px 52px -36px rgba(0,0,0,.8) !important; }
+        .tcard .chip-free {
+            padding: .25rem .65rem; border-radius: 9999px; font-size: .66rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+            background: transparent; color: var(--cp-accent); border: 1px solid color-mix(in srgb, var(--cp-accent) 45%, transparent);
+        }
+        .tcard .fa-star { color: color-mix(in srgb, var(--cp-muted) 45%, transparent); font-size: .85rem; margin-right: .25rem; }
+        .tcard .fa-star.on { color: var(--cp-primary); text-shadow: 0 0 10px color-mix(in srgb, var(--cp-primary) 60%, transparent); }
+        .tcard.next-card { box-shadow: 0 0 0 1px color-mix(in srgb, var(--cp-primary) 70%, transparent), 0 34px 60px -30px color-mix(in srgb, var(--cp-primary) 50%, transparent) !important; }
+
+        /* блок прогресса: стекло и мягкое свечение */
+        .pg {
+            border-radius: 28px !important;
+            background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--cp-primary) 12%, transparent), transparent 50%), var(--cp-surface) !important;
+            border: 1px solid var(--cp-line) !important;
+            box-shadow: 0 34px 60px -40px rgba(0,0,0,.75) !important;
+        }
+        .pg-cat { border-radius: 16px; padding: .5rem .7rem; transition: background .3s ease, transform .3s ease; }
+        .pg-cat:hover { transform: translateX(3px); }
+        .pg-bar { height: .5rem; }
+        .pg-bar i { background: linear-gradient(90deg, #8fd98a, #5fb865, var(--cp-primary)) !important; background-size: 200% 100%; animation: barFlow 3.5s linear infinite; }
+
+        /* карточки действий под прогрессом и в шапке */
+        .act-card {
+            border-radius: 26px !important;
+            border: 1px solid transparent !important;
+            background:
+                linear-gradient(165deg, var(--cp-surface2), var(--cp-surface)) padding-box,
+                linear-gradient(150deg, color-mix(in srgb, var(--cp-primary) 50%, transparent), var(--cp-line) 50%, transparent) border-box !important;
+            box-shadow: 0 22px 40px -30px rgba(0,0,0,.8);
+        }
+        .act-ico { border-radius: 18px; box-shadow: 0 10px 22px -12px var(--cp-primary); }
+
+        /* отступы и ритм страницы */
+        main { padding-top: .5rem; }
+        .rise { animation-duration: .8s; }
+
+        /* ---- прогресс в стиле «Мой прогресс» ---- */
+        .pg-card { border-radius: 30px; padding: 1.6rem 1.7rem; margin-bottom: 1.2rem; background: radial-gradient(circle at 100% 0%, rgba(124,224,124,.10), transparent 45%), var(--cp-surface); border: 1px solid var(--cp-line); box-shadow: 0 34px 60px -40px rgba(0,0,0,.8); }
+        .pg-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .pg-label { font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; font-weight: 900; color: var(--cp-muted); }
+        .pg-title { font-size: 1.35rem; font-weight: 900; color: var(--cp-text); margin-top: .2rem; }
+        .pg-stats { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: .7rem; margin-top: 1.2rem; }
+        @media (max-width: 560px) { .pg-stats { grid-template-columns: 1fr 1fr; } .pg-week { grid-column: 1 / -1; } }
+        .pg-stat { padding: .9rem 1rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .pg-stat b { display: block; font-size: 1.5rem; font-weight: 900; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .pg-stat span { font-size: .75rem; color: var(--cp-muted); }
+        .pg-week { display: flex; align-items: flex-end; justify-content: space-between; gap: .35rem; padding: .9rem 1rem; border-radius: 18px; background: var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .pg-week i { flex: 1; height: 1.6rem; border-radius: 6px; background: var(--cp-line); }
+        .pg-week i.on { background: linear-gradient(180deg, #8fd98a, #5fb865); box-shadow: 0 0 12px -4px #5fb865; }
+        .pg-week i.today { outline: 1px solid var(--cp-primary); outline-offset: 2px; }
+        .pg-sec { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; color: var(--cp-muted); margin: 1.4rem 0 .7rem; }
+        .pg-rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+        .pg-mr { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: .9rem .4rem; border-radius: 22px; background: var(--cp-surface2); border: 1px solid var(--cp-line); transition: transform .3s ease, border-color .3s ease; }
+        .pg-mr:hover { transform: translateY(-3px); }
+        .pg-mr.active { border-color: #8fd98a; box-shadow: 0 0 22px -10px #5fb865; }
+        .pg-ring2 { --p: 0; position: relative; width: 5.6rem; height: 5.6rem; border-radius: 9999px; background: conic-gradient(#8fd98a, #5fb865 calc(var(--p) * 1%), var(--cp-line) 0); display: flex; align-items: center; justify-content: center; animation: ringIn 1s ease both; }
+        .pg-ring2::before { content: ''; position: absolute; inset: 7px; border-radius: 9999px; background: var(--cp-surface); }
+        .pg-ring2 > span { position: relative; font-size: 1.45rem; font-weight: 900; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .pg-mn { font-size: .85rem; font-weight: 700; color: var(--cp-text); }
+        .pg-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; }
+        .pg-seg { text-align: center; padding: .55rem 0; border-radius: 12px; font-weight: 900; font-size: .85rem; background: var(--cp-surface2); border: 1px solid var(--cp-line); color: var(--cp-muted); }
+        .pg-seg.cur { color: #140c02; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); border-color: transparent; box-shadow: 0 8px 18px -10px var(--cp-primary); }
+        .pg-seg.empty { opacity: .45; }
+        .pg-hist { display: grid; gap: .5rem; }
+        .pg-h { display: flex; align-items: center; gap: .9rem; padding: .7rem .9rem; border-radius: 16px; background: var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .pg-hs { font-size: .8rem; color: var(--cp-primary); letter-spacing: .08em; white-space: nowrap; }
+        .pg-hs i { color: var(--cp-line); font-style: normal; }
+        .pg-h b { display: block; font-size: .92rem; color: var(--cp-text); }
+        .pg-h small { font-size: .75rem; color: var(--cp-muted); }
+        .pg-empty { font-size: .9rem; color: var(--cp-muted); padding: .6rem 0; }
+
+        /* ---- прогресс: дни недели, бейдж уровня, путь по уровням ---- */
+        .pg-head { gap: 1.1rem; }
+        .pg-levelbox { width: 4.3rem; height: 4.3rem; flex-shrink: 0; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(140deg, #f7d672, #c98a2a); color: #140c02; box-shadow: 0 16px 30px -16px #f5c04a, inset 0 1px 0 rgba(255,255,255,.4); }
+        .pg-lvl-n { font-size: 1.45rem; font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+        .pg-lvl-t { font-size: .58rem; letter-spacing: .24em; font-weight: 900; margin-top: .25rem; opacity: .7; }
+        .pg-head-txt { flex: 1; min-width: 0; }
+        .pg-week { display: grid !important; grid-template-columns: repeat(7, 1fr); gap: .3rem; align-items: end; padding: .8rem .7rem; }
+        .pg-week .wd { display: flex; flex-direction: column; align-items: center; gap: .35rem; }
+        .pg-week .wd em { font-style: normal; font-size: .62rem; font-weight: 800; letter-spacing: .04em; color: var(--cp-muted); }
+        .pg-week .wd i { flex: none; width: 1.6rem; height: 1.6rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--cp-line); box-shadow: none; color: #140c02; }
+        .pg-week .wd.on i { background: linear-gradient(135deg, #8fd98a, #5fb865); border-color: transparent; box-shadow: 0 6px 14px -6px #5fb865; }
+        .pg-week .wd.on i svg { width: .8rem; height: .8rem; }
+        .pg-week .wd.today em { color: var(--cp-primary); }
+        .pg-week .wd.today i { outline: 1px solid var(--cp-primary); outline-offset: 2px; }
+        .pg-track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); padding: .4rem .5rem 0; }
+        .pg-track::before { content: ''; position: absolute; left: 10%; right: 10%; top: calc(.4rem + .42rem); height: 2px; border-radius: 2px; background: linear-gradient(90deg, #8fd98a, var(--cp-primary) 60%, var(--cp-line)); opacity: .55; }
+        .pg-node { position: relative; display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+        .pg-node i { width: .85rem; height: .85rem; border-radius: 9999px; background: var(--cp-surface2); border: 2px solid var(--cp-line); }
+        .pg-node span { font-size: .8rem; font-weight: 800; color: var(--cp-muted); }
+        .pg-node.empty span { opacity: .4; }
+        .pg-node.cur i { background: var(--cp-primary); border-color: var(--cp-primary); box-shadow: 0 0 0 5px color-mix(in srgb, var(--cp-primary) 22%, transparent); animation: nodePulse 2.4s ease-in-out infinite; }
+        .pg-node.cur span { color: var(--cp-text); font-size: 1rem; }
+        @keyframes nodePulse { 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--cp-primary) 6%, transparent); } }
+        .pg-scale { display: none !important; }
+
+        /* ---- прогресс: анимации и блеск ---- */
+        @property --p { syntax: '<number>'; inherits: false; initial-value: 0; }
+        .pg-card > * { animation: pgIn .7s cubic-bezier(.2,.9,.3,1) both; }
+        .pg-card > *:nth-child(1) { animation-delay: .02s; }
+        .pg-card > *:nth-child(2) { animation-delay: .1s; }
+        .pg-card > *:nth-child(3) { animation-delay: .18s; }
+        .pg-card > *:nth-child(4) { animation-delay: .26s; }
+        .pg-card > *:nth-child(5) { animation-delay: .34s; }
+        .pg-card > *:nth-child(6) { animation-delay: .42s; }
+        .pg-card > *:nth-child(7) { animation-delay: .5s; }
+        .pg-card > *:nth-child(8) { animation-delay: .58s; }
+        @keyframes pgIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+        .pg-levelbox { position: relative; overflow: hidden; animation: lvlGlow 3.4s ease-in-out infinite; }
+        .pg-levelbox::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-18deg); animation: lvlShine 3.8s ease-in-out infinite; }
+        @keyframes lvlGlow { 50% { box-shadow: 0 20px 36px -14px #f5c04a, inset 0 1px 0 rgba(255,255,255,.4); } }
+        @keyframes lvlShine { 0%, 45% { left: -60%; } 100% { left: 130%; } }
+        .pg-stat { transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+        .pg-stat:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--cp-primary) 55%, transparent); box-shadow: 0 16px 28px -18px var(--cp-primary); }
+        .pg-stat b { background: linear-gradient(135deg, var(--cp-text), var(--cp-primary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .pg-week .wd i { animation: wdPop .55s cubic-bezier(.2,1.4,.3,1) both; animation-delay: var(--d, 0s); }
+        .pg-week .wd:not(.on) i { animation: none; }
+        .pg-week .wd.today i { animation: wdPop .55s cubic-bezier(.2,1.4,.3,1) both, todayRing 2.4s ease-in-out infinite; animation-delay: var(--d, 0s), 1s; }
+        @keyframes wdPop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes todayRing { 50% { outline-color: color-mix(in srgb, var(--cp-primary) 30%, transparent); } }
+        .pg-ring2 { animation: ringFill 1.5s cubic-bezier(.2,.9,.3,1) both; }
+        @keyframes ringFill { from { --p: 0; } }
+        .pg-mr { transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+        .pg-mr:hover .pg-ring2 { transform: scale(1.05); }
+        .pg-ring2 { transition: transform .35s ease; }
+        .pg-track::before { background-size: 200% 100%; animation: trackFlow 4s linear infinite; }
+        @keyframes trackFlow { to { background-position: -200% 0; } }
+        .pg-node i { transition: transform .3s ease; }
+        .pg-node:hover i { transform: scale(1.35); }
+        .pg-h { transition: transform .3s ease, border-color .3s ease; animation: pgIn .6s cubic-bezier(.2,.9,.3,1) both; }
+        .pg-h:nth-child(2) { animation-delay: .1s; }
+        .pg-h:nth-child(3) { animation-delay: .2s; }
+        .pg-h:hover { transform: translateX(4px); border-color: color-mix(in srgb, var(--cp-primary) 50%, transparent); }
+
+        /* ---- загрузка следующего уровня ---- */
+        .ld { margin-top: 1.2rem; padding: 1rem 1.1rem 1rem; border-radius: 22px; background: var(--cp-surface2); border: 1px solid var(--cp-line); }
+        .ld-top { display: flex; align-items: center; justify-content: space-between; gap: .8rem; font-weight: 900; }
+        .ld-from, .ld-to { font-size: .85rem; letter-spacing: .04em; padding: .2rem .65rem; border-radius: 9999px; border: 1px solid var(--cp-line); color: var(--cp-muted); }
+        .ld-to { color: var(--cp-primary); border-color: color-mix(in srgb, var(--cp-primary) 50%, transparent); }
+        .ld-msg { flex: 1; text-align: center; font-size: .9rem; color: var(--cp-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ld-dots { display: inline-flex; gap: 3px; margin-left: .3rem; vertical-align: middle; }
+        .ld-dots i { width: 4px; height: 4px; border-radius: 9999px; background: var(--cp-primary); animation: ldDot 1.2s ease-in-out infinite; }
+        .ld-dots i:nth-child(2) { animation-delay: .15s; }
+        .ld-dots i:nth-child(3) { animation-delay: .3s; }
+        @keyframes ldDot { 0%, 100% { opacity: .25; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
+        .ld-bar { position: relative; margin-top: .8rem; height: 1rem; border-radius: 9999px; background: var(--cp-line); overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,.35); }
+        .ld-bar i {
+            position: relative; display: block; height: 100%; border-radius: 9999px;
+            background:
+                repeating-linear-gradient(-45deg, rgba(255,255,255,.22) 0 8px, transparent 8px 16px),
+                linear-gradient(90deg, #8fd98a, #5fb865 55%, #f5c04a);
+            background-size: 22px 22px, 100% 100%;
+            animation: ldFill 1.6s cubic-bezier(.2,.9,.3,1) both, ldStripes 1s linear infinite;
+            box-shadow: 0 0 18px -4px rgba(143,217,138,.7);
+            transition: width 1s cubic-bezier(.2,.9,.3,1);
+        }
+        .ld-bar i::after { content: ''; position: absolute; right: -2px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 9999px; background: #fff; box-shadow: 0 0 10px 3px rgba(255,255,255,.7); animation: ldTip 1.1s ease-in-out infinite; }
+        @keyframes ldFill { from { width: 0; } }
+        @keyframes ldStripes { to { background-position: 22px 0, 0 0; } }
+        @keyframes ldTip { 50% { transform: scale(1.5); opacity: .6; } }
+        .ld-foot { display: flex; justify-content: space-between; margin-top: .55rem; font-size: .78rem; color: var(--cp-muted); font-variant-numeric: tabular-nums; }
+        .ld-foot b { color: var(--cp-text); font-size: .95rem; }
+        .ld.done { border-color: color-mix(in srgb, #8fd98a 55%, transparent); box-shadow: 0 0 26px -12px #8fd98a; }
+        .ld.done .ld-bar i::after { display: none; }
+        .ld.done .ld-msg { color: #8fd98a; }
+
+        /* ---- загрузка следующего уровня прямо на линии пути ---- */
+        .pg-track { position: relative; }
+        .pg-fill { position: absolute; top: calc(.4rem + .42rem - 3px); height: 8px; border-radius: 9999px; z-index: 0; background: repeating-linear-gradient(-45deg, rgba(255,255,255,.25) 0 8px, transparent 8px 16px), linear-gradient(90deg, #8fd98a, #5fb865 55%, #f5c04a); background-size: 22px 22px, 100% 100%; box-shadow: 0 0 16px -3px rgba(143,217,138,.75); animation: ldFill 1.6s cubic-bezier(.2,.9,.3,1) both, ldStripes 1s linear infinite; transition: width 1s cubic-bezier(.2,.9,.3,1); }
+        .pg-fill::after { content: ''; position: absolute; right: -4px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 9999px; background: #fff; box-shadow: 0 0 10px 3px rgba(255,255,255,.7); animation: ldTip 1.1s ease-in-out infinite; }
+        .pg-track::before { opacity: .25 !important; }
+        .pg-node { z-index: 1; }
+        .pg-node.next i { border-color: #8fd98a; }
+        .pg-ldp { font-size: .72rem; font-weight: 800; color: #8fd98a; font-variant-numeric: tabular-nums; margin-top: -.2rem; white-space: nowrap; }
+        .pg-ldp b { font-size: .8rem; }
+        .pg-node:not(.next) .pg-ldp { display: none; }
+
+        /* ---- разделы: понятные подписи ---- */
+        .pg-frac { font-size: 1.05rem !important; font-weight: 900; letter-spacing: -.01em; }
+        .pg-mh { font-size: .72rem; color: var(--cp-muted); margin-top: -.25rem; }
+
+        /* ---- путь по уровням: процент каждого уровня ---- */
+        .pg-node { gap: .45rem; }
+        .pg-lr { --p: 0; position: relative; width: 3.6rem; height: 3.6rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: conic-gradient(#8fd98a, #5fb865 calc(var(--p) * 1%), var(--cp-line) 0); transition: transform .3s ease; }
+        .pg-lr::before { content: ''; position: absolute; inset: 5px; border-radius: 9999px; background: var(--cp-surface); }
+        .pg-lr b { position: relative; font-size: .8rem; font-weight: 900; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .pg-node .pg-nl { font-size: .95rem; font-weight: 900; color: var(--cp-text); }
+        .pg-node.active .pg-lr { box-shadow: 0 0 0 4px color-mix(in srgb, var(--cp-primary) 25%, transparent), 0 0 24px -4px var(--cp-primary); animation: nodePulse 2.4s ease-in-out infinite; }
+        .pg-node.active .pg-nl { color: var(--cp-primary); }
+        .pg-node.done .pg-lr { box-shadow: 0 0 18px -6px #8fd98a; }
+        .pg-node.later .pg-lr, .pg-node.empty .pg-lr { opacity: .45; }
+        .pg-node.later .pg-nl, .pg-node.empty .pg-nl { color: var(--cp-muted); }
+        .pg-now { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; color: var(--cp-primary); }
+        .pg-now.ok { color: #8fd98a; }
+        .pg-node:hover .pg-lr { transform: translateY(-3px); }
+
+        /* ---- путь: идём от старта к текущему уровню ---- */
+        .pg-track { position: relative; padding-top: .6rem; }
+        .pg-track::before { opacity: .25 !important; left: 0 !important; right: 0 !important; }
+        .pg-fill { position: absolute; left: .5rem; top: calc(.6rem + .42rem - 4px); height: 8px; border-radius: 9999px; z-index: 0; background: repeating-linear-gradient(-45deg, rgba(255,255,255,.25) 0 8px, transparent 8px 16px), linear-gradient(90deg, #8fd98a, #5fb865 55%, #f5c04a); background-size: 22px 22px, 100% 100%; box-shadow: 0 0 16px -3px rgba(143,217,138,.75); animation: ldStripes 1s linear infinite; transition: width 1.1s cubic-bezier(.2,.9,.3,1); }
+        .pg-fill::after { content: ''; position: absolute; right: -4px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 9999px; background: #fff; box-shadow: 0 0 10px 3px rgba(255,255,255,.7); animation: ldTip 1.1s ease-in-out infinite; }
+        .pg-start { position: absolute; left: .5rem; top: calc(.6rem + .42rem - 6px); transform: translateX(-50%); z-index: 1; }
+        .pg-start i { display: block; width: 12px; height: 12px; border-radius: 9999px; background: var(--cp-accent); box-shadow: 0 0 12px -2px var(--cp-accent); }
+        .pg-start em { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); font-style: normal; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; color: var(--cp-muted); white-space: nowrap; }
+        .pg-node { z-index: 1; }
+        .pg-node i { position: relative; }
+        .pg-node.active i { background: var(--cp-primary); border-color: var(--cp-primary); box-shadow: 0 0 0 5px color-mix(in srgb, var(--cp-primary) 22%, transparent); animation: nodePulse 2.4s ease-in-out infinite; }
+        .pg-node.active > span { color: var(--cp-primary); }
+        .pg-node.done i { background: #8fd98a; border-color: #8fd98a; }
+        .pg-ldp { font-size: .72rem; font-weight: 800; color: var(--cp-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .pg-ldp b { font-size: .85rem; }
+        .pg-ldp.ok { color: #8fd98a; }
+        .pg-node:not(.active):not(.done) > span { opacity: .55; }
+
+
+        /* ---- проценты над уровнями: зелёные цифры ---- */
+        .pg-node { position: relative; }
+        .pg-node .pg-ldp { position: absolute; top: -1.55rem; left: 50%; transform: translateX(-50%); font-size: .78rem; font-weight: 900; color: #8fd98a; white-space: nowrap; font-variant-numeric: tabular-nums; text-shadow: 0 0 10px rgba(143,217,138,.35); }
+        .pg-node .pg-ldp b { font-size: .95rem; }
+        .pg-node .pg-ldp.ghost { visibility: hidden; }
+        .pg-node.empty .pg-ldp, .pg-node.later .pg-ldp { opacity: .55; }
+        .pg-left { display: none !important; }
+
+        /* ---- проценты под уровнями, без верхней линии ---- */
+        .pg-track::before { display: none !important; }
+        .pg-node .pg-ldp { position: static !important; transform: none !important; top: auto !important; left: auto !important; margin-top: .3rem; font-size: .8rem; }
+        .pg-node .pg-ldp b { font-size: .95rem; }
+
+        /* ---- путь начинается со старта: видимая линия и точка «старт» ---- */
+        .pg-track::before { display: block !important; content: ''; position: absolute; left: .5rem; right: .5rem; top: calc(.6rem + .42rem - 1px); height: 2px; border-radius: 2px; background: var(--cp-line); opacity: 1 !important; z-index: 0; }
+        .pg-start { left: .5rem !important; top: calc(.6rem + .42rem - 7px) !important; z-index: 2; }
+        .pg-start i { width: 14px !important; height: 14px !important; background: radial-gradient(circle at 35% 35%, #ffe2a0, #c98a2a) !important; box-shadow: 0 0 0 4px color-mix(in srgb, var(--cp-accent) 20%, transparent), 0 0 14px -2px var(--cp-accent) !important; }
+        .pg-start em { top: 22px !important; font-size: .66rem !important; color: var(--cp-accent) !important; font-weight: 900 !important; }
+        .pg-fill { left: .5rem !important; z-index: 1; }
+
+        .pg-node .lvl-pct { position: static !important; transform: none !important; visibility: visible !important; opacity: 1 !important; }
+        .pg-node.later .lvl-pct, .pg-node.empty .lvl-pct { opacity: .6 !important; }
+
+        /* ---- путь: живые анимации ---- */
+        /* искорка, бегущая по линии от старта */
+        .pg-track::after { content: ''; position: absolute; top: calc(.6rem + .42rem - 2px); left: .5rem; width: 64px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, transparent, #fff8dc, transparent); box-shadow: 0 0 12px 2px rgba(255,235,170,.55); opacity: .85; pointer-events: none; z-index: 2; animation: pathComet 3.2s cubic-bezier(.45,0,.55,1) infinite; }
+        @keyframes pathComet { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: .9; } 85% { opacity: .9; } 100% { transform: translateX(var(--comet-x, 700px)); opacity: 0; } }
+        /* точка «старт» пульсирует волной */
+        .pg-start i::before { content: ''; position: absolute; inset: -6px; border-radius: 9999px; border: 2px solid var(--cp-accent); animation: startRipple 2.4s ease-out infinite; }
+        @keyframes startRipple { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.1); opacity: 0; } }
+        .pg-start i { position: relative; }
+        /* уровни появляются по очереди */
+        .pg-node { animation: nodeIn .6s cubic-bezier(.2,.9,.3,1) both; }
+        .pg-node:nth-child(1) { animation-delay: .15s; }
+        .pg-node:nth-child(2) { animation-delay: .25s; }
+        .pg-node:nth-child(3) { animation-delay: .35s; }
+        .pg-node:nth-child(4) { animation-delay: .45s; }
+        .pg-node:nth-child(5) { animation-delay: .55s; }
+        @keyframes nodeIn { from { opacity: 0; transform: translateY(10px) scale(.85); } to { opacity: 1; transform: none; } }
+        /* текущий уровень: волны расходятся от точки */
+        .pg-node.active i { position: relative; }
+        .pg-node.active i::before, .pg-node.active i::after { content: ''; position: absolute; inset: -7px; border-radius: 9999px; border: 2px solid var(--cp-primary); pointer-events: none; }
+        .pg-node.active i::after { animation: nodeRipple 2.2s ease-out infinite; }
+        .pg-node.active i::before { animation: nodeRipple 2.2s ease-out 1.1s infinite; }
+        @keyframes nodeRipple { 0% { transform: scale(.7); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }
+        /* пройденные уровни: мягкое мерцание */
+        .pg-node.done i { box-shadow: 0 0 0 0 rgba(143,217,138,.6); animation: doneGlow 2.8s ease-in-out infinite; }
+        @keyframes doneGlow { 50% { box-shadow: 0 0 0 6px rgba(143,217,138,.12), 0 0 14px 2px rgba(143,217,138,.45); } }
+        /* проценты: мягко дышат */
+        .pg-node .lvl-pct { animation: pctBreathe 3s ease-in-out infinite; }
+        @keyframes pctBreathe { 50% { text-shadow: 0 0 12px rgba(143,217,138,.55); } }
+        /* кончик заливки: искры */
+        .pg-fill::before { content: ''; position: absolute; right: -10px; top: 50%; width: 22px; height: 22px; margin-top: -11px; border-radius: 9999px; background: radial-gradient(circle, rgba(255,255,255,.9), transparent 65%); animation: tipSpark 1.2s ease-in-out infinite; }
+        @keyframes tipSpark { 50% { transform: scale(1.4); opacity: .5; } }
+
+        /* ---- путь: спокойнее и медленнее ---- */
+        .pg-track::after { width: 44px !important; height: 3px !important; box-shadow: 0 0 8px 1px rgba(255,235,170,.35) !important; opacity: .6 !important; animation: pathComet 7s cubic-bezier(.45,0,.55,1) 1.5s infinite !important; }
+        @keyframes pathComet { 0% { transform: translateX(0); opacity: 0; } 12% { opacity: .6; } 80% { opacity: .6; } 100% { transform: translateX(var(--comet-x, 700px)); opacity: 0; } }
+        .pg-start i::before { animation: startRipple 5s ease-out infinite !important; opacity: .6; }
+        .pg-node.active i::before { animation: nodeRipple 5s ease-out 2.5s infinite !important; }
+        .pg-node.active i::after { animation: nodeRipple 5s ease-out infinite !important; }
+        .pg-node.active i::before, .pg-node.active i::after { border-width: 1px !important; }
+        .pg-node.done i { animation: doneGlow 6s ease-in-out infinite !important; }
+        @keyframes doneGlow { 50% { box-shadow: 0 0 0 4px rgba(143,217,138,.08), 0 0 8px 1px rgba(143,217,138,.25); } }
+        .pg-node .lvl-pct { animation: pctBreathe 6s ease-in-out infinite !important; }
+        @keyframes pctBreathe { 50% { text-shadow: 0 0 6px rgba(143,217,138,.3); } }
+        .pg-fill::before { animation: tipSpark 3s ease-in-out infinite !important; opacity: .5; transform: scale(.8); }
+        @keyframes tipSpark { 50% { transform: scale(1); opacity: .35; } }
+
+        /* ---- заголовок пути и XP-чип ---- */
+        .pg-path-h { display: flex; align-items: center; gap: .65rem; margin: 1.4rem 0 .8rem; font-size: 1.05rem; font-weight: 900; letter-spacing: -.01em; background: linear-gradient(90deg, var(--cp-text), var(--cp-primary) 70%, var(--cp-accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .pg-path-ico { width: 2.1rem; height: 2.1rem; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: .9rem; color: #140c02; background: linear-gradient(135deg, var(--cp-primary), var(--cp-accent)); -webkit-text-fill-color: #140c02; box-shadow: 0 8px 18px -10px var(--cp-primary); }
+        .xp-chip { display: inline-flex; align-items: center; gap: .45rem; padding: .32rem .85rem; border-radius: 9999px; font-size: .82rem; color: var(--cp-muted); background: color-mix(in srgb, var(--cp-primary) 8%, transparent); border: 1px solid color-mix(in srgb, var(--cp-primary) 30%, transparent); }
+        .xp-chip i { color: var(--cp-primary); font-size: .75rem; }
+        .xp-chip b { font-weight: 900; font-size: .95rem; color: var(--cp-text); font-variant-numeric: tabular-nums; }
+        .xp-lv { font-weight: 800; color: var(--cp-accent); padding-left: .45rem; border-left: 1px solid var(--cp-line); }
     </style>
 <script>
 (function () {
@@ -3277,39 +3606,8 @@ function clearMistakeIdxOld(i, btn) {
     setTimeout(() => { window.__journalSilent = true; try { clearMistakeIdx(i); } finally { window.__journalSilent = false; } }, 560);
 }
 function streakChip() {
-    const n = streakCount();
-    return `<span class="sk"><svg class="sk-flame" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5c.9 3.3 4.6 5.4 4.6 10.1a4.6 4.6 0 0 1-9.2 0c0-2.1 1-3.6 2.1-4.6.2 1.7 1 2.7 2 3.2C11.2 7.4 11.6 4.9 12 2.5z"/></svg><span class="sk-n">${n}</span><span class="sk-l">${dayWord(n)} подряд</span></span>`;
-}
-function progressHtml() {
-    const lvl = activeLevel;
-    const inLvl = allSlots().filter(x => x.lvl === lvl);
-    const sec = inLvl.filter(x => x.cat === activeCat);
-    const secSolved = sec.filter(isSolvedSlot).length;
-    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
-    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
-    const icons = { kanji: 'fa-pen-nib', grammar: 'fa-book-open', reading: 'fa-scroll' };
-    const tiles = ['kanji', 'grammar', 'reading'].map(c => {
-        const items = inLvl.filter(x => x.cat === c);
-        const s2 = items.filter(isSolvedSlot).length;
-        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
-        return `<button class="pg-tile ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
-            <span class="pg-ico"><i class="fa-solid ${icons[c]}"></i></span>
-            <span class="pg-tname">${CAT[c].name}</span>
-            <span class="pg-tcount">${items.length ? s2 + ' из ' + items.length : 'скоро'}</span>
-            <span class="pg-tbar"><i style="width:${p}%"></i></span>
-        </button>`;
-    }).join('');
-    const head = sec.length
-        ? `<p class="pg-big">${secSolved}<span> из ${sec.length}</span></p><p class="pg-sub">${CAT[activeCat].name} · ${lvl}</p>`
-        : `<p class="pg-big pg-soon">Скоро</p><p class="pg-sub">${CAT[activeCat].name} · ${lvl} пока не добавлен</p>`;
-    return `<section class="pg-hero rise">
-        <div class="pg-hero-top">
-            <div><p class="pg-label">Ваш прогресс</p>${head}</div>
-            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
-        </div>
-        <div class="pg-tiles">${tiles}</div>
-        <div class="pg-foot"><span><i class="fa-solid fa-star"></i> ${secStars} звёзд в разделе</span>${streakChip()}</div>
-    </section>`;
+    const st = pfStats();
+    return `<span class="xp-chip"><i class="fa-solid fa-bolt"></i><b>${st.xp}</b> XP <span class="xp-lv">ур. ${st.lvl}</span></span>`;
 }
 function renderDock() {
     let d = document.getElementById('dock');
@@ -3336,77 +3634,17 @@ function renderDock() {
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderDock); else renderDock();
 function renderDock() { const d = document.getElementById('dock'); if (d) d.remove(); }
 
-function progressHtml() {
-    const lvl = activeLevel;
-    const inLvl = allSlots().filter(x => x.lvl === lvl);
-    const sec = inLvl.filter(x => x.cat === activeCat);
-    const secSolved = sec.filter(isSolvedSlot).length;
-    const secStars = sec.reduce((a, x) => a + starsOfSlot(x), 0);
-    const pct = sec.length ? Math.round(secSolved / sec.length * 100) : 0;
-    const bars = ['kanji', 'grammar', 'reading'].map(c => {
-        const items = inLvl.filter(x => x.cat === c);
-        const s2 = items.filter(isSolvedSlot).length;
-        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
-        return `<button class="pg-cat ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
-            <span class="pg-name">${CAT[c].name}</span>
-            <div class="pg-bar"><i style="width:${p}%"></i></div>
-            <b class="pg-num">${items.length ? s2 + '/' + items.length : 'скоро'}</b></button>`;
-    }).join('');
-    const head = sec.length
-        ? `<p class="pg-big">${secSolved} <span>из ${sec.length} тестов</span></p><p class="pg-sub">${CAT[activeCat].name} · ${lvl}</p>`
-        : `<p class="pg-big pg-soon">Скоро</p><p class="pg-sub">${CAT[activeCat].name} · ${lvl} пока не добавлен</p>`;
-    return `<div class="pg glass rounded-2xl p-5 mb-6 rise">
-        <div class="pg-top">
-            <div><p class="pg-label">Прогресс · ${lvl}</p>${head}</div>
-            <div class="pg-ring" style="--p:${pct}"><span>${pct}%</span></div>
-        </div>
-        <div class="pg-cats">${bars}</div>
-        <div class="pg-foot"><span>Звёзд в разделе: <b>${secStars}</b></span>${streakChip()}</div>
-    </div>`;
-}
-function actionsHtml() {
-    const p = getProfile(), st = pfStats(), jc = allMistakes().length;
-    return `<div class="act-grid">
-        <button class="act-card act-prof" onclick="renderProfile()">
-            <span class="act-av fr-${p.frame}">${pfEsc(p.avatar)}</span>
-            <span class="act-txt"><span class="act-t">${pfEsc(p.name)}</span><span class="act-s">Уровень ${st.lvl} · ${st.xp} XP</span></span>
-            <i class="fa-solid fa-chevron-right act-go"></i>
-        </button>
-        <button class="act-card act-err" onclick="renderJournal()">
-            <span class="act-ico"><i class="fa-solid fa-book-open"></i></span>
-            <span class="act-txt"><span class="act-t">Мои ошибки</span><span class="act-s">${jc ? jc + ' ' + plural(jc) + ' для разбора' : 'Ошибок нет'}</span></span>
-            ${jc ? `<span class="act-badge">${jc}</span>` : ''}
-        </button>
-        <button class="act-card act-exam" onclick="toggleExam()">
-            <span class="act-ico"><i class="fa-solid fa-stopwatch"></i></span>
-            <span class="act-txt"><span class="act-t">Режим экзамена</span><span class="act-s">${examOn() ? 'Включён: 15 минут' : 'Таймер и примерный балл'}</span></span>
-            ${isPremium() ? '' : '<span class="pro">Premium</span>'}
-        </button>
-    </div>`;
-}
-function nextHtml() {
+function nextTestN() {
     const key = sectionKey(activeLevel, activeCat);
-    const list = [];
-    for (let n = 1; n <= TESTS_PER_SECTION; n++) if (hasContent(activeLevel, activeCat, n)) list.push(n);
-    if (!list.length) return '';
-    const solved = n => !!((JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null') || {}).solved);
-    const next = list.find(n => !solved(n));
-    const title = `${CAT[activeCat].name} · ${activeLevel}`;
-    if (next === undefined) {
-        return `<div class="nx glass rise">
-            <div class="nx-ico nx-done"><i class="fa-solid fa-trophy"></i></div>
-            <div class="nx-txt"><p class="nx-l">Раздел пройден</p><p class="nx-t">${title}: все тесты решены</p></div>
-            <button class="nx-btn" onclick="startTest(${list[0]})">Повторить <i class="fa-solid fa-rotate"></i></button>
-        </div>`;
+    for (let n = 1; n <= TESTS_PER_SECTION; n++) {
+        if (!hasContent(activeLevel, activeCat, n)) continue;
+        const st = JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null');
+        if (!(st && st.solved)) return n;
     }
-    return `<div class="nx glass rise">
-        <div class="nx-ico"><i class="fa-solid fa-play"></i></div>
-        <div class="nx-txt"><p class="nx-l">Продолжить</p><p class="nx-t">${title} · тест ${next}</p></div>
-        <button class="nx-btn" onclick="startTest(${next})">Начать <i class="fa-solid fa-arrow-right"></i></button>
-    </div>`;
+    return undefined;
 }
 function updateHeaderTools() {
-    const p = getProfile(), st = pfStats();
+    const p = getProfile();
     const av = document.getElementById('hdr-av'), nm = document.getElementById('hdr-name');
     if (av) { av.textContent = p.avatar; av.className = 'hdr-av fr-' + p.frame; }
     if (nm) nm.textContent = p.name;
@@ -3416,20 +3654,109 @@ function updateHeaderTools() {
     const ex = document.querySelector('.hdr-ex');
     if (ex) ex.classList.toggle('on', examOn());
 }
-{
-    const rl = renderList;
-    renderList = function () { rl(); updateHeaderTools(); };
-    const rfp = refreshProfileUI;
-    refreshProfileUI = function () { rfp(); updateHeaderTools(); };
-}
-function nextTestN() {
-    const key = sectionKey(activeLevel, activeCat);
-    for (let n = 1; n <= TESTS_PER_SECTION; n++) {
-        if (!hasContent(activeLevel, activeCat, n)) continue;
-        const st = JSON.parse(localStorage.getItem(`kz_test_${key}_${n}`) || 'null');
-        if (!(st && st.solved)) return n;
+function progressHtml() {
+    const lvl = activeLevel;
+    const all = allSlots();
+    const inLvl = all.filter(x => x.lvl === lvl);
+    const cats = ['kanji', 'grammar', 'reading'];
+    const mastery = c => {
+        const items = inLvl.filter(x => x.cat === c);
+        if (!items.length) return null;
+        const stars = items.reduce((a, x) => a + starsOfSlot(x), 0);
+        return Math.round(stars / (items.length * 3) * 100);
+    };
+    const solvedAll = inLvl.filter(isSolvedSlot).length;
+    const starsAll = inLvl.reduce((a, x) => a + starsOfSlot(x), 0);
+    const days = new Set(JSON.parse(localStorage.getItem('kz_days') || '[]'));
+    const WD = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const check = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const week = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date(); d.setDate(d.getDate() - i);
+        const k = d.toISOString().slice(0, 10);
+        const on = days.has(k);
+        week.push(`<span class="wd ${on ? 'on' : ''} ${i === 0 ? 'today' : ''}" style="--d:${(6 - i) * 0.08}s" title="${k}"><em>${WD[d.getDay()]}</em><i>${on ? check : ''}</i></span>`);
     }
-    return undefined;
+    const rings = cats.map(c => {
+        const items = inLvl.filter(x => x.cat === c);
+        const s2 = items.filter(isSolvedSlot).length;
+        const p = items.length ? Math.round(s2 / items.length * 100) : 0;
+        return `<button class="pg-mr ${c === activeCat ? 'active' : ''}" onclick="setCatFromProgress('${c}')">
+            <span class="pg-ring2" style="--p:${p}"><span class="pg-frac">${s2}/${items.length}</span></span>
+            <span class="pg-mn">${CAT[c].name}</span>
+            <span class="pg-mh">${items.length ? 'тестов решено' : 'скоро'}</span>
+        </button>`;
+    }).join('');
+    const curIdx = LEVELS.indexOf(lvl);
+    const nextLvl = curIdx >= 0 && curIdx < LEVELS.length - 1 ? LEVELS[curIdx + 1] : null;
+    const ldPct = inLvl.length ? Math.round(solvedAll / inLvl.length * 100) : 0;
+    const fillW = nextLvl ? 20 * ldPct / 100 : 0;
+    const perLvl = LEVELS.map(l => {
+        const items = all.filter(x => x.lvl === l);
+        const sv = items.filter(isSolvedSlot).length;
+        return { l, total: items.length, pct: items.length ? Math.round(sv / items.length * 100) : 0 };
+    });
+    const studyLvl = (perLvl.find(x => x.total && x.pct < 100) || {}).l;
+    const nodes = perLvl.map(x => {
+        const state = !x.total ? 'empty' : (x.pct >= 100 ? 'done' : (x.l === studyLvl ? 'active' : 'later'));
+        const pctHtml = x.total
+            ? `<span class="lvl-pct" style="display:block;margin-top:.35rem;font-size:.85rem;font-weight:900;color:#8fd98a;font-variant-numeric:tabular-nums">${x.pct}%</span>`
+            : '';
+        return `<div class="pg-node ${state}"><i></i><span class="pg-nl">${x.l}</span>${pctHtml}</div>`;
+    }).join('');
+    // полоска идёт от старта к текущему уровню: до N5 — 0, затем от N5 к N4 и т.д.
+    const actIdx = LEVELS.indexOf(studyLvl);
+    const actPct = actIdx >= 0 ? (perLvl[actIdx].pct) : 100;
+    const prevX = actIdx <= 0 ? 0 : 20 * actIdx - 10;
+    const curX = actIdx >= 0 ? 20 * actIdx + 10 : 90;
+    const trackFill = actIdx >= 0 ? prevX + (curX - prevX) * actPct / 100 : 90;
+    const actAll = studyLvl ? all.filter(x => x.lvl === studyLvl) : [];
+    const actLeft = actAll.filter(x => !isSolvedSlot(x)).length;
+    const plural = n => (n % 10 === 1 && n % 100 !== 11) ? 'тест' : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 'теста' : 'тестов');
+    const leftTxt = studyLvl
+        ? `До <b>${studyLvl}</b> осталось <b data-count="${actLeft}">${actLeft}</b> ${plural(actLeft)} · ${actPct}%`
+        : 'Все уровни пройдены';
+    const hist = JSON.parse(localStorage.getItem('kz_history') || '[]').slice(0, 3);
+    const histHtml = hist.length
+        ? hist.map(h => `<div class="pg-h">
+            <span class="pg-hs">${'★'.repeat(h.stars)}<i>${'★'.repeat(3 - h.stars)}</i></span>
+            <div><b>${pfEsc(h.title)}</b><small>${new Date(h.t).toLocaleDateString('ru-RU')}</small></div></div>`).join('')
+        : '<p class="pg-empty">Здесь появятся ваши последние тесты</p>';
+    return `<section class="pg-card rise">
+        <div class="pg-head">
+            <div class="pg-levelbox"><span class="pg-lvl-n">${lvl}</span><span class="pg-lvl-t">JLPT</span></div>
+            <div class="pg-head-txt"><p class="pg-label">Ваш прогресс</p><p class="pg-title">Решено ${solvedAll} из ${inLvl.length}</p></div>
+            ${streakChip()}
+        </div>
+        <div class="pg-stats">
+            <div class="pg-stat"><b data-count="${starsAll}">${starsAll}</b><span>звёзд</span></div>
+            <div class="pg-stat"><b data-count="${streakCount()}">${streakCount()}</b><span>дней подряд</span></div>
+            <div class="pg-week" title="Последние 7 дней">${week.join('')}</div>
+        </div>
+        <p class="pg-sec">Разделы · сколько тестов решено</p>
+        <div class="pg-rings">${rings}</div>
+        <div class="pg-path-h"><span class="pg-path-ico"><i class="fa-solid fa-route"></i></span><span>Путь к JLPT</span></div>
+        <div class="pg-track"><span class="pg-start"><i></i><em>старт</em></span><span class="pg-fill" style="width:calc((100% - 1rem) * ${trackFill} / 100)"></span>${nodes}</div>
+        <p class="pg-sec">Последние тесты</p>
+        <div class="pg-hist">${histHtml}</div>
+    </section>`;
+}
+function pgCountUp() {
+    document.querySelectorAll('#view [data-count]').forEach(el => {
+        const to = +el.dataset.count;
+        const t0 = performance.now(), dur = 900;
+        el.textContent = '0';
+        const step = now => {
+            const k = Math.min(1, (now - t0) / dur);
+            el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+            if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    });
+}
+{
+    const rlAn = renderList;
+    renderList = function () { rlAn(); pgCountUp(); };
 }
 function renderList() {
     run = null;
